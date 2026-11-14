@@ -8,6 +8,7 @@ create table if not exists public.people (
   bio text not null default '' check (char_length(bio) <= 600),
   interests text[] not null default '{}' check (interests <@ array['games', 'esports', 'boardgames', 'chess', 'films', 'series', 'anime', 'manga', 'cosplay', 'music', 'musicmaking', 'podcasts', 'books', 'art', 'photography', 'dance', 'creativity', 'languages', 'speaking', 'science', 'technology', 'pc', 'electronics', 'robotics', 'printing3d', 'linux', 'ai', 'sport', 'gym', 'running', 'swimming', 'football', 'tennis', 'martialarts', 'cycling', 'hiking', 'travel', 'cars', 'cooking', 'pets', 'investing', 'startups']),
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
+  cancel_token text not null default replace(gen_random_uuid()::text, '-', ''),
   created_at timestamptz not null default now()
 );
 
@@ -18,17 +19,30 @@ alter table public.people enable row level security;
 
 drop policy if exists "people read approved" on public.people;
 drop policy if exists "people submit pending" on public.people;
+drop policy if exists "people cancel own" on public.people;
 
+-- Токен заявки приезжает в заголовке x-s21-token: без регистрации это единственное
+-- доказательство авторства, поэтому сверяется внутри политики, а не фильтром клиента.
 create policy "people read approved" on public.people
   for select to anon, authenticated
-  using (status = 'approved');
+  using (
+    status = 'approved'
+    or cancel_token = nullif(current_setting('request.headers', true)::json ->> 'x-s21-token', '')
+  );
 
 create policy "people submit pending" on public.people
   for insert to anon, authenticated
   with check (status = 'pending');
 
+create policy "people cancel own" on public.people
+  for delete to anon, authenticated
+  using (
+    status <> 'approved'
+    and cancel_token = nullif(current_setting('request.headers', true)::json ->> 'x-s21-token', '')
+  );
+
 revoke all on public.people from anon, authenticated;
-grant select, insert on public.people to anon, authenticated;
+grant select, insert, delete on public.people to anon, authenticated;
 
 -- Модерация (SQL Editor):
 -- select id, nick, name, telegram, created_at from public.people where status = 'pending' order by created_at;
