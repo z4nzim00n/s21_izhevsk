@@ -59,16 +59,6 @@
     { id: 'c-trainer', title: 'Тренажёр по C', description: 'Сборник задач для практики перед экзаменом.', url: 'https://github.com/z4nzim00n/Exam_trainer', category: 'практика', icon: 'C', color: 'green' },
     { id: 'sql-trainer', title: 'SQL-тренажёр', description: 'Задания по SQL с проверкой запросов.', url: 'https://z4nzim00n.github.io/SQL_trainer/', category: 'тренажёр', icon: 'SQL', color: 'lilac' },
   ];
-  const avatars = [
-    { id: 'snake', glyph: '🐍', tone: 1 },
-    { id: 'fox', glyph: '🦊', tone: 2 },
-    { id: 'penguin', glyph: '🐧', tone: 3 },
-    { id: 'robot', glyph: '🤖', tone: 4 },
-    { id: 'rocket', glyph: '🚀', tone: 1 },
-    { id: 'herb', glyph: '🌿', tone: 2 },
-    { id: 'zap', glyph: '⚡', tone: 3 },
-    { id: 'headphones', glyph: '🎧', tone: 4 },
-  ];
   const chats = [
     { id: 'general', title: 'Общий чат кампуса', direction: '', description: 'Анонсы, вопросы и объявления для всех студентов кампуса.', url: '' },
     { id: 'chat-backend', title: 'Backend', direction: 'backend', description: 'Чат направления Backend: проекты, вопросы, пиры.', url: '' },
@@ -112,22 +102,14 @@
     return value === undefined || value === '' || (typeof value === 'string' && Object.hasOwn(directions, value));
   }
 
-  function validAvatar(value) {
-    return value === undefined || value === '' || (typeof value === 'string' && avatars.some(preset => preset.id === value));
-  }
-
-  function cleanAvatar(value) {
-    return typeof value === 'string' && avatars.some(preset => preset.id === value) ? value : '';
-  }
-
   function validPersonRecord(item) {
     return Boolean(item) && typeof item === 'object' && validText(item.id, 64) && typeof item.nick === 'string' && nickPattern.test(item.nick) && validText(item.name, 50) && typeof item.telegram === 'string' && telegramPattern.test(item.telegram) && validDirection(item.direction) && (item.bio === undefined || (typeof item.bio === 'string' && item.bio.length <= 600)) && (item.interests === undefined || validInterests(item.interests));
   }
 
   let people = loadRecords(keys.people, validPersonRecord)
-    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', avatar }) => ({ id, nick, name, telegram, bio, interests, direction, avatar: cleanAvatar(avatar) }));
+    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '' }) => ({ id, nick, name, telegram, bio, interests, direction }));
   let pendingPeople = loadRecords(keys.pending, validPersonRecord)
-    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', avatar }) => ({ id, nick, name, telegram, bio, interests, direction, avatar: cleanAvatar(avatar) }));
+    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '' }) => ({ id, nick, name, telegram, bio, interests, direction }));
   let remotePeople = [];
   let resources = loadRecords(keys.resources, item => validText(item.id, 64) && validText(item.title, 70) && typeof item.description === 'string' && item.description.length <= 240 && Boolean(safeUrl(item.url)));
   let editingId = null;
@@ -325,46 +307,6 @@
     $('#person-direction').replaceChildren(...options);
   }
 
-  function setAvatar(avatar, person) {
-    ['tone-1', 'tone-2', 'tone-3', 'tone-4'].forEach(tone => avatar.classList.remove(tone));
-    const preset = avatars.find(item => item.id === person.avatar);
-    if (preset) {
-      avatar.classList.add(`tone-${preset.tone}`);
-      avatar.textContent = preset.glyph;
-      return;
-    }
-    avatar.textContent = person.name.trim().split(/\s+/).slice(0, 2).map(part => [...part][0]).join('').toLocaleUpperCase('ru');
-  }
-
-  function renderAvatarPicker() {
-    const auto = document.createElement('label');
-    auto.className = 'interest-choice avatar-choice';
-    auto.title = 'Без аватарки — будут первые буквы имени';
-    const autoInput = document.createElement('input');
-    autoInput.type = 'radio';
-    autoInput.name = 'avatar';
-    autoInput.value = '';
-    autoInput.checked = true;
-    const autoSwatch = document.createElement('span');
-    autoSwatch.className = 'avatar-swatch';
-    autoSwatch.textContent = 'А';
-    auto.append(autoInput, autoSwatch);
-    const choices = avatars.map(preset => {
-      const label = document.createElement('label');
-      label.className = 'interest-choice avatar-choice';
-      const input = document.createElement('input');
-      input.type = 'radio';
-      input.name = 'avatar';
-      input.value = preset.id;
-      const swatch = document.createElement('span');
-      swatch.className = `avatar-swatch tone-${preset.tone}`;
-      swatch.textContent = preset.glyph;
-      label.append(input, swatch);
-      return label;
-    });
-    $('#avatar-picker').replaceChildren(auto, ...choices);
-  }
-
   function allPeople() {
     if (!supabaseClient) return people;
     const remoteNicks = new Set(remotePeople.map(person => person.nick.toLowerCase()));
@@ -387,13 +329,13 @@
     try {
       const { data, error } = await withTimeout(supabaseClient
         .from('people')
-        .select('id, nick, name, telegram, direction, bio, interests, avatar')
+        .select('id, nick, name, telegram, direction, bio, interests')
         .eq('status', 'approved')
         .order('created_at', { ascending: false }));
       if (error) throw error;
       remotePeople = (data || [])
         .filter(validPersonRecord)
-        .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', avatar }) => ({ id, nick, name, telegram, bio, interests, direction, avatar: cleanAvatar(avatar) }));
+        .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '' }) => ({ id, nick, name, telegram, bio, interests, direction }));
       prunePending();
       renderPeople();
     } catch (error) {
@@ -475,7 +417,6 @@
     pageItems.forEach(person => {
       const row = $('#person-template').content.firstElementChild.cloneNode(true);
       row.dataset.id = person.id;
-      setAvatar($('.avatar', row), person);
       $('.nick-text', row).textContent = person.nick;
       const nickButton = $('.copy-nick', row);
       nickButton.setAttribute('aria-label', `Скопировать ник ${person.nick}`);
@@ -579,7 +520,6 @@
 
   function openProfile(person) {
     profileId = person.id;
-    setAvatar($('#profile-avatar'), person);
     $('#profile-title').textContent = person.nick;
     $('#profile-name').textContent = person.name;
     $('#profile-badge').textContent = person.pending ? 'на проверке' : person.remote ? '' : 'локальная запись';
@@ -699,7 +639,6 @@
       $('#person-direction').value = person.direction || '';
       $('#person-bio').value = person.bio;
       $$('#interest-picker input').forEach(input => { input.checked = person.interests.includes(input.value); });
-      $$('#avatar-picker input').forEach(input => { input.checked = input.value === (person.avatar || ''); });
       $('#person-consent').checked = true;
     }
     showDialog($('#person-dialog'));
@@ -741,7 +680,6 @@
         direction: person.direction,
         bio: person.bio,
         interests: person.interests,
-        avatar: person.avatar,
       }));
       if (error) {
         console.error(error);
@@ -775,7 +713,6 @@
     const direction = $('#person-direction').value;
     const bio = $('#person-bio').value.trim();
     const interests = $$('#interest-picker input:checked').map(input => input.value);
-    const avatar = $('#avatar-picker input:checked')?.value || '';
     if (!nickPattern.test(nick)) {
       setError('#person-error', 'Проверь ник: 2–24 символа, первая — латинская буква.');
       $('#person-nick').focus();
@@ -810,11 +747,7 @@
       setError('#person-error', 'Описание должно быть не длиннее 600 символов, а интересы — из предложенного списка.');
       return;
     }
-    if (!validAvatar(avatar)) {
-      setError('#person-error', 'Выбери аватарку из предложенных.');
-      return;
-    }
-    const person = { id: editingId || crypto.randomUUID(), nick, name, telegram, direction, bio, interests, avatar };
+    const person = { id: editingId || crypto.randomUUID(), nick, name, telegram, direction, bio, interests };
     if (supabaseClient) {
       await submitPerson(person);
       return;
@@ -1020,7 +953,6 @@
   }
   renderDirectionPicker();
   renderInterestPicker();
-  renderAvatarPicker();
   renderChatFilter();
   renderChats();
   $('#hero-clubs').textContent = String(clubs.length);

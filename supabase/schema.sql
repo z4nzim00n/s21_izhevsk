@@ -7,7 +7,6 @@ create table if not exists public.people (
   direction text not null default '' check (direction in ('', 'backend', 'frontend', 'mobile', 'gamedev', 'devops', 'data', 'ai', 'security', 'qa', 'analytics', 'uxui', 'pm', 'bioinf')),
   bio text not null default '' check (char_length(bio) <= 600),
   interests text[] not null default '{}' check (interests <@ array['games', 'films', 'music', 'books', 'languages', 'sport', 'tennis', 'speaking', 'boardgames', 'travel', 'creativity', 'technology']),
-  avatar text not null default '',
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
   created_at timestamptz not null default now()
 );
