@@ -1,0 +1,36 @@
+-- Схема для Supabase: выполнить в SQL Editor один раз.
+create table if not exists public.people (
+  id uuid primary key default gen_random_uuid(),
+  nick text not null check (nick ~ '^[A-Za-z][A-Za-z0-9_-]{1,23}$'),
+  name text not null check (char_length(btrim(name)) between 1 and 50),
+  telegram text not null check (telegram ~ '^[A-Za-z][A-Za-z0-9_]{4,31}$'),
+  direction text not null default '' check (direction in ('', 'backend', 'frontend', 'mobile', 'gamedev', 'devops', 'data', 'ai', 'security', 'qa', 'analytics', 'uxui', 'pm', 'bioinf')),
+  bio text not null default '' check (char_length(bio) <= 600),
+  interests text[] not null default '{}' check (interests <@ array['games', 'films', 'music', 'books', 'languages', 'sport', 'tennis', 'speaking', 'boardgames', 'travel', 'creativity', 'technology']),
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
+  created_at timestamptz not null default now()
+);
+
+create unique index if not exists people_nick_key on public.people (lower(nick));
+create index if not exists people_created_idx on public.people (created_at desc);
+
+alter table public.people enable row level security;
+
+drop policy if exists "people read approved" on public.people;
+drop policy if exists "people submit pending" on public.people;
+
+create policy "people read approved" on public.people
+  for select to anon, authenticated
+  using (status = 'approved');
+
+create policy "people submit pending" on public.people
+  for insert to anon, authenticated
+  with check (status = 'pending');
+
+revoke all on public.people from anon, authenticated;
+grant select, insert on public.people to anon, authenticated;
+
+-- Модерация (SQL Editor):
+-- select id, nick, name, telegram, created_at from public.people where status = 'pending' order by created_at;
+-- update public.people set status = 'approved' where id = 'UUID';
+-- update public.people set status = 'rejected' where id = 'UUID';

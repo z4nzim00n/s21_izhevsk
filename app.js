@@ -1,0 +1,865 @@
+(() => {
+  'use strict';
+
+  const keys = {
+    people: 's21-izhevsk.people.v1',
+    pending: 's21-izhevsk.people.pending.v1',
+    resources: 's21-izhevsk.resources.v1',
+    theme: 's21-izhevsk.theme',
+    pageSize: 's21-izhevsk.pageSize',
+  };
+  const supabaseUrl = window.S21_SUPABASE?.url?.trim() || '';
+  const supabaseKey = window.S21_SUPABASE?.key?.trim() || '';
+  const supabaseConfigured = Boolean(supabaseUrl && supabaseKey);
+  const supabaseClient = supabaseConfigured && window.supabase
+    ? window.supabase.createClient(supabaseUrl, supabaseKey)
+    : null;
+  const pageSizes = [10, 20, 50];
+  const nickPattern = /^[a-z][a-z0-9_-]{1,23}$/i;
+  const telegramPattern = /^[a-z][a-z0-9_]{4,31}$/i;
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+  const warnings = [];
+  if (supabaseConfigured && !window.supabase) warnings.push('Не загрузился Supabase. Анкеты сохранятся только в этом браузере.');
+  const directions = {
+    backend: 'Backend',
+    frontend: 'Frontend',
+    mobile: 'Мобильная разработка',
+    gamedev: 'GameDev',
+    devops: 'DevOps',
+    data: 'Data Science',
+    ai: 'ИИ-инженер',
+    security: 'Кибербезопасность',
+    qa: 'QA',
+    analytics: 'Системный и бизнес-анализ',
+    uxui: 'UX/UI',
+    pm: 'Проджект-менеджмент',
+    bioinf: 'Биоинформатика',
+  };
+  const interestLabels = {
+    games: 'Игры',
+    films: 'Фильмы',
+    music: 'Музыка',
+    books: 'Книги',
+    languages: 'Иностранные языки',
+    sport: 'Спорт',
+    tennis: 'Теннис',
+    speaking: 'Публичные выступления',
+    boardgames: 'Настольные игры',
+    travel: 'Путешествия',
+    creativity: 'Творчество',
+    technology: 'Технологии',
+  };
+  const clubs = [
+    { id: 'english', name: 'Английский клуб', category: 'языки', icon: 'i-language', color: 'green', interests: ['languages'], description: 'Разговорная практика для тех, кто учит английский.' },
+    { id: 'tennis', name: 'Теннисный клуб', category: 'спорт', icon: 'i-tennis', color: 'blue', interests: ['tennis', 'sport'], description: 'Теннис и активный отдых после учёбы.' },
+    { id: 'speaking', name: 'Клуб публичных выступлений', category: 'выступления', icon: 'i-mic', color: 'lilac', interests: ['speaking'], description: 'Практика публичных выступлений и работы с голосом.' },
+  ];
+  const builtInResources = [
+    { id: 'c-trainer', title: 'Тренажёр по C', description: 'Сборник задач для практики перед экзаменом.', url: 'https://github.com/z4nzim00n/Exam_trainer', category: 'практика', icon: 'C', color: 'green' },
+    { id: 'sql-trainer', title: 'SQL-тренажёр', description: 'Задания по SQL с проверкой запросов.', url: 'https://z4nzim00n.github.io/SQL_trainer/', category: 'тренажёр', icon: 'SQL', color: 'lilac' },
+  ];
+
+  function validText(value, max) {
+    return typeof value === 'string' && value.trim().length > 0 && value.length <= max;
+  }
+
+  function safeUrl(value) {
+    if (!validText(value, 500)) return null;
+    try {
+      const url = new URL(value);
+      return url.protocol === 'https:' && !url.username && !url.password ? url.href : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function loadRecords(key, validate) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw === null) return [];
+      const records = JSON.parse(raw);
+      if (!Array.isArray(records) || !records.every(item => item && typeof item === 'object' && validate(item))) {
+        throw new Error('Invalid stored records');
+      }
+      return records;
+    } catch {
+      warnings.push('Не удалось прочитать локальные данные. Возможно, хранилище недоступно или повреждено.');
+      return [];
+    }
+  }
+
+  function validInterests(value) {
+    return Array.isArray(value) && value.length <= Object.keys(interestLabels).length && value.every(id => typeof id === 'string' && Object.hasOwn(interestLabels, id)) && new Set(value).size === value.length;
+  }
+
+  function validDirection(value) {
+    return value === undefined || value === '' || (typeof value === 'string' && Object.hasOwn(directions, value));
+  }
+
+  function validPersonRecord(item) {
+    return Boolean(item) && typeof item === 'object' && validText(item.id, 64) && typeof item.nick === 'string' && nickPattern.test(item.nick) && validText(item.name, 50) && typeof item.telegram === 'string' && telegramPattern.test(item.telegram) && validDirection(item.direction) && (item.bio === undefined || (typeof item.bio === 'string' && item.bio.length <= 600)) && (item.interests === undefined || validInterests(item.interests));
+  }
+
+  let people = loadRecords(keys.people, validPersonRecord)
+    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '' }) => ({ id, nick, name, telegram, bio, interests, direction }));
+  let pendingPeople = loadRecords(keys.pending, validPersonRecord)
+    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '' }) => ({ id, nick, name, telegram, bio, interests, direction }));
+  let remotePeople = [];
+  let resources = loadRecords(keys.resources, item => validText(item.id, 64) && validText(item.title, 70) && typeof item.description === 'string' && item.description.length <= 240 && Boolean(safeUrl(item.url)));
+  let editingId = null;
+  let profileId = null;
+  let pendingDelete = null;
+  let currentPage = 1;
+  let pageSize = loadPageSize();
+  let toastTimer;
+
+  function loadPageSize() {
+    try {
+      const value = Number(localStorage.getItem(keys.pageSize));
+      return pageSizes.includes(value) ? value : 10;
+    } catch {
+      return 10;
+    }
+  }
+
+  function hideToast(toast) {
+    if (typeof toast.hidePopover === 'function' && toast.matches(':popover-open')) toast.hidePopover();
+    toast.hidden = true;
+  }
+
+  function showToast(message, error = false) {
+    clearTimeout(toastTimer);
+    const toast = $('#toast');
+    $('span', toast).textContent = message;
+    $('use', toast).setAttribute('href', error ? '#i-info' : '#i-check');
+    toast.classList.toggle('is-error', error);
+    toast.hidden = false;
+    if (typeof toast.showPopover === 'function') {
+      if (!toast.matches(':popover-open')) toast.showPopover();
+    }
+    toastTimer = setTimeout(() => hideToast(toast), error ? 9000 : 4200);
+  }
+
+  function setError(id, message = '') {
+    const element = $(id);
+    element.textContent = message;
+    element.hidden = !message;
+  }
+
+  function persist(key, records, errorId) {
+    try {
+      localStorage.setItem(key, JSON.stringify(records));
+      return true;
+    } catch {
+      setError(errorId, 'Не удалось сохранить данные. Проверь, разрешено ли браузеру хранить данные сайта и есть ли свободное место.');
+      return false;
+    }
+  }
+
+  function withTimeout(promise, ms = 15000) {
+    let timer;
+    return Promise.race([
+      promise,
+      new Promise((_, reject) => { timer = setTimeout(() => reject(new Error('timeout')), ms); }),
+    ]).finally(() => clearTimeout(timer));
+  }
+
+  function legacyCopy(text) {
+    const area = document.createElement('textarea');
+    area.value = text;
+    area.setAttribute('readonly', '');
+    area.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+    document.body.append(area);
+    area.select();
+    area.setSelectionRange(0, text.length);
+    let copied = false;
+    try {
+      copied = document.execCommand('copy');
+    } catch {
+      copied = false;
+    }
+    area.remove();
+    return copied;
+  }
+
+  async function copyText(text, message) {
+    let copied = false;
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(text);
+        copied = true;
+      } catch {
+        copied = false;
+      }
+    }
+    if (!copied) copied = legacyCopy(text);
+    showToast(copied ? message : 'Не удалось скопировать: браузер запретил доступ к буферу.', !copied);
+  }
+
+  function svgIcon(id) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.classList.add('icon');
+    svg.setAttribute('aria-hidden', 'true');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', `#${id}`);
+    svg.append(use);
+    return svg;
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    const label = theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему';
+    $('#theme-toggle').setAttribute('aria-label', label);
+    $('#theme-toggle').title = label;
+    $('#theme-toggle use').setAttribute('href', theme === 'dark' ? '#i-sun' : '#i-moon');
+    $('meta[name="theme-color"]').content = theme === 'dark' ? '#101612' : '#eef3ee';
+  }
+
+  try {
+    applyTheme(localStorage.getItem(keys.theme) === 'light' ? 'light' : 'dark');
+  } catch {
+    applyTheme('dark');
+  }
+
+  $('#theme-toggle').addEventListener('click', () => {
+    const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(theme);
+    try {
+      localStorage.setItem(keys.theme, theme);
+    } catch {
+      showToast('Тема изменена, но браузер не разрешил сохранить выбор.', true);
+    }
+  });
+
+  function route(focus = false) {
+    const requested = location.hash.slice(1);
+    const page = ['people', 'rules', 'resources', 'clubs'].includes(requested) ? requested : 'people';
+    $$('.page-section').forEach(section => { section.hidden = section.id !== `page-${page}`; });
+    $$('.nav-link').forEach(link => {
+      const selected = link.dataset.page === page;
+      link.classList.toggle('is-active', selected);
+      if (selected) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    const titles = { people: 'Ники', rules: 'Правила и FAQ', resources: 'Полезные сайты', clubs: 'Клубы' };
+    document.title = `${titles[page]} · Школа 21, Ижевск`;
+    if (focus) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      $('#main').focus({ preventScroll: true });
+    }
+  }
+
+  window.addEventListener('hashchange', () => route(true));
+  $('.skip-link').addEventListener('click', event => {
+    event.preventDefault();
+    $('#main').focus();
+  });
+
+  function plural(count, forms) {
+    const last = count % 10;
+    const lastTwo = count % 100;
+    return forms[last === 1 && lastTwo !== 11 ? 0 : last >= 2 && last <= 4 && (lastTwo < 12 || lastTwo > 14) ? 1 : 2];
+  }
+
+  function renderInterestTags(container, interests, limit = interests.length) {
+    const tags = interests.slice(0, limit).map(id => {
+      const tag = document.createElement('span');
+      tag.className = 'interest-tag';
+      tag.textContent = interestLabels[id];
+      return tag;
+    });
+    if (interests.length > limit) {
+      const more = document.createElement('span');
+      more.className = 'interest-tag interest-more';
+      more.textContent = `+${interests.length - limit}`;
+      more.title = interests.slice(limit).map(id => interestLabels[id]).join(', ');
+      more.setAttribute('aria-label', `Ещё интересы: ${more.title}`);
+      tags.push(more);
+    }
+    container.replaceChildren(...tags);
+  }
+
+  function renderInterestPicker() {
+    const choices = Object.entries(interestLabels).map(([id, text]) => {
+      const label = document.createElement('label');
+      label.className = 'interest-choice';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.name = 'interests';
+      checkbox.value = id;
+      const caption = document.createElement('span');
+      caption.textContent = text;
+      label.append(checkbox, caption);
+      return label;
+    });
+    $('#interest-picker').replaceChildren(...choices);
+  }
+
+  function renderDirectionPicker() {
+    const options = [new Option('Не указано', '')];
+    Object.entries(directions).forEach(([id, text]) => options.push(new Option(text, id)));
+    $('#person-direction').replaceChildren(...options);
+  }
+
+  function setAvatar(avatar, person) {
+    avatar.textContent = person.name.trim().split(/\s+/).slice(0, 2).map(part => [...part][0]).join('').toLocaleUpperCase('ru');
+  }
+
+  function allPeople() {
+    if (!supabaseClient) return people;
+    const remoteNicks = new Set(remotePeople.map(person => person.nick.toLowerCase()));
+    const pending = pendingPeople
+      .filter(person => !remoteNicks.has(person.nick.toLowerCase()))
+      .map(person => ({ ...person, pending: true }));
+    return [...pending, ...remotePeople.map(person => ({ ...person, remote: true }))];
+  }
+
+  function prunePending() {
+    const remoteNicks = new Set(remotePeople.map(person => person.nick.toLowerCase()));
+    const next = pendingPeople.filter(person => !remoteNicks.has(person.nick.toLowerCase()));
+    if (next.length === pendingPeople.length) return;
+    pendingPeople = next;
+    persist(keys.pending, pendingPeople, '#person-error');
+  }
+
+  async function loadRemotePeople() {
+    if (!supabaseClient) return;
+    try {
+      const { data, error } = await withTimeout(supabaseClient
+        .from('people')
+        .select('id, nick, name, telegram, direction, bio, interests')
+        .eq('status', 'approved')
+        .order('created_at', { ascending: false }));
+      if (error) throw error;
+      remotePeople = (data || [])
+        .filter(validPersonRecord)
+        .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '' }) => ({ id, nick, name, telegram, bio, interests, direction }));
+      prunePending();
+      renderPeople();
+    } catch (error) {
+      console.error(error);
+      $('#results-summary').textContent = 'Общий список недоступен';
+      showToast('Не удалось загрузить общий список анкет.', true);
+    }
+  }
+
+  function pageSequence(total, current) {
+    if (total <= 7) return Array.from({ length: total }, (_, index) => index + 1);
+    const pages = new Set([1, total, current - 1, current, current + 1]);
+    if (current <= 3) [2, 3, 4].forEach(page => pages.add(page));
+    if (current >= total - 2) [total - 1, total - 2, total - 3].forEach(page => pages.add(page));
+    const sorted = [...pages].filter(page => page >= 1 && page <= total).sort((a, b) => a - b);
+    const sequence = [];
+    sorted.forEach((page, index) => {
+      if (index > 0 && page - sorted[index - 1] > 1) sequence.push(null);
+      sequence.push(page);
+    });
+    return sequence;
+  }
+
+  function stepButton(target, label, icon, disabled, className) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `page-button page-step ${className}`;
+    button.dataset.page = String(target);
+    button.setAttribute('aria-label', label);
+    button.disabled = disabled;
+    button.append(svgIcon(icon));
+    return button;
+  }
+
+  function renderPagination(totalPages, totalCount) {
+    const nav = $('#pagination');
+    $('#list-footer').hidden = totalCount === 0;
+    $('#page-size').value = String(pageSize);
+    if (totalPages <= 1) {
+      nav.hidden = true;
+      nav.replaceChildren();
+      return;
+    }
+    nav.hidden = false;
+    const fragment = document.createDocumentFragment();
+    fragment.append(stepButton(currentPage - 1, 'Предыдущая страница', 'i-chevron', currentPage === 1, 'is-prev'));
+    pageSequence(totalPages, currentPage).forEach(page => {
+      if (page === null) {
+        const gap = document.createElement('span');
+        gap.className = 'page-ellipsis';
+        gap.textContent = '…';
+        gap.setAttribute('aria-hidden', 'true');
+        fragment.append(gap);
+        return;
+      }
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'page-button';
+      button.dataset.page = String(page);
+      button.textContent = String(page);
+      button.setAttribute('aria-label', `Страница ${page}`);
+      if (page === currentPage) button.setAttribute('aria-current', 'page');
+      button.classList.toggle('is-current', page === currentPage);
+      fragment.append(button);
+    });
+    fragment.append(stepButton(currentPage + 1, 'Следующая страница', 'i-chevron', currentPage === totalPages, 'is-next'));
+    nav.replaceChildren(fragment);
+  }
+
+  function renderPeople() {
+    const everyone = allPeople();
+    const query = $('#people-search').value.trim().toLocaleLowerCase('ru').replace(/^@/, '');
+    const visible = everyone.filter(person => [person.nick, person.name, person.telegram || '', directions[person.direction] || '', ...person.interests.map(id => interestLabels[id])].some(value => value.toLocaleLowerCase('ru').includes(query)));
+    const totalPages = Math.max(1, Math.ceil(visible.length / pageSize));
+    currentPage = Math.min(Math.max(1, currentPage), totalPages);
+    const start = (currentPage - 1) * pageSize;
+    const pageItems = visible.slice(start, start + pageSize);
+    const fragment = document.createDocumentFragment();
+    pageItems.forEach(person => {
+      const row = $('#person-template').content.firstElementChild.cloneNode(true);
+      row.dataset.id = person.id;
+      setAvatar($('.avatar', row), person);
+      $('.nick-text', row).textContent = person.nick;
+      const nickButton = $('.copy-nick', row);
+      nickButton.setAttribute('aria-label', `Скопировать ник ${person.nick}`);
+      nickButton.title = `Скопировать ник ${person.nick}`;
+      const direction = $('.direction-badge', row);
+      direction.textContent = directions[person.direction] || '';
+      direction.hidden = !person.direction;
+      $('.person-name', row).textContent = person.name;
+      $('.person-bio-preview', row).textContent = person.bio || 'О себе пока ничего не указано.';
+      renderInterestTags($('.person-interests', row), person.interests, 4);
+      const telegram = $('.copy-telegram', row);
+      $('span', telegram).textContent = `@${person.telegram}`;
+      telegram.setAttribute('aria-label', `Скопировать тег @${person.telegram}`);
+      telegram.title = `Скопировать тег @${person.telegram}`;
+      $('.profile-open', row).setAttribute('aria-label', `Открыть профиль ${person.nick}`);
+      $('.edit-person', row).setAttribute('aria-label', `Редактировать анкету ${person.nick}`);
+      $('.delete-person', row).setAttribute('aria-label', `Удалить анкету ${person.nick}`);
+      $('.card-actions', row).hidden = Boolean(person.remote || person.pending);
+      $('.person-pending', row).hidden = !person.pending;
+      fragment.append(row);
+    });
+    $('#people-list').replaceChildren(fragment);
+    renderPagination(totalPages, visible.length);
+    $('#people-count').textContent = everyone.length;
+    $('#hero-total').textContent = everyone.length;
+    $('#hero-total-label').textContent = plural(everyone.length, ['студент', 'студента', 'студентов']);
+    const end = Math.min(start + pageSize, visible.length);
+    $('#results-summary').textContent = visible.length
+      ? `${visible.length > pageSize ? `${start + 1}–${end} из ` : ''}${visible.length} ${plural(visible.length, ['студент', 'студента', 'студентов'])}`
+      : query ? 'Ничего не найдено' : 'Пока никого';
+    $('#people-empty').hidden = visible.length > 0;
+    if (!visible.length) {
+      $('#empty-title').textContent = query ? 'Ничего не найдено' : 'Пока никого';
+      $('#empty-description').textContent = query ? 'Попробуй другой ник, имя, Telegram, направление или интерес.' : supabaseClient ? 'Добавь первую анкету — после проверки она появится в общем каталоге.' : 'Добавь первую анкету — она сохранится в этом браузере.';
+      $('#empty-action').textContent = query ? 'Сбросить поиск' : 'Добавить анкету';
+    }
+  }
+
+  $('#people-search').addEventListener('input', () => {
+    currentPage = 1;
+    renderPeople();
+  });
+  $('#empty-action').addEventListener('click', () => {
+    if ($('#people-search').value.trim()) {
+      $('#people-search').value = '';
+      currentPage = 1;
+      renderPeople();
+      $('#people-search').focus();
+    } else {
+      openPerson();
+    }
+  });
+
+  $('#pagination').addEventListener('click', event => {
+    const button = event.target.closest('button[data-page]');
+    if (!button || button.disabled) return;
+    const target = Number(button.dataset.page);
+    if (!Number.isInteger(target) || target === currentPage) return;
+    currentPage = target;
+    renderPeople();
+    $('#people-list').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  $('#page-size').addEventListener('change', event => {
+    const value = Number(event.target.value);
+    if (!pageSizes.includes(value)) return;
+    pageSize = value;
+    currentPage = 1;
+    try {
+      localStorage.setItem(keys.pageSize, String(value));
+    } catch {
+      showToast('Размер страницы изменён, но браузер не разрешил сохранить выбор.', true);
+    }
+    renderPeople();
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !event.target.closest('input, textarea, select, [contenteditable="true"]') && !document.querySelector('dialog[open]') && !$('#page-people').hidden) {
+      event.preventDefault();
+      $('#people-search').focus();
+    }
+  });
+
+  function showDialog(dialog) {
+    dialog.showModal();
+    dialog.scrollTop = 0;
+    document.body.classList.add('modal-open');
+  }
+
+  $$('dialog').forEach(dialog => {
+    $$('[data-close-dialog]', dialog).forEach(button => button.addEventListener('click', () => dialog.close()));
+    dialog.addEventListener('close', () => {
+      document.body.classList.toggle('modal-open', Boolean(document.querySelector('dialog[open]')));
+    });
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const rect = dialog.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+    });
+  });
+
+  function openProfile(person) {
+    profileId = person.id;
+    setAvatar($('#profile-avatar'), person);
+    $('#profile-title').textContent = person.nick;
+    $('#profile-name').textContent = person.name;
+    $('#profile-badge').textContent = person.pending ? 'на проверке' : person.remote ? '' : 'локальная запись';
+    $('#profile-badge').hidden = Boolean(person.remote);
+    $('#profile-edit').hidden = Boolean(person.remote || person.pending);
+    const direction = $('#profile-direction');
+    direction.textContent = directions[person.direction] || '';
+    direction.hidden = !person.direction;
+    $('#profile-bio').textContent = person.bio || 'О себе пока ничего не указано.';
+    renderInterestTags($('#profile-interests'), person.interests);
+    $('#profile-no-interests').hidden = person.interests.length > 0;
+    showDialog($('#profile-dialog'));
+  }
+
+  $('#profile-edit').addEventListener('click', () => {
+    const person = allPeople().find(item => item.id === profileId);
+    if (!person || person.remote || person.pending) return;
+    $('#profile-dialog').close();
+    openPerson(person);
+  });
+
+  $('#profile-telegram').addEventListener('click', () => {
+    const person = allPeople().find(item => item.id === profileId);
+    if (!person) return;
+    copyText(`@${person.telegram}`, `Тег скопирован: @${person.telegram}`);
+  });
+
+  function makeClubCard(club, interests = []) {
+    const card = $('#club-template').content.firstElementChild.cloneNode(true);
+    card.dataset.club = club.id;
+    const icon = $('.club-icon', card);
+    icon.classList.add(club.color);
+    icon.append(svgIcon(club.icon));
+    $('.club-category', card).textContent = club.category;
+    $('.club-name', card).textContent = club.name;
+    $('.club-description', card).textContent = club.description;
+    renderInterestTags($('.club-interests', card), club.interests);
+    const matched = club.interests.filter(id => interests.includes(id));
+    const reason = $('.club-reason', card);
+    reason.hidden = matched.length === 0;
+    reason.textContent = `Твои интересы: ${matched.map(id => interestLabels[id]).join(', ')}.`;
+    return card;
+  }
+
+  function showClubRecommendations(person) {
+    const matched = clubs.filter(club => club.interests.some(id => person.interests.includes(id)));
+    if (!matched.length) return false;
+    $('#recommendation-list').replaceChildren(...matched.map(club => makeClubCard(club, person.interests)));
+    hideToast($('#toast'));
+    showDialog($('#recommendation-dialog'));
+    return true;
+  }
+
+  $('#recommendation-clubs').addEventListener('click', event => {
+    event.preventDefault();
+    $('#recommendation-dialog').close();
+    if (location.hash === '#clubs') route(true);
+    else location.hash = 'clubs';
+  });
+
+  function openPerson(person = null) {
+    editingId = person?.id ?? null;
+    $('#person-form').reset();
+    setError('#person-error');
+    $('#person-dialog-title').textContent = person ? 'Изменить анкету' : 'Новая анкета';
+    $('#person-dialog-description').textContent = person
+      ? 'Изменения сохранятся в этом браузере.'
+      : supabaseClient
+        ? 'Ник, имя и Telegram. После проверки анкета появится в общем каталоге.'
+        : 'Ник, имя и Telegram. Направление, интересы и описание можно добавить по желанию.';
+    $('#person-submit').replaceChildren(document.createTextNode(person ? 'Сохранить' : 'Добавить'), svgIcon('i-arrow'));
+    if (person) {
+      $('#person-nick').value = person.nick;
+      $('#person-name').value = person.name;
+      $('#person-telegram').value = person.telegram;
+      $('#person-direction').value = person.direction || '';
+      $('#person-bio').value = person.bio;
+      $$('#interest-picker input').forEach(input => { input.checked = person.interests.includes(input.value); });
+      $('#person-consent').checked = true;
+    }
+    showDialog($('#person-dialog'));
+    $('#person-nick').focus();
+  }
+
+  $$('[data-add-person]').forEach(button => button.addEventListener('click', () => openPerson()));
+
+  $('#person-telegram').addEventListener('input', event => {
+    const field = event.target;
+    const cleaned = field.value.replace(/^@+/, '');
+    if (cleaned !== field.value) field.value = cleaned;
+  });
+
+  function parseTelegram(value) {
+    let username = value.trim();
+    if (/^(?:https?:\/\/)?(?:www\.)?t\.me\//i.test(username)) {
+      try {
+        const url = new URL(/^https?:\/\//i.test(username) ? username : `https://${username}`);
+        if (!['t.me', 'www.t.me'].includes(url.hostname) || url.username || url.password || url.port || url.search || url.hash) return null;
+        username = url.pathname.replace(/^\//, '').replace(/\/$/, '');
+      } catch {
+        return null;
+      }
+    } else {
+      username = username.replace(/^@/, '');
+    }
+    return telegramPattern.test(username) ? username.toLowerCase() : null;
+  }
+
+  async function submitPerson(person) {
+    const button = $('#person-submit');
+    button.disabled = true;
+    try {
+      const { error } = await withTimeout(supabaseClient.from('people').insert({
+        nick: person.nick,
+        name: person.name,
+        telegram: person.telegram,
+        direction: person.direction,
+        bio: person.bio,
+        interests: person.interests,
+      }));
+      if (error) {
+        console.error(error);
+        setError('#person-error', error.code === '23505'
+          ? 'Этот ник уже занят. Если анкета уже отправлена — дождись проверки.'
+          : 'Не удалось отправить анкету. Проверь интернет и попробуй ещё раз.');
+        return;
+      }
+    } catch (requestError) {
+      console.error(requestError);
+      setError('#person-error', 'Не удалось отправить анкету. Проверь интернет и попробуй ещё раз.');
+      return;
+    } finally {
+      button.disabled = false;
+    }
+    const next = [person, ...pendingPeople];
+    if (persist(keys.pending, next, '#person-error')) pendingPeople = next;
+    $('#people-search').value = '';
+    currentPage = 1;
+    renderPeople();
+    $('#person-dialog').close();
+    if (!showClubRecommendations(person)) showToast('Анкета отправлена на проверку.');
+  }
+
+  $('#person-form').addEventListener('submit', async event => {
+    event.preventDefault();
+    setError('#person-error');
+    const nick = $('#person-nick').value.trim().toLowerCase();
+    const name = $('#person-name').value.trim();
+    const telegram = parseTelegram($('#person-telegram').value);
+    const direction = $('#person-direction').value;
+    const bio = $('#person-bio').value.trim();
+    const interests = $$('#interest-picker input:checked').map(input => input.value);
+    if (!nickPattern.test(nick)) {
+      setError('#person-error', 'Проверь ник: 2–24 символа, первая — латинская буква.');
+      $('#person-nick').focus();
+      return;
+    }
+    if (!validText(name, 50)) {
+      setError('#person-error', 'Укажи имя, а не только пробелы.');
+      $('#person-name').focus();
+      return;
+    }
+    if (!telegram) {
+      setError('#person-error', 'Проверь Telegram: username из 5–32 латинских букв, цифр или _, начинается с буквы. Можно вставить ссылку https://t.me/username.');
+      $('#person-telegram').focus();
+      return;
+    }
+    if (!validDirection(direction)) {
+      setError('#person-error', 'Выбери направление из списка.');
+      $('#person-direction').focus();
+      return;
+    }
+    const taken = supabaseClient
+      ? remotePeople.some(item => item.nick.toLowerCase() === nick) || pendingPeople.some(item => item.nick.toLowerCase() === nick)
+      : people.some(item => item.id !== editingId && item.nick.toLowerCase() === nick);
+    if (taken) {
+      setError('#person-error', supabaseClient
+        ? 'Этот ник уже есть в общем каталоге или отправлен на проверку.'
+        : 'Этот ник уже есть в твоих записях. Можно отредактировать существующую анкету.');
+      $('#person-nick').focus();
+      return;
+    }
+    if (bio.length > 600 || !validInterests(interests)) {
+      setError('#person-error', 'Описание должно быть не длиннее 600 символов, а интересы — из предложенного списка.');
+      return;
+    }
+    const person = { id: editingId || crypto.randomUUID(), nick, name, telegram, direction, bio, interests };
+    if (supabaseClient) {
+      await submitPerson(person);
+      return;
+    }
+    const next = editingId ? people.map(item => item.id === editingId ? person : item) : [person, ...people];
+    if (!persist(keys.people, next, '#person-error')) return;
+    people = next;
+    $('#people-search').value = '';
+    currentPage = 1;
+    renderPeople();
+    $('#person-dialog').close();
+    if (!showClubRecommendations(person)) {
+      showToast(editingId ? 'Анкета обновлена.' : 'Анкета добавлена и сохранена в этом браузере.');
+    }
+  });
+
+  $('#people-list').addEventListener('click', event => {
+    const row = event.target.closest('.person-row');
+    if (!row) return;
+    const id = row.dataset.id;
+    const person = allPeople().find(item => item.id === id);
+    if (!person) return;
+    if (event.target.closest('.copy-nick')) {
+      copyText(person.nick, `Ник скопирован: ${person.nick}`);
+      return;
+    }
+    if (event.target.closest('.copy-telegram')) {
+      copyText(`@${person.telegram}`, `Тег скопирован: @${person.telegram}`);
+      return;
+    }
+    if (event.target.closest('.profile-open')) {
+      openProfile(person);
+      return;
+    }
+    if (event.target.closest('.edit-person')) openPerson(person);
+    if (event.target.closest('.delete-person')) requestDelete('person', person.id, `Анкета ${person.nick} исчезнет из этого браузера. Это действие нельзя отменить.`);
+  });
+
+  function renderResources() {
+    const allResources = [...builtInResources, ...resources];
+    const fragment = document.createDocumentFragment();
+    allResources.forEach(resource => {
+      const card = $('#resource-template').content.firstElementChild.cloneNode(true);
+      card.dataset.id = resource.id;
+      const isBuiltIn = builtInResources.includes(resource);
+      const icon = $('.resource-icon', card);
+      icon.classList.add(resource.color || 'blue');
+      if (resource.icon) icon.textContent = resource.icon;
+      else icon.append(svgIcon('i-grid'));
+      $('.resource-category', card).textContent = resource.category || 'моя подборка';
+      $('h3', card).textContent = resource.title;
+      $('.resource-description', card).textContent = resource.description || 'Полезная ссылка, сохранённая в этом браузере.';
+      $('.resource-link', card).href = safeUrl(resource.url);
+      $('.resource-link', card).setAttribute('aria-label', `Открыть: ${resource.title}`);
+      $('.resource-domain', card).textContent = new URL(resource.url).hostname;
+      const remove = $('.delete-resource', card);
+      remove.hidden = isBuiltIn;
+      remove.setAttribute('aria-label', `Удалить ссылку ${resource.title}`);
+      fragment.append(card);
+    });
+    $('#resources-grid').replaceChildren(fragment);
+    $('#resources-count').textContent = allResources.length;
+  }
+
+  $('#add-resource').addEventListener('click', () => {
+    $('#resource-form').reset();
+    setError('#resource-error');
+    showDialog($('#resource-dialog'));
+    $('#resource-title').focus();
+  });
+  $('#resource-form').addEventListener('submit', event => {
+    event.preventDefault();
+    setError('#resource-error');
+    const title = $('#resource-title').value.trim();
+    const url = safeUrl($('#resource-url').value.trim());
+    const description = $('#resource-description').value.trim();
+    if (!validText(title, 70)) {
+      setError('#resource-error', 'Укажи название, а не только пробелы.');
+      $('#resource-title').focus();
+      return;
+    }
+    if (!url) {
+      setError('#resource-error', 'Нужна полная HTTPS-ссылка без логина и пароля в адресе.');
+      $('#resource-url').focus();
+      return;
+    }
+    if ([...builtInResources, ...resources].some(resource => resource.url === url)) {
+      setError('#resource-error', 'Эта ссылка уже есть в подборке.');
+      return;
+    }
+    const next = [...resources, { id: crypto.randomUUID(), title, url, description }];
+    if (!persist(keys.resources, next, '#resource-error')) return;
+    resources = next;
+    renderResources();
+    $('#resource-dialog').close();
+    showToast('Ссылка добавлена в подборку этого браузера.');
+  });
+  $('#resources-grid').addEventListener('click', event => {
+    if (!event.target.closest('.delete-resource')) return;
+    const id = event.target.closest('.resource-card').dataset.id;
+    const resource = resources.find(item => item.id === id);
+    if (resource) requestDelete('resource', id, `Ссылка «${resource.title}» исчезнет из твоей локальной подборки.`);
+  });
+
+  function requestDelete(type, id, description) {
+    pendingDelete = { type, id };
+    $('#delete-description').textContent = description;
+    setError('#delete-error');
+    showDialog($('#delete-dialog'));
+  }
+
+  $('#confirm-delete').addEventListener('click', () => {
+    if (!pendingDelete) return;
+    const { type, id } = pendingDelete;
+    if (type === 'person') {
+      const next = people.filter(person => person.id !== id);
+      if (!persist(keys.people, next, '#delete-error')) return;
+      people = next;
+      renderPeople();
+    } else {
+      const next = resources.filter(resource => resource.id !== id);
+      if (!persist(keys.resources, next, '#delete-error')) return;
+      resources = next;
+      renderResources();
+    }
+    pendingDelete = null;
+    $('#delete-dialog').close();
+    showToast('Запись удалена из этого браузера.');
+  });
+
+  window.addEventListener('storage', event => {
+    if (event.key === keys.people || event.key === keys.pending || event.key === keys.resources || event.key === keys.pageSize || event.key === null) {
+      location.reload();
+    } else if (event.key === keys.theme) {
+      applyTheme(event.newValue === 'dark' ? 'dark' : 'light');
+    }
+  });
+
+  if (supabaseClient) {
+    $('.consent-label span').textContent = 'Публикую свои данные в общем каталоге. Их увидят все посетители сайта.';
+  }
+  renderDirectionPicker();
+  renderInterestPicker();
+  $('#hero-clubs').textContent = String(clubs.length);
+  $('#hero-clubs-label').textContent = plural(clubs.length, ['клуб', 'клуба', 'клубов']);
+  $('#clubs-grid').replaceChildren(...clubs.map(club => makeClubCard(club)));
+  route();
+  renderPeople();
+  if (supabaseClient) {
+    $('#results-summary').textContent = 'Загружаем анкеты…';
+    loadRemotePeople();
+  }
+  renderResources();
+  if (warnings.length) showToast(warnings[0], true);
+})();
