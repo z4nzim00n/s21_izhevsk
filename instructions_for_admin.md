@@ -70,7 +70,7 @@
   `nick` — ник Школы 21, `role` — роль текстом (например `ADM IZH`), оба необязательны.
   Тег организатора на сайте копируется кликом. Организатора ещё нет — `organizersSoon: true`.
 - **FAQ и правила:** файл `index.html`, секция `id="page-rules"`. Вопрос — блок
-  `<details class="faq-item glass"><summary>Вопрос?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Ответ.</p></details>`.
+  `<details class="faq-item"><summary>Вопрос?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Ответ.</p></details>`.
   Тексты уже заполнены — правь формулировки прямо в этих блоках.
 - **Направление или интерес:** мало поменять `app.js` — нужно ещё обновить ограничение в базе.
   Это миграция, попроси AI дать готовый SQL и выполни его один раз в SQL Editor.

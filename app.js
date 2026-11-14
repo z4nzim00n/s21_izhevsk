@@ -105,7 +105,7 @@
     { id: 'knowledge-base-nsk', group: 'knowledge', title: 'База знаний (Новосибирск)', description: 'Полезное по веткам, чаты проектов, поиск команды и ответы на вопросы по заданиям.', url: 'https://git.21-school.ru/gehnaeli/knowledge-base-nsk/-/tree/master', category: 'база знаний', icon: 'NSK', color: 'blue' },
     { id: 'emap', group: 'tools', title: 'Интерактивная карта', description: 'Карта Школы 21 без скрытых узлов и ограничений: путь к цели и проекты, которые откроются после неё.', url: 'https://emap.tamelaos.fun/', category: 'карта', icon: 'MAP', color: 'lilac' },
     { id: 'linux-cheatsheet', group: 'tools', title: 'Шпаргалка по Linux', description: 'Команды Linux коротко: файлы, права, процессы и сеть.', url: 'https://github.com/justxor/Linux-/', category: 'шпаргалка', icon: 'SH', color: 'lilac' },
-    { id: 'starter-pack', group: 'tools', title: 'Настройка терминала разработчика', description: 'Гайд по настройке терминала для заданий из дома: WSL и SSH.', url: 'https://github.com/z4nzim00n/S21-Starter-Pack', category: 'гайд', icon: 'WSL', color: 'green' },
+    { id: 'starter-pack', group: 'tools', title: 'Настройка терминала разработчика', description: 'Руководство по настройке терминала для работы из дома: WSL и SSH.', url: 'https://github.com/z4nzim00n/S21-Starter-Pack', category: 'руководство', icon: 'WSL', color: 'green' },
   ];
   const chatGroups = [
     { id: 'campus', title: 'Кампус Ижевск' },
@@ -146,7 +146,7 @@
     { id: 'uxui', group: 'other', title: 'UX / UI', url: 'https://t.me/+1NkIFYy7tiM2YmFi' },
     { id: 'morty-bot', group: 'bots', title: 'MortyS21bot', tag: 'поиск и верификация', description: 'Поиск пиров по нику, Telegram username или ID, верификация в чатах, статистика активности и база проверенных пользователей.', url: 'https://t.me/MortyS21bot' },
     { id: 'login-bot', group: 'bots', title: 'login_school21_bot', tag: 'поиск пиров', description: 'Бот для поиска пиров по нику в Telegram и школьному нику.', url: 'https://t.me/login_school21_bot' },
-    { id: 'noem-bot', group: 'bots', title: 'NoemX21_bot', tag: 'бот-помощник', description: 'Переговорки, книги, клубы, личная стата, PRR helper и админка групп — в одном месте.', url: 'https://t.me/NoemX21_bot' },
+    { id: 'noem-bot', group: 'bots', title: 'NoemX21_bot', tag: 'бот-помощник', description: 'Переговорки, книги, клубы, личная статистика, PRR helper и управление группами.', url: 'https://t.me/NoemX21_bot' },
     { id: 'smartcalc', group: 'archive', title: 'SmartCalc', tag: 'архив', description: 'Проект больше недоступен для выполнения.', url: 'https://t.me/+kVtODVcII0k2MjU6' },
   ];
 
@@ -303,13 +303,13 @@
     $('#theme-toggle').setAttribute('aria-label', label);
     $('#theme-toggle').title = label;
     $('#theme-toggle use').setAttribute('href', theme === 'dark' ? '#i-sun' : '#i-moon');
-    $('meta[name="theme-color"]').content = theme === 'dark' ? '#101612' : '#eef3ee';
+    $('meta[name="theme-color"]').content = theme === 'dark' ? '#222329' : '#f5f4f0';
   }
 
   try {
-    applyTheme(localStorage.getItem(keys.theme) === 'light' ? 'light' : 'dark');
+    applyTheme(localStorage.getItem(keys.theme) === 'dark' ? 'dark' : 'light');
   } catch {
-    applyTheme('dark');
+    applyTheme('light');
   }
 
   $('#theme-toggle').addEventListener('click', () => {
@@ -332,7 +332,7 @@
       if (selected) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     });
-    const titles = { people: 'Ники', rules: 'Правила и FAQ', chats: 'Чаты', resources: 'Полезные сайты', clubs: 'Клубы' };
+    const titles = { people: 'Студенты', rules: 'Правила и FAQ', chats: 'Чаты', resources: 'Полезные сайты', clubs: 'Клубы' };
     document.title = `${titles[page]} · Школа 21, Ижевск`;
     if (focus) {
       window.scrollTo({ top: 0, behavior: 'instant' });
@@ -476,7 +476,7 @@
       if (!updated.length) throw new Error('nothing updated');
     } catch (error) {
       console.error(error);
-      setError('#person-error', 'Не удалось сохранить правки в базе. Проверь интернет; если повторяется — сообщи админу.');
+      setError('#person-error', 'Не удалось сохранить правки в базе. Проверь подключение к интернету. Если ошибка повторяется, обратись к администратору.');
       return;
     } finally {
       button.disabled = false;
@@ -636,12 +636,12 @@
     $('#hero-total-label').textContent = plural(everyone.length, ['студент', 'студента', 'студентов']);
     const end = Math.min(start + pageSize, visible.length);
     $('#results-summary').textContent = visible.length
-      ? `${visible.length > pageSize ? `${start + 1}–${end} из ` : ''}${visible.length} ${plural(visible.length, ['студент', 'студента', 'студентов'])}`
+      ? visible.length > pageSize ? `Показано ${start + 1}–${end} из ${visible.length}` : `${visible.length} ${plural(visible.length, ['студент', 'студента', 'студентов'])}`
       : query ? 'Ничего не найдено' : 'Пока никого';
     $('#people-empty').hidden = visible.length > 0;
     if (!visible.length) {
       $('#empty-title').textContent = query ? 'Ничего не найдено' : 'Пока никого';
-      $('#empty-description').textContent = query ? 'Попробуй другой ник, имя, Telegram, направление или интерес.' : supabaseClient ? 'Добавь первую анкету — после проверки она появится в общем каталоге.' : 'Добавь первую анкету — она сохранится в этом браузере.';
+      $('#empty-description').textContent = query ? 'Измени запрос или сбрось поиск, чтобы увидеть весь список.' : supabaseClient ? 'Добавь первую анкету — после проверки она появится в общем каталоге.' : 'Добавь первую анкету — она сохранится в этом браузере.';
       $('#empty-action').textContent = query ? 'Сбросить поиск' : 'Добавить анкету';
     }
   }
@@ -797,7 +797,7 @@
     $('#person-dialog-description').textContent = person
       ? (person.pending
         ? (person.status === 'rejected'
-          ? 'Заявка отклонена: исправь данные и сохрани — она снова уйдёт на проверку. Ник изменить нельзя.'
+          ? 'После исправления и сохранения отклонённая заявка будет отправлена на повторную проверку. Ник изменить нельзя.'
           : 'Заявка ещё на проверке: данные можно исправить до решения модератора. Ник изменить нельзя.')
         : 'Изменения сохранятся в этом браузере.')
       : supabaseClient
@@ -1093,7 +1093,7 @@
         await deleteOwnSubmission(person.nick, person.token);
       } catch (error) {
         console.error(error);
-        setError('#delete-error', 'Не удалось отменить заявку в базе. Проверь интернет; если повторяется — сообщи админу.');
+        setError('#delete-error', 'Не удалось отменить заявку в базе. Проверь подключение к интернету. Если ошибка повторяется, обратись к администратору.');
         return;
       } finally {
         button.disabled = false;
