@@ -695,21 +695,6 @@ kbd {
 .empty-state p { max-width: 420px; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
 .empty-state .button { margin-top: 6px; }
 
-.prototype-note {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin-top: 22px;
-  padding: 16px 18px;
-  border-radius: 10px;
-  box-shadow: var(--shadow-soft);
-}
-.note-icon { display: grid; place-items: center; flex: 0 0 28px; width: 28px; height: 28px; border-radius: 6px; background: var(--chip); color: var(--accent); }
-.note-icon .icon { width: 16px; height: 16px; flex-basis: 16px; }
-.prototype-note > div { min-width: 0; }
-.prototype-note strong { font-size: 13px; font-weight: 600; }
-.prototype-note p { max-width: 840px; margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.75; }
-
 /* Rules */
 .official-card {
   display: flex;
@@ -822,9 +807,10 @@ kbd {
 }
 .chat-chip.is-active { border-color: var(--accent-chip-border); background: var(--accent-chip); color: var(--accent-chip-text); }
 .chat-soon { color: var(--faint); font-size: 12px; }
-.chats-group-title { grid-column: 1 / -1; margin: 6px 0 0; font-size: 14px; font-weight: 600; }
-.chats-group-title:first-child { margin-top: 0; }
+.chats-group-title, .resources-group-title { grid-column: 1 / -1; margin: 6px 0 0; font-size: 14px; font-weight: 600; }
+.chats-group-title:first-child, .resources-group-title:first-child { margin-top: 0; }
 .club-organizers { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); }
+.club-organizer-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; width: 100%; }
 .club-organizer-name { color: var(--muted); font-size: 12px; }
 .resource-card, .club-card {
   display: flex;
@@ -858,49 +844,10 @@ kbd {
 .resource-link { display: inline-flex; align-items: center; gap: 7px; min-height: 32px; color: var(--accent); font-size: 12px; }
 .resource-link .icon { width: 14px; height: 14px; flex-basis: 14px; }
 .resource-domain { overflow: hidden; margin-top: 6px; color: var(--faint); font-family: var(--font-mono); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
-.delete-resource { color: var(--faint); }
 
 .club-category { min-width: 0; color: var(--faint); font-size: 10px; white-space: normal; text-align: right; overflow-wrap: anywhere; }
 .club-description { margin: 8px 0 14px; color: var(--muted); font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; }
 .club-interests { margin-bottom: 16px; }
-.club-reason {
-  display: none;
-  margin-bottom: 12px;
-  padding: 8px 10px;
-  border-left: 2px solid var(--lime);
-  background: var(--accent-chip);
-  color: var(--accent-chip-text);
-  font-size: 12px;
-  line-height: 1.65;
-  overflow-wrap: anywhere;
-}
-.club-contact {
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  margin-top: auto;
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
-  color: var(--faint);
-  font-size: 11px;
-  line-height: 1.6;
-}
-.club-organizers + .club-contact { margin-top: 0; border-top: 0; padding-top: 8px; }
-.club-contact > span { min-width: 0; overflow-wrap: anywhere; }
-.club-contact .icon { width: 14px; height: 14px; flex-basis: 14px; margin-top: 1px; }
-.club-invitation {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 14px;
-  margin-top: 22px;
-  padding: 18px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-soft);
-}
-.club-invitation > div { min-width: 0; overflow-wrap: anywhere; }
-.club-invitation h2 { font-size: 17px; letter-spacing: -.25px; }
-.club-invitation p { margin-top: 4px; color: var(--muted); font-size: 12px; line-height: 1.7; }
 .clubs-footnote { margin: 12px 2px 0; color: var(--faint); font-size: 12px; line-height: 1.7; overflow-wrap: anywhere; }
 
 /* Footer */
@@ -967,6 +914,7 @@ kbd {
 .modal select { padding-right: 8px; }
 .modal textarea { min-height: 96px; }
 .modal input:not([type='checkbox']):focus, .modal textarea:focus, .modal select:focus { border-color: var(--accent); }
+.modal input:disabled { opacity: .55; cursor: not-allowed; }
 .modal [aria-invalid='true'] { border-color: var(--danger) !important; }
 .input-wrap { position: relative; }
 .input-prefix { position: absolute; top: 50%; left: 12px; color: var(--faint); font-size: 13px; transform: translateY(-50%); pointer-events: none; }
@@ -1008,7 +956,7 @@ kbd {
 .consent-label input { flex: 0 0 16px; width: 16px; height: 16px; margin: 2px 0 0; accent-color: var(--lime); cursor: pointer; }
 .modal-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); }
 
-.profile-modal, .recommendation-modal { width: min(560px, calc(100% - 28px)); max-width: 560px; }
+.profile-modal { width: min(560px, calc(100% - 28px)); max-width: 560px; }
 .profile-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
 .profile-heading > div:last-child { min-width: 0; }
 .profile-heading h2 { margin: 0 0 2px; overflow-wrap: anywhere; }
@@ -1019,18 +967,6 @@ kbd {
 .profile-bio { color: var(--muted); font-size: 13px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
 .profile-section > .muted { font-size: 13px; overflow-wrap: anywhere; }
 .profile-modal .modal-actions .button { flex: 1 1 140px; min-width: 0; overflow-wrap: anywhere; }
-
-.save-confirmation { display: inline-flex; align-items: center; gap: 6px; min-width: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
-.save-confirmation .icon { width: 15px; height: 15px; flex-basis: 15px; color: var(--accent); }
-.recommendation-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin: 18px 0 12px; }
-.recommendation-list .club-card { padding: 14px; border-radius: 8px; box-shadow: none; }
-.recommendation-list .club-card-top { margin-bottom: 10px; }
-.recommendation-list .club-icon { flex-basis: 34px; width: 34px; height: 34px; border-radius: 7px; }
-.recommendation-list .club-name { font-size: 16px; }
-.recommendation-list .club-description { margin: 6px 0 10px; font-size: 12px; }
-.recommendation-list .club-interests { margin-bottom: 10px; }
-.recommendation-list .club-reason { display: block; }
-.recommendation-list .club-contact { margin-top: 0; padding-top: 8px; }
 
 .form-error { margin-top: 14px; padding: 9px 11px; border: 1px solid var(--danger); border-radius: 7px; background: var(--danger-bg); color: var(--danger); font-size: 12px; overflow-wrap: anywhere; }
 
@@ -1076,7 +1012,7 @@ kbd {
   .official-card:hover, .resource-card:hover, .club-card:hover { border-color: var(--line-strong); }
   .page-button:hover:not(:disabled):not(.is-current) { background: var(--surface-hover); color: var(--text); }
   .resource-link:hover > span, .profile-open:hover span { text-decoration: underline; text-underline-offset: 3px; }
-  .delete-person:hover, .delete-resource:hover { background: var(--danger-bg); color: var(--danger); }
+  .delete-person:hover { background: var(--danger-bg); color: var(--danger); }
   .faq-item summary:hover { background: var(--surface-hover); }
   .chat-chip:hover { border-color: var(--accent-chip-border); color: var(--text); }
   .club-organizer:hover { border-color: var(--accent-chip-border); background: var(--accent-chip); }
@@ -1143,8 +1079,6 @@ kbd {
   .official-card p { font-size: 12px; }
   .round-arrow { display: none; }
   .advice-card { padding: 18px; }
-  .club-invitation { grid-template-columns: auto minmax(0, 1fr); align-items: start; padding: 16px; }
-  .club-invitation > .button { grid-column: 1 / -1; margin-top: 4px; }
   .site-footer { flex-wrap: wrap; gap: 6px 16px; margin-top: 30px; padding-top: 20px; }
   .footer-location { flex-basis: 100%; margin-left: 0; }
   .modal { padding: 18px; }
@@ -1197,8 +1131,8 @@ kbd {
 
 @media (forced-colors: active) {
   .site-header, .button, .icon-button, .interest-choice > span,
-  .person-row, .resource-card, .club-card, .official-card, .prototype-note,
-  .advice-card, .faq-item, .club-invitation, .directory-toolbar, .empty-state,
+  .person-row, .resource-card, .club-card, .official-card,
+  .advice-card, .faq-item, .directory-toolbar, .empty-state,
   .chat-chip,
   .direction-badge, .telegram-link { border: 1px solid ButtonText; }
   .nav-link.is-active, .interest-choice input:checked + span,
