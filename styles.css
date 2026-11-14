@@ -41,6 +41,10 @@
   --art-line: rgba(190, 224, 165, .18);
   --art-front: rgba(52, 72, 47, .5);
   --art-back: rgba(94, 128, 74, .16);
+  --avatar-1: rgba(63, 125, 85, .4);
+  --avatar-2: rgba(56, 96, 130, .4);
+  --avatar-3: rgba(112, 84, 150, .4);
+  --avatar-4: rgba(160, 124, 44, .4);
   --radius: 12px;
   --font: "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
   --font-mono: "Source Code Pro", ui-monospace, "Cascadia Code", Consolas, monospace;
@@ -89,6 +93,10 @@ html[data-theme='light'] {
   --art-line: rgba(96, 136, 83, .22);
   --art-front: rgba(255, 255, 255, .62);
   --art-back: rgba(190, 211, 169, .42);
+  --avatar-1: rgba(63, 125, 85, .16);
+  --avatar-2: rgba(56, 96, 130, .16);
+  --avatar-3: rgba(112, 84, 150, .16);
+  --avatar-4: rgba(160, 124, 44, .18);
 }
 
 *,
@@ -558,6 +566,29 @@ kbd {
   font-weight: 600;
   letter-spacing: -.4px;
 }
+.avatar.tone-1 { background: var(--avatar-1); }
+.avatar.tone-2 { background: var(--avatar-2); }
+.avatar.tone-3 { background: var(--avatar-3); }
+.avatar.tone-4 { background: var(--avatar-4); }
+.avatar-swatch {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line-strong);
+  border-radius: 9px;
+  background: var(--chip);
+  color: var(--accent-strong);
+  font-size: 21px;
+  line-height: 1;
+}
+.avatar-swatch.tone-1 { background: var(--avatar-1); }
+.avatar-swatch.tone-2 { background: var(--avatar-2); }
+.avatar-swatch.tone-3 { background: var(--avatar-3); }
+.avatar-swatch.tone-4 { background: var(--avatar-4); }
+.avatar-choice > span { min-height: 0; padding: 3px; border-radius: 10px; }
+.avatar-choice input:checked + span { border-color: var(--accent-chip-border); background: var(--accent-chip); }
+.avatar-choice:hover input:not(:checked) + span { border-color: var(--accent-chip-border); color: var(--text); }
 .person-main { min-width: 0; }
 .person-head { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; }
 .person-nick {
@@ -801,12 +832,27 @@ kbd {
 .faq-item[open] summary .icon { transform: rotate(180deg); }
 .faq-item > p { padding: 0 15px 15px; color: var(--muted); font-size: 13px; line-height: 1.75; overflow-wrap: anywhere; }
 
-/* Resources and clubs */
-.resources-grid, .clubs-grid {
+/* Resources, chats and clubs */
+.resources-grid, .clubs-grid, .chats-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
 }
+.chat-filter { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.chat-chip {
+  min-height: 30px;
+  padding: 4px 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 12px;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.chat-chip.is-active { border-color: var(--accent-chip-border); background: var(--accent-chip); color: var(--accent-chip-text); }
+.chat-soon { color: var(--faint); font-size: 12px; }
+.club-organizers { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); }
+.club-organizer-name { color: var(--muted); font-size: 12px; }
 .resource-card, .club-card {
   display: flex;
   flex-direction: column;
@@ -866,6 +912,7 @@ kbd {
   font-size: 11px;
   line-height: 1.6;
 }
+.club-organizers + .club-contact { margin-top: 0; border-top: 0; padding-top: 8px; }
 .club-contact > span { min-width: 0; overflow-wrap: anywhere; }
 .club-contact .icon { width: 14px; height: 14px; flex-basis: 14px; margin-top: 1px; }
 .club-invitation {
@@ -958,7 +1005,7 @@ kbd {
 .interests-fieldset > .field-help { margin-top: 0; }
 .interest-picker { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
 .interest-choice { position: relative; display: inline-flex; max-width: 100%; cursor: pointer; }
-.interest-choice input[type='checkbox'] {
+.interest-choice input[type='checkbox'], .interest-choice input[type='radio'] {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -1059,13 +1106,15 @@ kbd {
   .resource-link:hover > span, .profile-open:hover span { text-decoration: underline; text-underline-offset: 3px; }
   .delete-person:hover, .delete-resource:hover { background: var(--danger-bg); color: var(--danger); }
   .faq-item summary:hover { background: var(--surface-hover); }
+  .chat-chip:hover { border-color: var(--accent-chip-border); color: var(--text); }
+  .club-organizer:hover { border-color: var(--accent-chip-border); background: var(--accent-chip); }
   .footer-brand:hover { color: var(--accent); }
 }
 
 @media (max-width: 1020px) {
   .hero { grid-template-columns: minmax(0, 1.15fr) minmax(280px, .85fr); }
   .person-row { grid-template-columns: 44px minmax(0, 1fr) 190px; }
-  .resources-grid, .clubs-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .resources-grid, .clubs-grid, .chats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rules-columns { gap: 18px; }
 }
 
@@ -1101,7 +1150,7 @@ kbd {
   .page-intro { padding: 32px 0 22px; }
   .page-intro h1 { font-size: clamp(27px, 7vw, 34px); letter-spacing: -1px; }
   .page-intro > p { font-size: 13px; }
-  .resources-grid, .clubs-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .resources-grid, .clubs-grid, .chats-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .section-heading { flex-wrap: wrap; align-items: flex-start; gap: 6px 12px; }
   .section-caption { max-width: none; text-align: left; }
   .directory-toolbar { flex-direction: column; align-items: stretch; gap: 6px; }
@@ -1177,9 +1226,10 @@ kbd {
 }
 
 @media (forced-colors: active) {
-  .site-header, .button, .icon-button, .avatar, .interest-choice > span,
+  .site-header, .button, .icon-button, .avatar, .avatar-swatch, .interest-choice > span,
   .person-row, .resource-card, .club-card, .official-card, .prototype-note,
   .advice-card, .faq-item, .club-invitation, .directory-toolbar, .empty-state,
+  .chat-chip,
   .direction-badge, .telegram-link { border: 1px solid ButtonText; }
   .nav-link.is-active, .interest-choice input:checked + span,
   .page-button.is-current { outline: 2px solid Highlight; outline-offset: -3px; }

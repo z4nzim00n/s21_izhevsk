@@ -35,6 +35,15 @@ python -m http.server 8084
 
 `url` — это `https://<project-ref>.supabase.co`, **без** `/rest/v1/`. Путь `/rest/v1` клиент добавляет сам.
 
+### Обновление уже созданной базы
+
+Если таблица `people` уже существует, а в коде появилась колонка `avatar` (выбор аватарки), добавь её один раз:
+
+- мышкой: **Table Editor → people → Add column** → имя `avatar`, тип `text`, default `''`, nullable выключить;
+- или в SQL Editor: `alter table public.people add column if not exists avatar text not null default '';`
+
+Сделай это **до** деплоя новой версии сайта: без колонки запрос анкет вернёт ошибку и каталог покажет «Общий список недоступен».
+
 ### Ключи
 
 - `Publishable key` (`sb_publishable_...`) или legacy `anon public` — публичные, их можно держать в репозитории.

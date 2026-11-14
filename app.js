@@ -59,6 +59,21 @@
     { id: 'c-trainer', title: 'Тренажёр по C', description: 'Сборник задач для практики перед экзаменом.', url: 'https://github.com/z4nzim00n/Exam_trainer', category: 'практика', icon: 'C', color: 'green' },
     { id: 'sql-trainer', title: 'SQL-тренажёр', description: 'Задания по SQL с проверкой запросов.', url: 'https://z4nzim00n.github.io/SQL_trainer/', category: 'тренажёр', icon: 'SQL', color: 'lilac' },
   ];
+  const avatars = [
+    { id: 'snake', glyph: '🐍', tone: 1 },
+    { id: 'fox', glyph: '🦊', tone: 2 },
+    { id: 'penguin', glyph: '🐧', tone: 3 },
+    { id: 'robot', glyph: '🤖', tone: 4 },
+    { id: 'rocket', glyph: '🚀', tone: 1 },
+    { id: 'herb', glyph: '🌿', tone: 2 },
+    { id: 'zap', glyph: '⚡', tone: 3 },
+    { id: 'headphones', glyph: '🎧', tone: 4 },
+  ];
+  const chats = [
+    { id: 'general', title: 'Общий чат кампуса', direction: '', description: 'Анонсы, вопросы и объявления для всех студентов кампуса.', url: '' },
+    { id: 'chat-backend', title: 'Backend', direction: 'backend', description: 'Чат направления Backend: проекты, вопросы, пиры.', url: '' },
+    { id: 'chat-frontend', title: 'Frontend', direction: 'frontend', description: 'Чат направления Frontend: проекты, вопросы, пиры.', url: '' },
+  ];
 
   function validText(value, max) {
     return typeof value === 'string' && value.trim().length > 0 && value.length <= max;
@@ -97,14 +112,18 @@
     return value === undefined || value === '' || (typeof value === 'string' && Object.hasOwn(directions, value));
   }
 
+  function validAvatar(value) {
+    return value === undefined || value === '' || (typeof value === 'string' && avatars.some(preset => preset.id === value));
+  }
+
   function validPersonRecord(item) {
-    return Boolean(item) && typeof item === 'object' && validText(item.id, 64) && typeof item.nick === 'string' && nickPattern.test(item.nick) && validText(item.name, 50) && typeof item.telegram === 'string' && telegramPattern.test(item.telegram) && validDirection(item.direction) && (item.bio === undefined || (typeof item.bio === 'string' && item.bio.length <= 600)) && (item.interests === undefined || validInterests(item.interests));
+    return Boolean(item) && typeof item === 'object' && validText(item.id, 64) && typeof item.nick === 'string' && nickPattern.test(item.nick) && validText(item.name, 50) && typeof item.telegram === 'string' && telegramPattern.test(item.telegram) && validDirection(item.direction) && validAvatar(item.avatar) && (item.bio === undefined || (typeof item.bio === 'string' && item.bio.length <= 600)) && (item.interests === undefined || validInterests(item.interests));
   }
 
   let people = loadRecords(keys.people, validPersonRecord)
-    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '' }) => ({ id, nick, name, telegram, bio, interests, direction }));
+    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', avatar = '' }) => ({ id, nick, name, telegram, bio, interests, direction, avatar }));
   let pendingPeople = loadRecords(keys.pending, validPersonRecord)
-    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '' }) => ({ id, nick, name, telegram, bio, interests, direction }));
+    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', avatar = '' }) => ({ id, nick, name, telegram, bio, interests, direction, avatar }));
   let remotePeople = [];
   let resources = loadRecords(keys.resources, item => validText(item.id, 64) && validText(item.title, 70) && typeof item.description === 'string' && item.description.length <= 240 && Boolean(safeUrl(item.url)));
   let editingId = null;
@@ -234,7 +253,7 @@
 
   function route(focus = false) {
     const requested = location.hash.slice(1);
-    const page = ['people', 'rules', 'resources', 'clubs'].includes(requested) ? requested : 'people';
+    const page = ['people', 'rules', 'chats', 'resources', 'clubs'].includes(requested) ? requested : 'people';
     $$('.page-section').forEach(section => { section.hidden = section.id !== `page-${page}`; });
     $$('.nav-link').forEach(link => {
       const selected = link.dataset.page === page;
@@ -242,7 +261,7 @@
       if (selected) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     });
-    const titles = { people: 'Ники', rules: 'Правила и FAQ', resources: 'Полезные сайты', clubs: 'Клубы' };
+    const titles = { people: 'Ники', rules: 'Правила и FAQ', chats: 'Чаты', resources: 'Полезные сайты', clubs: 'Клубы' };
     document.title = `${titles[page]} · Школа 21, Ижевск`;
     if (focus) {
       window.scrollTo({ top: 0, behavior: 'instant' });
@@ -303,7 +322,43 @@
   }
 
   function setAvatar(avatar, person) {
+    ['tone-1', 'tone-2', 'tone-3', 'tone-4'].forEach(tone => avatar.classList.remove(tone));
+    const preset = avatars.find(item => item.id === person.avatar);
+    if (preset) {
+      avatar.classList.add(`tone-${preset.tone}`);
+      avatar.textContent = preset.glyph;
+      return;
+    }
     avatar.textContent = person.name.trim().split(/\s+/).slice(0, 2).map(part => [...part][0]).join('').toLocaleUpperCase('ru');
+  }
+
+  function renderAvatarPicker() {
+    const auto = document.createElement('label');
+    auto.className = 'interest-choice avatar-choice';
+    auto.title = 'Без аватарки — будут первые буквы имени';
+    const autoInput = document.createElement('input');
+    autoInput.type = 'radio';
+    autoInput.name = 'avatar';
+    autoInput.value = '';
+    autoInput.checked = true;
+    const autoSwatch = document.createElement('span');
+    autoSwatch.className = 'avatar-swatch';
+    autoSwatch.textContent = 'А';
+    auto.append(autoInput, autoSwatch);
+    const choices = avatars.map(preset => {
+      const label = document.createElement('label');
+      label.className = 'interest-choice avatar-choice';
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.name = 'avatar';
+      input.value = preset.id;
+      const swatch = document.createElement('span');
+      swatch.className = `avatar-swatch tone-${preset.tone}`;
+      swatch.textContent = preset.glyph;
+      label.append(input, swatch);
+      return label;
+    });
+    $('#avatar-picker').replaceChildren(auto, ...choices);
   }
 
   function allPeople() {
@@ -328,13 +383,13 @@
     try {
       const { data, error } = await withTimeout(supabaseClient
         .from('people')
-        .select('id, nick, name, telegram, direction, bio, interests')
+        .select('id, nick, name, telegram, direction, bio, interests, avatar')
         .eq('status', 'approved')
         .order('created_at', { ascending: false }));
       if (error) throw error;
       remotePeople = (data || [])
         .filter(validPersonRecord)
-        .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '' }) => ({ id, nick, name, telegram, bio, interests, direction }));
+        .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', avatar = '' }) => ({ id, nick, name, telegram, bio, interests, direction, avatar }));
       prunePending();
       renderPeople();
     } catch (error) {
@@ -562,8 +617,49 @@
     const reason = $('.club-reason', card);
     reason.hidden = matched.length === 0;
     reason.textContent = `Твои интересы: ${matched.map(id => interestLabels[id]).join(', ')}.`;
+    const organizers = (club.organizers || []).filter(item => item && validText(item.name, 50));
+    const organizersBox = $('.club-organizers', card);
+    organizersBox.hidden = organizers.length === 0;
+    organizersBox.replaceChildren(...organizers.map(item => {
+      if (item.telegram && telegramPattern.test(item.telegram)) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'telegram-link club-organizer';
+        button.dataset.telegram = item.telegram;
+        button.setAttribute('aria-label', `Скопировать тег @${item.telegram}`);
+        button.title = `Скопировать тег @${item.telegram}`;
+        const copyIcon = svgIcon('i-copy');
+        copyIcon.classList.add('copy-mini');
+        button.append(svgIcon('i-telegram'), document.createTextNode(`@${item.telegram} · ${item.name}`), copyIcon);
+        return button;
+      }
+      const name = document.createElement('span');
+      name.className = 'club-organizer-name';
+      name.textContent = item.name;
+      return name;
+    }));
+    const contact = $('.club-contact', card);
+    const contactText = $('span', contact);
+    const chatUrl = safeUrl(club.chatUrl || '');
+    if (chatUrl) {
+      const anchor = document.createElement('a');
+      anchor.className = 'resource-link';
+      anchor.href = chatUrl;
+      anchor.target = '_blank';
+      anchor.rel = 'noopener noreferrer';
+      anchor.append(document.createTextNode('Чат клуба'), svgIcon('i-external'));
+      contactText.replaceChildren(anchor);
+    } else {
+      contactText.textContent = organizers.length ? 'Чат клуба появится позже' : 'Контакты появятся позже';
+    }
     return card;
   }
+
+  $('#clubs-grid').addEventListener('click', event => {
+    const organizer = event.target.closest('.club-organizer');
+    if (!organizer) return;
+    copyText(`@${organizer.dataset.telegram}`, `Тег скопирован: @${organizer.dataset.telegram}`);
+  });
 
   function showClubRecommendations(person) {
     const matched = clubs.filter(club => club.interests.some(id => person.interests.includes(id)));
@@ -599,6 +695,7 @@
       $('#person-direction').value = person.direction || '';
       $('#person-bio').value = person.bio;
       $$('#interest-picker input').forEach(input => { input.checked = person.interests.includes(input.value); });
+      $$('#avatar-picker input').forEach(input => { input.checked = input.value === (person.avatar || ''); });
       $('#person-consent').checked = true;
     }
     showDialog($('#person-dialog'));
@@ -640,6 +737,7 @@
         direction: person.direction,
         bio: person.bio,
         interests: person.interests,
+        avatar: person.avatar,
       }));
       if (error) {
         console.error(error);
@@ -673,6 +771,7 @@
     const direction = $('#person-direction').value;
     const bio = $('#person-bio').value.trim();
     const interests = $$('#interest-picker input:checked').map(input => input.value);
+    const avatar = $('#avatar-picker input:checked')?.value || '';
     if (!nickPattern.test(nick)) {
       setError('#person-error', 'Проверь ник: 2–24 символа, первая — латинская буква.');
       $('#person-nick').focus();
@@ -707,7 +806,11 @@
       setError('#person-error', 'Описание должно быть не длиннее 600 символов, а интересы — из предложенного списка.');
       return;
     }
-    const person = { id: editingId || crypto.randomUUID(), nick, name, telegram, direction, bio, interests };
+    if (!validAvatar(avatar)) {
+      setError('#person-error', 'Выбери аватарку из предложенных.');
+      return;
+    }
+    const person = { id: editingId || crypto.randomUUID(), nick, name, telegram, direction, bio, interests, avatar };
     if (supabaseClient) {
       await submitPerson(person);
       return;
@@ -812,6 +915,68 @@
     if (resource) requestDelete('resource', id, `Ссылка «${resource.title}» исчезнет из твоей локальной подборки.`);
   });
 
+  let chatFilter = 'all';
+
+  function renderChatFilter() {
+    const filters = ['all', ...new Set(chats.map(chat => chat.direction))];
+    const chips = filters.map(filter => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'chat-chip';
+      chip.dataset.filter = filter;
+      chip.textContent = filter === 'all' ? 'Все чаты' : directions[filter] || 'Общее';
+      chip.setAttribute('aria-pressed', String(filter === chatFilter));
+      chip.classList.toggle('is-active', filter === chatFilter);
+      return chip;
+    });
+    $('#chat-filter').replaceChildren(...chips);
+  }
+
+  function renderChats() {
+    const visible = chats.filter(chat => chatFilter === 'all' || chat.direction === chatFilter);
+    const fragment = document.createDocumentFragment();
+    visible.forEach(chat => {
+      const card = $('#chat-template').content.firstElementChild.cloneNode(true);
+      card.dataset.id = chat.id;
+      $('.chat-direction', card).textContent = chat.direction ? directions[chat.direction] : 'общий';
+      $('h3', card).textContent = chat.title;
+      $('.resource-description', card).textContent = chat.description;
+      const link = $('.chat-link', card);
+      const url = safeUrl(chat.url);
+      if (url) {
+        const anchor = document.createElement('a');
+        anchor.className = 'resource-link';
+        anchor.href = url;
+        anchor.target = '_blank';
+        anchor.rel = 'noopener noreferrer';
+        anchor.setAttribute('aria-label', `Открыть чат: ${chat.title}`);
+        anchor.append(document.createTextNode('Открыть чат'), svgIcon('i-external'));
+        link.replaceChildren(anchor);
+      } else {
+        const soon = document.createElement('span');
+        soon.className = 'chat-soon';
+        soon.textContent = 'Ссылку добавим позже';
+        link.replaceChildren(soon);
+      }
+      fragment.append(card);
+    });
+    $('#chats-grid').replaceChildren(fragment);
+    $('#chats-count').textContent = chats.length;
+    $('#chats-empty').hidden = visible.length > 0;
+    $$('#chat-filter .chat-chip').forEach(chip => {
+      const active = chip.dataset.filter === chatFilter;
+      chip.classList.toggle('is-active', active);
+      chip.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  $('#chat-filter').addEventListener('click', event => {
+    const chip = event.target.closest('.chat-chip');
+    if (!chip) return;
+    chatFilter = chip.dataset.filter;
+    renderChats();
+  });
+
   function requestDelete(type, id, description) {
     pendingDelete = { type, id };
     $('#delete-description').textContent = description;
@@ -851,6 +1016,9 @@
   }
   renderDirectionPicker();
   renderInterestPicker();
+  renderAvatarPicker();
+  renderChatFilter();
+  renderChats();
   $('#hero-clubs').textContent = String(clubs.length);
   $('#hero-clubs-label').textContent = plural(clubs.length, ['клуб', 'клуба', 'клубов']);
   $('#clubs-grid').replaceChildren(...clubs.map(club => makeClubCard(club)));
