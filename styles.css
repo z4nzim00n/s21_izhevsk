@@ -620,6 +620,7 @@ kbd {
   letter-spacing: .04em;
   white-space: nowrap;
 }
+.person-pending.is-rejected { border-color: var(--danger); background: var(--danger-bg); color: var(--danger); }
 .faq-item { margin-bottom: 8px; border-radius: 8px; box-shadow: none; }
 .faq-item summary {
   display: flex;

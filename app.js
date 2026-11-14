@@ -17,6 +17,7 @@
   const pageSizes = [10, 20, 50];
   const nickPattern = /^[a-z][a-z0-9_-]{1,23}$/i;
   const telegramPattern = /^[a-z][a-z0-9_]{4,31}$/i;
+  const tokenPattern = /^[0-9a-f]{32}$/;
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
   const warnings = [];
@@ -170,13 +171,13 @@
   }
 
   function validPersonRecord(item) {
-    return Boolean(item) && typeof item === 'object' && validText(item.id, 64) && typeof item.nick === 'string' && nickPattern.test(item.nick) && validText(item.name, 50) && typeof item.telegram === 'string' && telegramPattern.test(item.telegram) && validDirection(item.direction) && (item.bio === undefined || (typeof item.bio === 'string' && item.bio.length <= 600)) && (item.interests === undefined || validInterests(item.interests));
+    return Boolean(item) && typeof item === 'object' && validText(item.id, 64) && typeof item.nick === 'string' && nickPattern.test(item.nick) && validText(item.name, 50) && typeof item.telegram === 'string' && telegramPattern.test(item.telegram) && validDirection(item.direction) && (item.bio === undefined || (typeof item.bio === 'string' && item.bio.length <= 600)) && (item.interests === undefined || validInterests(item.interests)) && (item.token === undefined || item.token === '' || tokenPattern.test(item.token));
   }
 
   let people = loadRecords(keys.people, validPersonRecord)
     .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '' }) => ({ id, nick, name, telegram, bio, interests, direction }));
   let pendingPeople = loadRecords(keys.pending, validPersonRecord)
-    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '' }) => ({ id, nick, name, telegram, bio, interests, direction }));
+    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', token = '', status }) => ({ id, nick, name, telegram, bio, interests, direction, token, status: status === 'rejected' ? 'rejected' : 'pending' }));
   let remotePeople = [];
   let resources = loadRecords(keys.resources, item => validText(item.id, 64) && validText(item.title, 70) && typeof item.description === 'string' && item.description.length <= 240 && Boolean(safeUrl(item.url)));
   let editingId = null;
@@ -412,6 +413,67 @@
     }
   }
 
+  function newCancelToken() {
+    return Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => byte.toString(16).padStart(2, '0')).join('');
+  }
+
+  function ownHeaders(token) {
+    return { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}`, 'x-s21-token': token };
+  }
+
+  async function fetchOwnStatus(nick, token) {
+    const response = await withTimeout(fetch(`${supabaseUrl}/rest/v1/people?select=status&nick=eq.${encodeURIComponent(nick)}`, { headers: ownHeaders(token) }));
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const rows = await response.json();
+    return rows.length ? rows[0].status : null;
+  }
+
+  async function deleteOwnSubmission(nick, token) {
+    const response = await withTimeout(fetch(`${supabaseUrl}/rest/v1/people?nick=eq.${encodeURIComponent(nick)}`, {
+      method: 'DELETE',
+      headers: { ...ownHeaders(token), Prefer: 'return=representation' },
+    }));
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const deleted = await response.json();
+    if (!deleted.length) throw new Error('nothing deleted');
+  }
+
+  async function syncPendingStatus() {
+    const withToken = pendingPeople.filter(person => person.token);
+    if (!withToken.length) return;
+    const statuses = await Promise.all(withToken.map(async person => {
+      try {
+        return { id: person.id, status: await fetchOwnStatus(person.nick, person.token) };
+      } catch (error) {
+        console.error(error);
+        return { id: person.id, status: undefined };
+      }
+    }));
+    const removed = [];
+    const next = [];
+    let changed = false;
+    pendingPeople.forEach(person => {
+      const found = statuses.find(item => item.id === person.id);
+      if (!found || found.status === undefined || found.status === 'approved') {
+        next.push(person);
+        return;
+      }
+      if (found.status === null) {
+        removed.push(person.nick);
+        changed = true;
+        return;
+      }
+      const status = found.status === 'rejected' ? 'rejected' : 'pending';
+      if (person.status !== status) changed = true;
+      next.push(person.status === status ? person : { ...person, status });
+    });
+    if (!changed) return;
+    pendingPeople = next;
+    persist(keys.pending, pendingPeople, '#person-error');
+    renderPeople();
+    if (removed.length) showToast(`Модератор удалил заявку: ${removed.join(', ')}.`, true);
+  }
+
   function pageSequence(total, current) {
     if (total <= 7) return Array.from({ length: total }, (_, index) => index + 1);
     const pages = new Set([1, total, current - 1, current, current + 1]);
@@ -500,9 +562,16 @@
       telegram.title = `Скопировать тег @${person.telegram}`;
       $('.profile-open', row).setAttribute('aria-label', `Открыть профиль ${person.nick}`);
       $('.edit-person', row).setAttribute('aria-label', `Редактировать анкету ${person.nick}`);
-      $('.delete-person', row).setAttribute('aria-label', `Удалить анкету ${person.nick}`);
-      $('.card-actions', row).hidden = Boolean(person.remote || person.pending);
-      $('.person-pending', row).hidden = !person.pending;
+      $('.edit-person', row).hidden = Boolean(person.pending);
+      const cancellable = Boolean(person.pending && person.token);
+      const deleteButton = $('.delete-person', row);
+      deleteButton.setAttribute('aria-label', cancellable ? `Отменить заявку ${person.nick}` : `Удалить анкету ${person.nick}`);
+      deleteButton.title = cancellable ? 'Отменить заявку' : 'Удалить анкету';
+      $('.card-actions', row).hidden = Boolean(person.remote || (person.pending && !cancellable));
+      const badge = $('.person-pending', row);
+      badge.textContent = person.status === 'rejected' ? 'отклонена' : 'на проверке';
+      badge.classList.toggle('is-rejected', person.status === 'rejected');
+      badge.hidden = !person.pending;
       fragment.append(row);
     });
     $('#people-list').replaceChildren(fragment);
@@ -589,7 +658,7 @@
     profileId = person.id;
     $('#profile-title').textContent = person.nick;
     $('#profile-name').textContent = person.name;
-    $('#profile-badge').textContent = person.pending ? 'на проверке' : person.remote ? '' : 'локальная запись';
+    $('#profile-badge').textContent = person.pending ? (person.status === 'rejected' ? 'отклонена' : 'на проверке') : person.remote ? '' : 'локальная запись';
     $('#profile-badge').hidden = Boolean(person.remote);
     $('#profile-edit').hidden = Boolean(person.remote || person.pending);
     const direction = $('#profile-direction');
@@ -747,6 +816,7 @@
         direction: person.direction,
         bio: person.bio,
         interests: person.interests,
+        cancel_token: person.token,
       }));
       if (error) {
         console.error(error);
@@ -816,7 +886,7 @@
     }
     const person = { id: editingId || crypto.randomUUID(), nick, name, telegram, direction, bio, interests };
     if (supabaseClient) {
-      await submitPerson(person);
+      await submitPerson({ ...person, token: newCancelToken() });
       return;
     }
     const next = editingId ? people.map(item => item.id === editingId ? person : item) : [person, ...people];
@@ -850,7 +920,15 @@
       return;
     }
     if (event.target.closest('.edit-person')) openPerson(person);
-    if (event.target.closest('.delete-person')) requestDelete('person', person.id, `Анкета ${person.nick} исчезнет из этого браузера. Это действие нельзя отменить.`);
+    if (event.target.closest('.delete-person')) {
+      if (person.pending) {
+        requestDelete('pending', person.id, person.status === 'rejected'
+          ? `Заявка ${person.nick} отклонена модератором. Убрать её? Ник освободится, и анкету можно будет отправить заново.`
+          : `Заявка ${person.nick} ещё на проверке. Отменить её? Она исчезнет из списка и из базы модератора.`);
+        return;
+      }
+      requestDelete('person', person.id, `Анкета ${person.nick} исчезнет из этого браузера. Это действие нельзя отменить.`);
+    }
   });
 
   function renderResources() {
@@ -997,14 +1075,39 @@
 
   function requestDelete(type, id, description) {
     pendingDelete = { type, id };
+    $('#delete-title').textContent = type === 'pending' ? 'Отменить заявку?' : 'Удалить запись?';
+    $('#confirm-delete').textContent = type === 'pending' ? 'Отменить заявку' : 'Удалить';
     $('#delete-description').textContent = description;
     setError('#delete-error');
     showDialog($('#delete-dialog'));
   }
 
-  $('#confirm-delete').addEventListener('click', () => {
+  $('#confirm-delete').addEventListener('click', async () => {
     if (!pendingDelete) return;
     const { type, id } = pendingDelete;
+    if (type === 'pending') {
+      const person = pendingPeople.find(item => item.id === id);
+      if (!person) return;
+      const button = $('#confirm-delete');
+      button.disabled = true;
+      try {
+        await deleteOwnSubmission(person.nick, person.token);
+      } catch (error) {
+        console.error(error);
+        setError('#delete-error', 'Не удалось отменить заявку в базе. Проверь интернет; если повторяется — сообщи админу.');
+        return;
+      } finally {
+        button.disabled = false;
+      }
+      const next = pendingPeople.filter(item => item.id !== id);
+      if (!persist(keys.pending, next, '#delete-error')) return;
+      pendingPeople = next;
+      renderPeople();
+      pendingDelete = null;
+      $('#delete-dialog').close();
+      showToast('Заявка отменена.');
+      return;
+    }
     if (type === 'person') {
       const next = people.filter(person => person.id !== id);
       if (!persist(keys.people, next, '#delete-error')) return;
@@ -1043,7 +1146,7 @@
   renderPeople();
   if (supabaseClient) {
     $('#results-summary').textContent = 'Загружаем анкеты…';
-    loadRemotePeople();
+    loadRemotePeople().then(syncPendingStatus);
   }
   renderResources();
   if (warnings.length) showToast(warnings[0], true);
