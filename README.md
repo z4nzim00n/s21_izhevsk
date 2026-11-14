@@ -81,7 +81,7 @@ delete from public.people where nick = 'nickname';
 ### Бесплатный тариф
 
 Проект может заснуть после недели простоя. Разбудить можно в дашборде Supabase.
-
+ 
 ## Деплой
 
 GitHub Pages: **Settings → Pages → Deploy from a branch → main / (root)**. После пуша в `main` сайт обновляется сам за минуту-две.
