@@ -24,11 +24,8 @@
       document.documentElement.dataset.theme = 'dark';
     }
   </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=campus-2">
+  <link rel="stylesheet" href="./styles.css?v=izhevsk">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
   <script src="./app.js" defer></script>
@@ -64,7 +61,6 @@
   <div class="page-shell">
     <header class="site-header glass">
       <a class="brand" href="#people" aria-label="Школа 21, Ижевск — на главную">
-        <span class="brand-mark" aria-hidden="true">21</span>
         <span class="brand-copy"><strong>Школа 21</strong><span>Ижевск</span></span>
       </a>
       <nav class="main-nav" aria-label="Разделы сайта">
@@ -80,26 +76,28 @@
     <main id="main" tabindex="-1">
       <section class="page-section" id="page-people" aria-labelledby="people-heading">
         <div class="hero">
-          <span class="campus-step campus-step-left" aria-hidden="true"></span>
-          <span class="campus-step campus-step-right" aria-hidden="true"></span>
-          <div class="directory-toolbar glass">
-            <label class="search-field" for="people-search"><svg class="icon"><use href="#i-search"/></svg><input id="people-search" type="search" placeholder="Ник, имя, Telegram, направление или интерес" maxlength="100" autocomplete="off" aria-label="Поиск по нику, имени, Telegram, направлению или интересам"><kbd aria-hidden="true">/</kbd></label>
-          </div>
-          <div class="campus-identity">
-            <span class="campus-emblem" aria-hidden="true">21</span>
-            <div><h1 id="people-heading">Ники Школы 21</h1><p>Ижевский кампус</p></div>
-          </div>
-        </div>
-
-        <div class="directory-overview">
-          <ul class="hero-stats">
+          <div>
+            <h1 id="people-heading">Ники Школы 21 <span>в Ижевске</span></h1>
+            <p class="hero-description">Каталог участников кампуса. Найди человека по нику, имени или интересам.</p>
+            <div class="hero-actions"><button type="button" class="button button-primary" data-add-person><svg class="icon"><use href="#i-plus"/></svg>Добавить анкету</button></div>
+            <ul class="hero-stats">
             <li><strong id="hero-total">0</strong><span id="hero-total-label">студентов</span></li>
             <li><strong id="hero-clubs">3</strong><span id="hero-clubs-label">клуба</span></li>
           </ul>
-          <div class="hero-actions"><button type="button" class="button button-primary" data-add-person><svg class="icon"><use href="#i-plus"/></svg>Добавить анкету</button><span class="intro-note">Только свои данные</span></div>
+          </div>
+          <div class="campus-art">
+            <div class="school-mark"><img src="./assets/school-21.png" width="2047" height="2047" alt="Школа 21"></div>
+            <div class="local-marks">
+              <figure><img src="./assets/izhevsk.png" width="28" height="30" alt=""><figcaption>Ижевск</figcaption></figure>
+              <figure><img class="republic-mark" src="./assets/udmurtia.png" width="28" height="28" alt=""><figcaption>Удмуртия</figcaption></figure>
+            </div>
+          </div>
         </div>
 
-        <div class="section-heading"><div class="heading-inline"><h2>Студенты</h2><span class="count-badge" id="people-count">0</span></div></div>
+        <div class="directory-head">
+          <div class="heading-inline"><h2>Участники</h2><span class="count-badge" id="people-count">0</span></div>
+          <div class="directory-toolbar glass"><label class="search-field" for="people-search"><svg class="icon"><use href="#i-search"/></svg><input id="people-search" type="search" placeholder="Ник, имя, Telegram, направление или интерес" maxlength="100" autocomplete="off" aria-label="Поиск по нику, имени, Telegram, направлению или интересам"><kbd aria-hidden="true">/</kbd></label></div>
+        </div>
         <div class="directory-meta"><span id="results-summary" role="status" aria-live="polite">Пока никого</span></div>
         <div id="people-list" class="people-list"></div>
         <div id="people-empty" class="empty-state glass" hidden><span class="empty-icon"><svg class="icon"><use href="#i-search"/></svg></span><h3 id="empty-title">Пока никого</h3><p id="empty-description">Добавь свою первую анкету.</p><button class="button button-secondary" type="button" id="empty-action">Добавить анкету</button></div>
