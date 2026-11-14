@@ -285,7 +285,7 @@
     $('#theme-toggle').setAttribute('aria-label', label);
     $('#theme-toggle').title = label;
     $('#theme-toggle use').setAttribute('href', theme === 'dark' ? '#i-sun' : '#i-moon');
-    $('meta[name="theme-color"]').content = theme === 'dark' ? '#101612' : '#eef3ee';
+    $('meta[name="theme-color"]').content = theme === 'dark' ? '#1c2431' : '#edf2f5';
   }
 
   try {

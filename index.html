@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#101612">
+  <meta name="theme-color" content="#1c2431">
   <meta name="description" content="Неофициальный список анкет студентов Школы 21 в Ижевске: ники, имена, Telegram, направления и интересы.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Школа 21, Ижевск">
@@ -26,7 +26,7 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -61,11 +61,6 @@
     <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
   </svg>
   <a class="skip-link" href="#main">К содержимому</a>
-  <div class="ambient" aria-hidden="true">
-    <span class="ambient-orb orb-one"></span>
-    <span class="ambient-orb orb-two"></span>
-    <span class="ambient-orb orb-three"></span>
-  </div>
   <div class="page-shell">
     <header class="site-header glass">
       <a class="brand" href="#people" aria-label="Школа 21, Ижевск — на главную">
@@ -86,7 +81,6 @@
       <section class="page-section" id="page-people" aria-labelledby="people-heading">
         <div class="hero">
           <div class="hero-copy">
-            <p class="mono-label">s21 / izhevsk / nicks</p>
             <h1 id="people-heading">Ники Школы 21 в Ижевске</h1>
             <p class="hero-description">Анкеты студентов: ник, имя, Telegram, направление и интересы. Ник и тег копируются в один клик, поиск ищет по всем полям.</p>
             <div class="hero-actions"><button type="button" class="button button-primary" data-add-person><svg class="icon"><use href="#i-plus"/></svg>Добавить анкету</button><span class="intro-note">Только свои данные</span></div>
@@ -96,26 +90,15 @@
             </ul>
           </div>
           <div class="campus-art" aria-hidden="true">
-            <span class="art-orbit orbit-a"></span>
-            <span class="art-orbit orbit-b"></span>
-            <span class="art-tile tile-back"></span>
-            <span class="art-tile tile-front">
-              <span class="tile-caption">school / 21</span>
-              <span class="tile-number">21<span>↗</span></span>
-              <span class="tile-footer"><span>Ижевск</span><svg class="icon"><use href="#i-code"/></svg></span>
-            </span>
-            <span class="art-label label-top glass"><span class="status-dot"></span>студенты</span>
-            <span class="art-label label-bottom glass"><svg class="icon"><use href="#i-pin"/></svg><strong>Ижевск</strong><span>кампус</span></span>
-            <span class="floating-code code-one">{ }</span>
-            <span class="floating-code code-two">&lt;/&gt;</span>
+            <span class="campus-sign">21</span>
           </div>
         </div>
 
-        <div class="section-heading"><div class="heading-inline"><h2>Студенты</h2><span class="count-badge" id="people-count">0</span></div><span class="section-caption">Ижевский кампус</span></div>
+        <div class="section-heading"><div class="heading-inline"><h2>Студенты</h2><span class="count-badge" id="people-count">0</span></div></div>
         <div class="directory-toolbar glass">
           <label class="search-field" for="people-search"><svg class="icon"><use href="#i-search"/></svg><input id="people-search" type="search" placeholder="Ник, имя, Telegram, направление или интерес" maxlength="100" autocomplete="off" aria-label="Поиск по нику, имени, Telegram, направлению или интересам"><kbd aria-hidden="true">/</kbd></label>
         </div>
-        <div class="directory-meta"><span id="results-summary" role="status" aria-live="polite">Пока никого</span><span><span class="tiny-dot"></span> Ижевск</span></div>
+        <div class="directory-meta"><span id="results-summary" role="status" aria-live="polite">Пока никого</span></div>
         <div id="people-list" class="people-list"></div>
         <div id="people-empty" class="empty-state glass" hidden><span class="empty-icon"><svg class="icon"><use href="#i-search"/></svg></span><h3 id="empty-title">Пока никого</h3><p id="empty-description">Добавь свою первую анкету.</p><button class="button button-secondary" type="button" id="empty-action">Добавить анкету</button></div>
         <div class="list-footer" id="list-footer">
@@ -125,7 +108,7 @@
       </section>
 
       <section class="page-section" id="page-rules" aria-labelledby="rules-heading" hidden>
-        <div class="page-intro"><p class="mono-label">s21 / izhevsk / faq</p><h1 id="rules-heading">Правила и FAQ</h1><p>Официальная ссылка, памятка по Rocket.Chat и частые вопросы об учёбе. Правила кампуса уточняй у его команды.</p></div>
+        <div class="page-intro"><h1 id="rules-heading">Правила и FAQ</h1><p>Официальная ссылка, памятка по Rocket.Chat и частые вопросы об учёбе. Правила кампуса уточняй у его команды.</p></div>
         <a class="official-card glass" href="https://applicant.21-school.ru/adm" target="_blank" rel="noopener noreferrer"><div class="resource-icon"><svg class="icon"><use href="#i-book"/></svg></div><div><span class="card-label">Официальный ресурс</span><h2>Портал абитуриента Школы 21</h2><p>Актуальные условия поступления и информация для абитуриентов.</p><span class="link-domain">applicant.21-school.ru/adm</span></div><span class="round-arrow"><svg class="icon"><use href="#i-external"/></svg></span></a>
         <div class="rules-columns">
           <section class="advice-card glass" aria-labelledby="rocketchat-heading"><h2 id="rocketchat-heading">Rocket.Chat: памятка</h2><p class="muted">Основной рабочий чат Школы 21. Вход — <a href="https://rocketchat-student.21-school.ru" target="_blank" rel="noopener noreferrer">rocketchat-student.21-school.ru</a>.</p><ol class="advice-list"><li><span>01</span><div><h3>Как войти</h3><p>Логин — <code>школьный_ник@student.21-school.ru</code>: твой ник в Школе 21 и студенческий домен.</p></div></li><li><span>02</span><div><h3>Каналы</h3><ul class="channel-list"><li><code>#general</code> — общение между всеми участниками Школы 21 из разных городов.</li><li><code>#izh_adm</code> — организационные вопросы: обучение, мероприятия и клубы, запросы на продление и т.д.</li><li><code>#izh_report</code> — технические проблемы с платформой, рокетом, техникой и вай-фаем в кампусе.</li><li><code>#izh_service</code> — инфраструктура кампуса: что-то сломалось, пролилось и т.д.</li></ul></div></li><li><span>03</span><div><h3>Связь с администрацией</h3><p>Канал волны, канал адм и АДМ в Rocket.Chat. Почта: <a href="mailto:info@izh.21-school.ru">info@izh.21-school.ru</a>.</p></div></li></ol></section>
@@ -141,20 +124,20 @@
       </section>
 
       <section class="page-section" id="page-resources" aria-labelledby="resources-heading" hidden>
-        <div class="page-intro"><p class="mono-label">s21 / izhevsk / useful_sites</p><h1 id="resources-heading">Полезные сайты</h1><p>Тренажёры и ссылки, которые пригодились при обучении. Список можно дополнить, но пока только в этом браузере.</p></div>
+        <div class="page-intro"><h1 id="resources-heading">Полезные сайты</h1><p>Тренажёры и ссылки, которые пригодились при обучении. Список можно дополнить, но пока только в этом браузере.</p></div>
         <div class="section-heading"><div class="heading-inline"><h2>Ссылки</h2><span class="count-badge" id="resources-count">2</span></div><button class="button button-secondary button-small" id="add-resource" type="button"><svg class="icon"><use href="#i-plus"/></svg>Добавить ссылку</button></div>
         <div class="resources-grid" id="resources-grid"></div>
         <aside class="prototype-note glass"><span class="note-icon"><svg class="icon"><use href="#i-lock"/></svg></span><div><strong>Редактор пока локальный</strong><p>Добавить ссылку может любой посетитель, но её увидит только его браузер. Это не защищённая админка. В общей версии подборкой будет управлять администратор после входа.</p></div></aside>
       </section>
       <section class="page-section" id="page-chats" aria-labelledby="chats-heading" hidden>
-        <div class="page-intro"><p class="mono-label">s21 / izhevsk / chats</p><h1 id="chats-heading">Чаты кампуса</h1><p>Основное общение — в Rocket.Chat: <a href="https://rocketchat-student.21-school.ru/home" target="_blank" rel="noopener noreferrer">веб-версия</a>, каналы и формат входа — в «Правилах и FAQ». Ниже — Telegram-чаты по проектам, веткам и направлениям, боты и архив.</p></div>
+        <div class="page-intro"><h1 id="chats-heading">Чаты кампуса</h1><p>Основное общение — в Rocket.Chat: <a href="https://rocketchat-student.21-school.ru/home" target="_blank" rel="noopener noreferrer">веб-версия</a>, каналы и формат входа — в «Правилах и FAQ». Ниже — Telegram-чаты по проектам, веткам и направлениям, боты и архив.</p></div>
         <div class="section-heading"><div class="heading-inline"><h2>Чаты</h2><span class="count-badge" id="chats-count">0</span></div><span class="section-caption">Telegram</span></div>
         <div class="chat-filter" id="chat-filter" role="group" aria-label="Фильтр чатов по группам"></div>
         <div class="chats-grid" id="chats-grid"></div>
         <p class="clubs-footnote" id="chats-empty" hidden>В этой группе чатов пока нет.</p>
       </section>
       <section class="page-section" id="page-clubs" aria-labelledby="clubs-heading" hidden>
-        <div class="page-intro"><p class="mono-label">s21 / izhevsk / clubs</p><h1 id="clubs-heading">Клубы кампуса</h1><p>Английский клуб, теннис и публичные выступления. Контактов и расписания пока нет: добавим, когда появится проверенная информация.</p></div>
+        <div class="page-intro"><h1 id="clubs-heading">Клубы кампуса</h1><p>Английский клуб, теннис и публичные выступления. Контактов и расписания пока нет: добавим, когда появится проверенная информация.</p></div>
         <div class="section-heading"><div class="heading-inline"><h2>Клубы</h2><span class="count-badge">3</span></div><span class="section-caption">Ижевск</span></div>
         <div class="clubs-grid" id="clubs-grid"></div>
         <aside class="club-invitation glass"><span class="note-icon"><svg class="icon"><use href="#i-people"/></svg></span><div><h2>Подобрать клуб по интересам</h2><p>Отметь интересы в анкете — после сохранения покажем подходящие клубы. Это подсказка, а не запись в участники.</p></div><button class="button button-secondary" type="button" data-add-person><svg class="icon"><use href="#i-plus"/></svg>Заполнить анкету</button></aside>
