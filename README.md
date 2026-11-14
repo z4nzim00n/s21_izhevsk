@@ -1,5 +1,5 @@
 # s21_izhevsk
- 
+
 Каталог студентов Школы 21 в Ижевске: ник, имя, Telegram, направление и интересы.
 
 - Сайт: https://z4nzim00n.github.io/s21_izhevsk/
