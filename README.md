@@ -1,2 +1,113 @@
 # s21_izhevsk
-# s21_izhevsk
+
+Каталог студентов Школы 21 в Ижевске: ник, имя, Telegram, направление и интересы.
+
+- Сайт: https://z4nzim00n.github.io/s21_izhevsk/
+- Репозиторий: https://github.com/z4nzim00n/s21_izhevsk
+
+## Как это работает
+
+1. Студент заполняет анкету на сайте.
+2. Анкета уходит в Supabase со статусом `pending`.
+3. Модератор проверяет её и ставит `approved` или `rejected`.
+4. Сайт показывает всем только `approved`-анкеты.
+
+Сайт статический, без сборки: HTML + CSS + ванильный JS. Supabase даёт базу, API и правила доступа (RLS). Хостинг — GitHub Pages.
+
+## Локальный запуск
+
+```bash
+python -m http.server 8084
+```
+
+Открыть http://127.0.0.1:8084/
+
+Без настроенного `config.js` сайт работает в локальном режиме и хранит анкеты в `localStorage`.
+
+## Supabase
+
+### Настройка с нуля
+
+1. Создать проект на supabase.com.
+2. В **SQL Editor** выполнить [supabase/schema.sql](supabase/schema.sql).
+3. В **Project Settings → API** взять **Project URL** и **Publishable key**.
+4. Вписать их в `config.js`.
+
+`url` — это `https://<project-ref>.supabase.co`, **без** `/rest/v1/`. Путь `/rest/v1` клиент добавляет сам.
+
+### Ключи
+
+- `Publishable key` (`sb_publishable_...`) или legacy `anon public` — публичные, их можно держать в репозитории.
+- `Secret key` / `service_role` — полный доступ ко всему проекту. В сайт и в репозиторий его вставлять нельзя.
+
+Доступ ограничивают RLS-политики:
+
+- `anon` может читать только `approved`;
+- `anon` может добавлять только `pending`;
+- изменять и удалять строки через сайт нельзя вовсе.
+
+### Модерация
+
+Всё делается мышкой в **Table Editor → people**.
+
+| Статус | Значение |
+|---|---|
+| `pending` | заявка ждёт проверки, видна только автору в его браузере |
+| `approved` | одобрена и видна всем посетителям |
+| `rejected` | отклонена |
+
+`approved` выбран потому, что это состояние проверки, а не действие. «Добавить» — это `insert`, после него анкета ещё не опубликована.
+
+Одобрить: клик по ячейке `status` → `approved`. Отклонить: `rejected`. Удалить: чекбокс строки → **Delete** (или **⋮** → **Delete row**).
+
+То же самое через SQL Editor, если удобнее:
+
+```sql
+select id, nick, name, telegram, created_at
+from public.people
+where status = 'pending'
+order by created_at;
+
+update public.people set status = 'approved' where nick = 'nickname';
+update public.people set status = 'rejected' where nick = 'nickname';
+delete from public.people where nick = 'nickname';
+```
+
+### Бесплатный тариф
+
+Проект может заснуть после недели простоя. Разбудить можно в дашборде Supabase.
+
+## Деплой
+
+GitHub Pages: **Settings → Pages → Deploy from a branch → main / (root)**. После пуша в `main` сайт обновляется сам за минуту-две.
+
+Если подключишь свой домен, не забудь поменять `og:url` и `og:image` в `index.html` на новый адрес.
+
+## Превью для Telegram
+
+В `index.html` подключены Open Graph-теги, картинка — `og.png` (1200×630). Telegram кеширует превью: после изменений отправь ссылку боту `@WebpageBot` и нажми **Update preview**.
+
+## Структура
+
+```
+index.html            разметка и шаблоны карточек
+styles.css            тёмная и светлая темы
+app.js                логика, Supabase, модерационные статусы
+config.js             Project URL и publishable key
+supabase/schema.sql   таблица, ограничения и RLS-политики
+og.png                превью для соцсетей
+favicon.svg           иконка сайта
+```
+
+## Если что-то не работает
+
+- **«Общий список недоступен»** — проверь `url` (без `/rest/v1/`), ключ, что проект не на паузе и что SQL из `schema.sql` выполнен.
+- **«Не удалось отправить анкету»** — нет сети или проект недоступен.
+- **«Этот ник уже занят»** — в таблице уже есть строка с таким ником.
+- **Анкета не появилась после одобрения** — обнови страницу; статус должен быть именно `approved`.
+
+## Ограничения и планы
+
+- Нельзя удалить или отредактировать свою анкету после отправки — пока только через модератора.
+- Нет защиты от спама: при росте потока добавить honeypot или Turnstile.
+- В планах: Telegram-бот для проверки тега, аккуратная админка, свой домен.
