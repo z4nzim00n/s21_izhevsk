@@ -38,17 +38,47 @@
   };
   const interestLabels = {
     games: 'Игры',
-    films: 'Фильмы',
-    music: 'Музыка',
-    books: 'Книги',
-    languages: 'Иностранные языки',
-    sport: 'Спорт',
-    tennis: 'Теннис',
-    speaking: 'Публичные выступления',
+    esports: 'Киберспорт',
     boardgames: 'Настольные игры',
-    travel: 'Путешествия',
+    chess: 'Шахматы',
+    films: 'Фильмы',
+    series: 'Сериалы',
+    anime: 'Аниме',
+    manga: 'Манга',
+    cosplay: 'Косплей',
+    music: 'Музыка',
+    musicmaking: 'Создание музыки',
+    podcasts: 'Подкасты',
+    books: 'Книги',
+    art: 'Рисование',
+    photography: 'Фотография',
+    dance: 'Танцы',
     creativity: 'Творчество',
+    languages: 'Иностранные языки',
+    speaking: 'Публичные выступления',
+    science: 'Наука',
     technology: 'Технологии',
+    pc: 'Сборка ПК',
+    electronics: 'Электроника',
+    robotics: 'Робототехника',
+    printing3d: '3D-печать',
+    linux: 'Linux',
+    ai: 'Нейросети',
+    sport: 'Спорт',
+    gym: 'Тренажёрный зал',
+    running: 'Бег',
+    swimming: 'Плавание',
+    football: 'Футбол',
+    tennis: 'Теннис',
+    martialarts: 'Единоборства',
+    cycling: 'Велосипеды',
+    hiking: 'Походы',
+    travel: 'Путешествия',
+    cars: 'Автомобили',
+    cooking: 'Кулинария',
+    pets: 'Питомцы',
+    investing: 'Инвестиции',
+    startups: 'Стартапы',
   };
   const clubs = [
     { id: 'english', name: 'Английский клуб', category: 'языки', icon: 'i-language', color: 'green', interests: ['languages'], description: 'Разговорная практика для тех, кто учит английский.' },
@@ -59,10 +89,47 @@
     { id: 'c-trainer', title: 'Тренажёр по C', description: 'Сборник задач для практики перед экзаменом.', url: 'https://github.com/z4nzim00n/Exam_trainer', category: 'практика', icon: 'C', color: 'green' },
     { id: 'sql-trainer', title: 'SQL-тренажёр', description: 'Задания по SQL с проверкой запросов.', url: 'https://z4nzim00n.github.io/SQL_trainer/', category: 'тренажёр', icon: 'SQL', color: 'lilac' },
   ];
+  const chatGroups = [
+    { id: 'campus', title: 'Кампус Ижевск' },
+    { id: 'dev', title: 'Разработка' },
+    { id: 'branches', title: 'Ветки' },
+    { id: 'other', title: 'Другие направления' },
+    { id: 'bots', title: 'Боты' },
+    { id: 'archive', title: 'Архив' },
+  ];
   const chats = [
-    { id: 'general', title: 'Общий чат кампуса', direction: '', description: 'Анонсы, вопросы и объявления для всех студентов кампуса.', url: '' },
-    { id: 'chat-backend', title: 'Backend', direction: 'backend', description: 'Чат направления Backend: проекты, вопросы, пиры.', url: '' },
-    { id: 'chat-frontend', title: 'Frontend', direction: 'frontend', description: 'Чат направления Frontend: проекты, вопросы, пиры.', url: '' },
+    { id: 'izh-backend', group: 'campus', title: 'Backend Ижевск', description: 'Чат направления Backend в Ижевске.', url: 'https://t.me/+JYuUe1n0cwkwYmUy' },
+    { id: 'izh-qa', group: 'campus', title: 'QA Ижевск', description: 'Чат направления QA в Ижевске.', url: 'https://t.me/+2Bnrzy64xRk0Mzky' },
+    { id: 'izh-devops', group: 'campus', title: 'DevOps Ижевск', description: 'Чат направления DevOps в Ижевске.', url: 'https://t.me/+IMXkLAMMwcoxZjRi' },
+    { id: 'izh-ds', group: 'campus', title: 'Data Science Ижевск', description: 'Чат направления Data Science в Ижевске.', url: 'https://t.me/ds_school21_izhevsk' },
+    { id: 'simplebashutils', group: 'dev', title: 'SimpleBashUtils', url: 'https://t.me/+C8pCQLUsSvNkNzcy' },
+    { id: 's21-string', group: 'dev', title: 's21_string+', url: 'https://t.me/+LQpPWconGXViMzA6' },
+    { id: 's21-decimal', group: 'dev', title: 's21_decimal', url: 'https://t.me/+KvtB8PKDB2xlM2Qy' },
+    { id: 's21-matrix', group: 'dev', title: 's21_matrix / s21_matrix+', url: 'https://t.me/S21_matrix' },
+    { id: 'brickgame', group: 'dev', title: 'BrickGame', tag: 'все части', url: 'https://t.me/+3YyNoe6dMDM3OGQy' },
+    { id: 'devops-project', group: 'dev', title: 'DevOps', url: 'https://t.me/+MPogbcEDJ-JhZWE6' },
+    { id: 'cpp', group: 'dev', title: 'C++', url: 'https://t.me/+wqh8GgT1dClmNmJi' },
+    { id: 'sql', group: 'dev', title: 'SQL', url: 'https://t.me/+t1CH7q-bZNcxY2Qy' },
+    { id: 'sber-java', group: 'dev', title: 'Sber_Java', url: 'https://t.me/+gUdaLC_tadNmYjJi' },
+    { id: 'algo-branches', group: 'branches', title: 'Алгоритмические ветки', tag: 'общий чат', description: 'Общий чат алгоритмических веток.', url: 'https://t.me/+KgbLy4KXsVxiYTIy' },
+    { id: 'lang-branches', group: 'branches', title: 'Языковые ветки', tag: 'общий чат', description: 'Java, Python, Kotlin, Go, C#.', url: 'https://t.me/+0QNpBkJDKQNhZjAy' },
+    { id: 'ai-agent', group: 'other', title: 'AI Agent', url: 'https://t.me/+zFa1Humn1X9iNTZi' },
+    { id: 'cbs-branch', group: 'other', title: 'Кибербезопасность / CbS', tag: 'чат ветки', url: 'https://t.me/+a85WycvCrtxiNjYy' },
+    { id: 'cbs-club', group: 'other', title: 'Клуб кибербеза', tag: 'чат клуба', url: 'https://t.me/+r5wufz8L3mUzOGUy' },
+    { id: 'backend', group: 'other', title: 'Backend', url: 'https://t.me/+3arMZbxPqtgxNWZi' },
+    { id: 'ml-ds', group: 'other', title: 'ML / DS', url: 'https://t.me/+mAUDhBpSrvo0YzIy' },
+    { id: 'bsa', group: 'other', title: 'BSA', url: 'https://t.me/+lUffgOle5M8yMTgy' },
+    { id: 's21-math', group: 'other', title: 's21_math', url: 'https://t.me/+PYp_Z2nGW_FjYmJi' },
+    { id: '3dviewer', group: 'other', title: '3DViewer', url: 'https://t.me/+D2sccrQhVL5hOWYy' },
+    { id: 'qa', group: 'other', title: 'QA', url: 'https://t.me/+NVATSadWEcc1Njcy' },
+    { id: 'pm', group: 'other', title: 'Project Manager', tag: 'межкампусный', description: 'Общий чат проджектов, не только Ижевск.', url: 'https://t.me/+yPBq8rDpXy02MmU6' },
+    { id: 'product', group: 'other', title: 'Product Manager', url: 'https://t.me/+_16VEmzJtFQ0N2Zi' },
+    { id: 'bioinf', group: 'other', title: 'Биоинформатика', url: 'https://t.me/+uvUmkuHuyAhhZGFi' },
+    { id: 'uxui', group: 'other', title: 'UX / UI', url: 'https://t.me/+1NkIFYy7tiM2YmFi' },
+    { id: 'morty-bot', group: 'bots', title: 'MortyS21bot', tag: 'поиск и верификация', description: 'Поиск пиров по нику, Telegram username или ID, верификация в чатах, статистика активности и база проверенных пользователей.', url: 'https://t.me/MortyS21bot' },
+    { id: 'login-bot', group: 'bots', title: 'login_school21_bot', tag: 'поиск пиров', description: 'Бот для поиска пиров по нику в Telegram и школьному нику.', url: 'https://t.me/login_school21_bot' },
+    { id: 'noem-bot', group: 'bots', title: 'NoemX21_bot', tag: 'бот-помощник', description: 'Переговорки, книги, клубы, личная стата, PRR helper и админка групп — в одном месте.', url: 'https://t.me/NoemX21_bot' },
+    { id: 'smartcalc', group: 'archive', title: 'SmartCalc', tag: 'архив', description: 'Проект больше недоступен для выполнения.', url: 'https://t.me/+kVtODVcII0k2MjU6' },
   ];
 
   function validText(value, max) {
@@ -855,51 +922,65 @@
   let chatFilter = 'all';
 
   function renderChatFilter() {
-    const filters = ['all', ...new Set(chats.map(chat => chat.direction))];
-    const chips = filters.map(filter => {
+    const chips = [{ id: 'all', title: 'Все чаты' }, ...chatGroups].map(group => {
       const chip = document.createElement('button');
       chip.type = 'button';
       chip.className = 'chat-chip';
-      chip.dataset.filter = filter;
-      chip.textContent = filter === 'all' ? 'Все чаты' : directions[filter] || 'Общее';
-      chip.setAttribute('aria-pressed', String(filter === chatFilter));
-      chip.classList.toggle('is-active', filter === chatFilter);
+      chip.dataset.filter = group.id;
+      chip.textContent = group.title;
+      chip.setAttribute('aria-pressed', String(group.id === chatFilter));
+      chip.classList.toggle('is-active', group.id === chatFilter);
       return chip;
     });
     $('#chat-filter').replaceChildren(...chips);
   }
 
   function renderChats() {
-    const visible = chats.filter(chat => chatFilter === 'all' || chat.direction === chatFilter);
     const fragment = document.createDocumentFragment();
-    visible.forEach(chat => {
-      const card = $('#chat-template').content.firstElementChild.cloneNode(true);
-      card.dataset.id = chat.id;
-      $('.chat-direction', card).textContent = chat.direction ? directions[chat.direction] : 'общий';
-      $('h3', card).textContent = chat.title;
-      $('.resource-description', card).textContent = chat.description;
-      const link = $('.chat-link', card);
-      const url = safeUrl(chat.url);
-      if (url) {
-        const anchor = document.createElement('a');
-        anchor.className = 'resource-link';
-        anchor.href = url;
-        anchor.target = '_blank';
-        anchor.rel = 'noopener noreferrer';
-        anchor.setAttribute('aria-label', `Открыть чат: ${chat.title}`);
-        anchor.append(document.createTextNode('Открыть чат'), svgIcon('i-external'));
-        link.replaceChildren(anchor);
-      } else {
-        const soon = document.createElement('span');
-        soon.className = 'chat-soon';
-        soon.textContent = 'Ссылку добавим позже';
-        link.replaceChildren(soon);
-      }
-      fragment.append(card);
+    let visible = 0;
+    chatGroups.forEach(group => {
+      if (chatFilter !== 'all' && chatFilter !== group.id) return;
+      const items = chats.filter(chat => chat.group === group.id);
+      if (!items.length) return;
+      const heading = document.createElement('h3');
+      heading.className = 'chats-group-title';
+      heading.textContent = group.title;
+      fragment.append(heading);
+      items.forEach(chat => {
+        const card = $('#chat-template').content.firstElementChild.cloneNode(true);
+        card.dataset.id = chat.id;
+        const badge = $('.chat-direction', card);
+        badge.textContent = chat.tag || '';
+        badge.hidden = !chat.tag;
+        $('h3', card).textContent = chat.title;
+        const description = $('.resource-description', card);
+        description.textContent = chat.description || '';
+        description.hidden = !chat.description;
+        const link = $('.chat-link', card);
+        const url = safeUrl(chat.url);
+        if (url) {
+          const anchor = document.createElement('a');
+          anchor.className = 'resource-link';
+          anchor.href = url;
+          anchor.target = '_blank';
+          anchor.rel = 'noopener noreferrer';
+          const label = chat.group === 'bots' ? 'Открыть бота' : 'Открыть чат';
+          anchor.setAttribute('aria-label', `${label}: ${chat.title}`);
+          anchor.append(document.createTextNode(label), svgIcon('i-external'));
+          link.replaceChildren(anchor);
+        } else {
+          const soon = document.createElement('span');
+          soon.className = 'chat-soon';
+          soon.textContent = 'Ссылку добавим позже';
+          link.replaceChildren(soon);
+        }
+        fragment.append(card);
+        visible += 1;
+      });
     });
     $('#chats-grid').replaceChildren(fragment);
     $('#chats-count').textContent = chats.length;
-    $('#chats-empty').hidden = visible.length > 0;
+    $('#chats-empty').hidden = visible > 0;
     $$('#chat-filter .chat-chip').forEach(chip => {
       const active = chip.dataset.filter === chatFilter;
       chip.classList.toggle('is-active', active);

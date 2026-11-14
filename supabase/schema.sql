@@ -6,7 +6,7 @@ create table if not exists public.people (
   telegram text not null check (telegram ~ '^[A-Za-z][A-Za-z0-9_]{4,31}$'),
   direction text not null default '' check (direction in ('', 'backend', 'frontend', 'mobile', 'gamedev', 'devops', 'data', 'ai', 'security', 'qa', 'analytics', 'uxui', 'pm', 'bioinf')),
   bio text not null default '' check (char_length(bio) <= 600),
-  interests text[] not null default '{}' check (interests <@ array['games', 'films', 'music', 'books', 'languages', 'sport', 'tennis', 'speaking', 'boardgames', 'travel', 'creativity', 'technology']),
+  interests text[] not null default '{}' check (interests <@ array['games', 'esports', 'boardgames', 'chess', 'films', 'series', 'anime', 'manga', 'cosplay', 'music', 'musicmaking', 'podcasts', 'books', 'art', 'photography', 'dance', 'creativity', 'languages', 'speaking', 'science', 'technology', 'pc', 'electronics', 'robotics', 'printing3d', 'linux', 'ai', 'sport', 'gym', 'running', 'swimming', 'football', 'tennis', 'martialarts', 'cycling', 'hiking', 'travel', 'cars', 'cooking', 'pets', 'investing', 'startups']),
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
   created_at timestamptz not null default now()
 );

@@ -5,6 +5,11 @@
 - Сайт: https://z4nzim00n.github.io/s21_izhevsk/
 - Репозиторий: https://github.com/z4nzim00n/s21_izhevsk
 
+## Документация
+
+- [instructions_for_admin.md](instructions_for_admin.md) — владельцу и админам: модерация, контент, деплой, безопасность и полная передача проекта после выпуска.
+- [instructions_for_ai.md](instructions_for_ai.md) — AI-ассистенту: архитектура, рецепты правок, конвенции и подводные камни.
+
 ## Как это работает
 
 1. Студент заполняет анкету на сайте.
