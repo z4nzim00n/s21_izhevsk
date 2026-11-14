@@ -429,8 +429,13 @@
   }
 
   async function deleteOwnSubmission(nick, token) {
-    const response = await withTimeout(fetch(`${supabaseUrl}/rest/v1/people?nick=eq.${encodeURIComponent(nick)}`, { method: 'DELETE', headers: ownHeaders(token) }));
+    const response = await withTimeout(fetch(`${supabaseUrl}/rest/v1/people?nick=eq.${encodeURIComponent(nick)}`, {
+      method: 'DELETE',
+      headers: { ...ownHeaders(token), Prefer: 'return=representation' },
+    }));
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const deleted = await response.json();
+    if (!deleted.length) throw new Error('nothing deleted');
   }
 
   async function syncPendingStatus() {
@@ -1089,7 +1094,7 @@
         await deleteOwnSubmission(person.nick, person.token);
       } catch (error) {
         console.error(error);
-        setError('#delete-error', 'Не удалось отменить заявку. Проверь интернет и попробуй ещё раз.');
+        setError('#delete-error', 'Не удалось отменить заявку в базе. Проверь интернет; если повторяется — сообщи админу.');
         return;
       } finally {
         button.disabled = false;
