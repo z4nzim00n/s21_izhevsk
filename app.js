@@ -116,14 +116,18 @@
     return value === undefined || value === '' || (typeof value === 'string' && avatars.some(preset => preset.id === value));
   }
 
+  function cleanAvatar(value) {
+    return typeof value === 'string' && avatars.some(preset => preset.id === value) ? value : '';
+  }
+
   function validPersonRecord(item) {
-    return Boolean(item) && typeof item === 'object' && validText(item.id, 64) && typeof item.nick === 'string' && nickPattern.test(item.nick) && validText(item.name, 50) && typeof item.telegram === 'string' && telegramPattern.test(item.telegram) && validDirection(item.direction) && validAvatar(item.avatar) && (item.bio === undefined || (typeof item.bio === 'string' && item.bio.length <= 600)) && (item.interests === undefined || validInterests(item.interests));
+    return Boolean(item) && typeof item === 'object' && validText(item.id, 64) && typeof item.nick === 'string' && nickPattern.test(item.nick) && validText(item.name, 50) && typeof item.telegram === 'string' && telegramPattern.test(item.telegram) && validDirection(item.direction) && (item.bio === undefined || (typeof item.bio === 'string' && item.bio.length <= 600)) && (item.interests === undefined || validInterests(item.interests));
   }
 
   let people = loadRecords(keys.people, validPersonRecord)
-    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', avatar = '' }) => ({ id, nick, name, telegram, bio, interests, direction, avatar }));
+    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', avatar }) => ({ id, nick, name, telegram, bio, interests, direction, avatar: cleanAvatar(avatar) }));
   let pendingPeople = loadRecords(keys.pending, validPersonRecord)
-    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', avatar = '' }) => ({ id, nick, name, telegram, bio, interests, direction, avatar }));
+    .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', avatar }) => ({ id, nick, name, telegram, bio, interests, direction, avatar: cleanAvatar(avatar) }));
   let remotePeople = [];
   let resources = loadRecords(keys.resources, item => validText(item.id, 64) && validText(item.title, 70) && typeof item.description === 'string' && item.description.length <= 240 && Boolean(safeUrl(item.url)));
   let editingId = null;
@@ -389,7 +393,7 @@
       if (error) throw error;
       remotePeople = (data || [])
         .filter(validPersonRecord)
-        .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', avatar = '' }) => ({ id, nick, name, telegram, bio, interests, direction, avatar }));
+        .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', avatar }) => ({ id, nick, name, telegram, bio, interests, direction, avatar: cleanAvatar(avatar) }));
       prunePending();
       renderPeople();
     } catch (error) {
