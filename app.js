@@ -81,9 +81,9 @@
     startups: 'Стартапы',
   };
   const clubs = [
-    { id: 'english', name: 'Английский клуб', category: 'языки', icon: 'i-language', color: 'green', interests: ['languages'], description: 'Разговорная практика для тех, кто учит английский.', organizers: [{ name: 'Катя', nick: 'rosalchi', telegram: 'Kate_hunterr' }] },
-    { id: 'tennis', name: 'Теннисный клуб', category: 'спорт', icon: 'i-tennis', color: 'blue', interests: ['tennis', 'sport'], description: 'Теннис и активный отдых после учёбы.', organizersSoon: true },
-    { id: 'speaking', name: 'Клуб публичных выступлений', category: 'выступления', icon: 'i-mic', color: 'lilac', interests: ['speaking'], description: 'Практика публичных выступлений и работы с голосом.', organizers: [{ name: 'Екатерина Анисимова', role: 'ADM IZH' }] },
+    { id: 'english', name: 'Английский клуб', interests: ['languages'], description: 'Разговорная практика для тех, кто учит английский.', organizers: [{ name: 'Катя', nick: 'rosalchi', telegram: 'Kate_hunterr' }] },
+    { id: 'tennis', name: 'Теннисный клуб', interests: ['tennis', 'sport'], description: 'Теннис и активный отдых после учёбы.', organizersSoon: true },
+    { id: 'speaking', name: 'Клуб публичных выступлений', interests: ['speaking'], description: 'Практика публичных выступлений и работы с голосом.', organizers: [{ name: 'Екатерина Анисимова', role: 'ADM IZH' }] },
   ];
   const resourceGroups = [
     { id: 'practice', title: 'Тренажёры и практика' },
@@ -93,19 +93,19 @@
     { id: 'tools', title: 'Инструменты и карта' },
   ];
   const resources = [
-    { id: 'c-trainer', group: 'practice', title: 'Тренажёр по C', description: 'Сборник задач для практики перед экзаменом.', url: 'https://github.com/z4nzim00n/Exam_trainer', category: 'практика', icon: 'C', color: 'green' },
-    { id: 'sql-trainer', group: 'practice', title: 'SQL-тренажёр', description: 'Задания по SQL с проверкой запросов.', url: 'https://z4nzim00n.github.io/SQL_trainer/', category: 'тренажёр', icon: 'SQL', color: 'lilac' },
-    { id: 'sql-theory', group: 'practice', title: 'SQL-тест к экзамену', description: 'Теоретические тесты для подготовки к экзамену по SQL.', url: 'https://z4nzim00n.github.io/sql_theory_trainer/', category: 'тренажёр', icon: 'SQL', color: 'lilac' },
-    { id: 'platform', group: 'school', title: 'Платформа Школы 21', description: 'Основной сайт школы: проекты, проверки и прогресс.', url: 'https://platform.21-school.ru/', category: 'школа', icon: '21', color: 'green' },
-    { id: 'deadlines', group: 'school', title: 'Дедлайны обучения', description: 'Сроки и этапы обучения на портале абитуриента.', url: 'https://applicant.21-school.ru/education/education', category: 'школа', icon: '21', color: 'blue' },
-    { id: 'campus-qr', group: 'school', title: 'QR-код кампуса', description: 'QR-код кампуса Ижевска на портале абитуриента.', url: 'https://applicant.21-school.ru/campus-qr-code', category: 'кампус', icon: 'QR', color: 'green' },
-    { id: 'rocketchat', group: 'school', title: 'Rocket.Chat', description: 'Основной рабочий чат Школы 21: каналы кампуса и проектов.', url: 'https://rocketchat-student.21-school.ru/home', category: 'чат', icon: 'RC', color: 'lilac' },
-    { id: 'salutejazz', group: 'calls', title: 'SaluteJazz', description: 'Видеопереговоры для сдачи заданий и проверок.', url: 'https://salutejazz.ru/', category: 'учёба', icon: 'Jazz', color: 'blue' },
-    { id: 'izh-knowledge', group: 'knowledge', title: 'Хранилище знаний Ижевска', description: 'Общий документ кампуса: заметки и материалы по учёбе.', url: 'https://docs.yandex.ru/edit/d/GDBAOOKz1vtQPndD9p8_7iPegnqahzm72s0qoIz-cKg6VENfa3QyRUNTZw?from_public=1', category: 'кампус', icon: 'IZH', color: 'green' },
-    { id: 'knowledge-base-nsk', group: 'knowledge', title: 'База знаний (Новосибирск)', description: 'Полезное по веткам, чаты проектов, поиск команды и ответы на вопросы по заданиям.', url: 'https://git.21-school.ru/gehnaeli/knowledge-base-nsk/-/tree/master', category: 'база знаний', icon: 'NSK', color: 'blue' },
-    { id: 'emap', group: 'tools', title: 'Интерактивная карта', description: 'Карта Школы 21 без скрытых узлов и ограничений: путь к цели и проекты, которые откроются после неё.', url: 'https://emap.tamelaos.fun/', category: 'карта', icon: 'MAP', color: 'lilac' },
-    { id: 'linux-cheatsheet', group: 'tools', title: 'Шпаргалка по Linux', description: 'Команды Linux коротко: файлы, права, процессы и сеть.', url: 'https://github.com/justxor/Linux-/', category: 'шпаргалка', icon: 'SH', color: 'lilac' },
-    { id: 'starter-pack', group: 'tools', title: 'Настройка терминала разработчика', description: 'Руководство по настройке терминала для работы из дома: WSL и SSH.', url: 'https://github.com/z4nzim00n/S21-Starter-Pack', category: 'руководство', icon: 'WSL', color: 'green' },
+    { id: 'c-trainer', group: 'practice', title: 'Тренажёр по C', description: 'Сборник задач для практики перед экзаменом.', url: 'https://github.com/z4nzim00n/Exam_trainer' },
+    { id: 'sql-trainer', group: 'practice', title: 'SQL-тренажёр', description: 'Задания по SQL с проверкой запросов.', url: 'https://z4nzim00n.github.io/SQL_trainer/' },
+    { id: 'sql-theory', group: 'practice', title: 'SQL-тест к экзамену', description: 'Теоретические тесты для подготовки к экзамену по SQL.', url: 'https://z4nzim00n.github.io/sql_theory_trainer/' },
+    { id: 'platform', group: 'school', title: 'Платформа Школы 21', description: 'Основной сайт школы: проекты, проверки и прогресс.', url: 'https://platform.21-school.ru/' },
+    { id: 'deadlines', group: 'school', title: 'Дедлайны обучения', description: 'Сроки и этапы обучения на портале абитуриента.', url: 'https://applicant.21-school.ru/education/education' },
+    { id: 'campus-qr', group: 'school', title: 'QR-код кампуса', description: 'QR-код кампуса Ижевска на портале абитуриента.', url: 'https://applicant.21-school.ru/campus-qr-code' },
+    { id: 'rocketchat', group: 'school', title: 'Rocket.Chat', description: 'Основной рабочий чат Школы 21: каналы кампуса и проектов.', url: 'https://rocketchat-student.21-school.ru/home' },
+    { id: 'salutejazz', group: 'calls', title: 'SaluteJazz', description: 'Видеопереговоры для сдачи заданий и проверок.', url: 'https://salutejazz.ru/' },
+    { id: 'izh-knowledge', group: 'knowledge', title: 'Хранилище знаний Ижевска', description: 'Общий документ кампуса: заметки и материалы по учёбе.', url: 'https://docs.yandex.ru/edit/d/GDBAOOKz1vtQPndD9p8_7iPegnqahzm72s0qoIz-cKg6VENfa3QyRUNTZw?from_public=1' },
+    { id: 'knowledge-base-nsk', group: 'knowledge', title: 'База знаний (Новосибирск)', description: 'Полезное по веткам, чаты проектов, поиск команды и ответы на вопросы по заданиям.', url: 'https://git.21-school.ru/gehnaeli/knowledge-base-nsk/-/tree/master' },
+    { id: 'emap', group: 'tools', title: 'Интерактивная карта', description: 'Карта Школы 21 без скрытых узлов и ограничений: путь к цели и проекты, которые откроются после неё.', url: 'https://emap.tamelaos.fun/' },
+    { id: 'linux-cheatsheet', group: 'tools', title: 'Шпаргалка по Linux', description: 'Команды Linux коротко: файлы, права, процессы и сеть.', url: 'https://github.com/justxor/Linux-/' },
+    { id: 'starter-pack', group: 'tools', title: 'Настройка терминала разработчика', description: 'Руководство по настройке терминала для работы из дома: WSL и SSH.', url: 'https://github.com/z4nzim00n/S21-Starter-Pack' },
   ];
   const chatGroups = [
     { id: 'campus', title: 'Кампус Ижевск' },
@@ -714,10 +714,6 @@
   function makeClubCard(club) {
     const card = $('#club-template').content.firstElementChild.cloneNode(true);
     card.dataset.club = club.id;
-    const icon = $('.club-icon', card);
-    icon.classList.add(club.color);
-    icon.append(svgIcon(club.icon));
-    $('.club-category', card).textContent = club.category;
     $('.club-name', card).textContent = club.name;
     $('.club-description', card).textContent = club.description;
     renderInterestTags($('.club-interests', card), club.interests);
@@ -952,11 +948,6 @@
       items.forEach(resource => {
         const card = $('#resource-template').content.firstElementChild.cloneNode(true);
         card.dataset.id = resource.id;
-        const icon = $('.resource-icon', card);
-        icon.classList.add(resource.color || 'blue');
-        if (resource.icon) icon.textContent = resource.icon;
-        else icon.append(svgIcon('i-grid'));
-        $('.resource-category', card).textContent = resource.category || 'ссылка';
         $('h3', card).textContent = resource.title;
         $('.resource-description', card).textContent = resource.description || '';
         $('.resource-link', card).href = safeUrl(resource.url);
