@@ -178,7 +178,6 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px
 .skip-link:focus { transform: translateY(0); }
 
 .site-header { display: grid; position: sticky; top: 0; z-index: 20; isolation: isolate; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 28px; margin: 0 -20px; padding: 18px 20px; }
-.site-header::before { content: ""; position: absolute; inset: -8px 0; z-index: -1; background: var(--header-bg); filter: blur(16px); pointer-events: none; }
 .main-nav { display: flex; justify-self: center; align-items: center; gap: 3px; min-width: 0; padding: 5px; border: 0; border-radius: 13px; background: var(--surface); box-shadow: var(--card-shadow); }
 .nav-link { display: inline-flex; position: relative; align-items: center; justify-content: center; flex: 0 0 auto; gap: 6px; min-height: 40px; padding: 9px 12px; border-radius: 9px; color: var(--muted); font-size: 12px; font-weight: 500; white-space: nowrap; }
 .nav-link .icon { width: 15px; height: 15px; flex-basis: 15px; }
@@ -489,7 +488,7 @@ kbd { display: grid; flex: 0 0 25px; place-items: center; width: 25px; height: 2
   .hero-actions [data-add-person]:hover:not(:disabled) { transform: none; }
 }
 @media (forced-colors: active) {
-  body::before, body::after, .site-header::before { display: none; }
+  body::before, body::after { display: none; }
   .site-header { background: Canvas; }
   .button, .icon-button, .interest-choice > span, .person-row, .resource-card, .club-card, .official-card,
   .advice-card, .faq-section, .directory-toolbar, .empty-state, .chat-chip, .direction-badge, .telegram-link, .main-nav, .modal,
