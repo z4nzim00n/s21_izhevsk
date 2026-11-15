@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#f5f4f0">
+  <meta name="theme-color" content="#f2f6f4">
   <meta name="description" content="Неофициальный список анкет студентов Школы 21 в Ижевске: ники, имена, Telegram, направления и интересы.">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Школа 21, Ижевск">
@@ -26,12 +26,12 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="icon" href="./favicon.svg?v=8" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=9">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="./favicon.svg?v=10" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css?v=10">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./app.js?v=8" defer></script>
+  <script src="./app.js?v=10" defer></script>
 </head>
 <body>
   <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -80,14 +80,21 @@
         <div class="hero">
           <div class="hero-copy">
             <p class="section-label">Студенческий справочник</p>
-            <h1 id="people-heading">Студенты кампуса</h1>
+            <h1 id="people-heading">Студенты <span class="hero-accent">кампуса</span></h1>
             <p class="hero-description">Ники, имена и контакты студентов Школы 21 в Ижевске. Поиск по направлениям и интересам, копирование контактов в один клик.</p>
             <div class="hero-actions"><button type="button" class="button button-primary" data-add-person><svg class="icon"><use href="#i-plus"/></svg>Добавить анкету</button><span class="intro-note">Публикация после проверки</span></div>
           </div>
-          <ul class="hero-stats" aria-label="В справочнике">
-            <li><strong id="hero-total">0</strong><span id="hero-total-label">студентов</span></li>
-            <li><strong id="hero-clubs">3</strong><span id="hero-clubs-label">клуба</span></li>
-          </ul>
+          <div class="hero-aside">
+            <div class="hero-scene" aria-hidden="true">
+              <span class="scene-orbit orbit-one"></span><span class="scene-orbit orbit-two"></span>
+              <span class="scene-core">21<span class="scene-core-dot"></span></span>
+              <span class="scene-spark spark-one"></span><span class="scene-spark spark-two"></span>
+            </div>
+            <ul class="hero-stats" aria-label="В справочнике">
+              <li><strong id="hero-total">0</strong><span id="hero-total-label">студентов</span></li>
+              <li><strong id="hero-clubs">3</strong><span id="hero-clubs-label">клуба</span></li>
+            </ul>
+          </div>
         </div>
 
         <div class="section-heading"><div class="heading-inline"><h2>Студенты</h2><span class="count-badge" id="people-count">0</span></div><span class="section-caption">Ижевский кампус</span></div>
