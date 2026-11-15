@@ -4,7 +4,6 @@
   const keys = {
     people: 's21-izhevsk.people.v1',
     pending: 's21-izhevsk.people.pending.v1',
-    theme: 's21-izhevsk.theme',
     pageSize: 's21-izhevsk.pageSize',
   };
   const supabaseUrl = window.S21_SUPABASE?.url?.trim() || '';
@@ -297,31 +296,6 @@
     return svg;
   }
 
-  function applyTheme(theme) {
-    document.documentElement.dataset.theme = theme;
-    const label = theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему';
-    $('#theme-toggle').setAttribute('aria-label', label);
-    $('#theme-toggle').title = label;
-    $('#theme-toggle use').setAttribute('href', theme === 'dark' ? '#i-sun' : '#i-moon');
-    $('meta[name="theme-color"]').content = theme === 'dark' ? '#0c1417' : '#f2f6f4';
-  }
-
-  try {
-    applyTheme(localStorage.getItem(keys.theme) === 'dark' ? 'dark' : 'light');
-  } catch {
-    applyTheme('light');
-  }
-
-  $('#theme-toggle').addEventListener('click', () => {
-    const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-    applyTheme(theme);
-    try {
-      localStorage.setItem(keys.theme, theme);
-    } catch {
-      showToast('Тема изменена, но браузер не разрешил сохранить выбор.', true);
-    }
-  });
-
   function route(focus = false) {
     const requested = location.hash.slice(1);
     const page = ['people', 'rules', 'chats', 'resources', 'clubs'].includes(requested) ? requested : 'people';
@@ -333,118 +307,11 @@
       else link.removeAttribute('aria-current');
     });
     const titles = { people: 'Студенты', rules: 'Правила и FAQ', chats: 'Чаты', resources: 'Полезные сайты', clubs: 'Клубы' };
-    document.title = `${titles[page]} · Школа 21, Ижевск`;
+    document.title = `${titles[page]} · Ижевский кампус`;
     if (focus) {
       window.scrollTo({ top: 0, behavior: 'instant' });
       $('#main').focus({ preventScroll: true });
     }
-  }
-
-  function setupVisualEffects() {
-    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-    const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
-    const glow = document.createElement('div');
-    glow.className = 'cursor-glow';
-    glow.setAttribute('aria-hidden', 'true');
-    document.body.append(glow);
-    const cardSelector = '.person-row, .resource-card, .club-card, .official-card';
-    let pointerFrame = 0;
-    let pointer;
-    let activeCard;
-
-    function clearPointer() {
-      cancelAnimationFrame(pointerFrame);
-      pointerFrame = 0;
-      glow.classList.remove('is-visible');
-      if (activeCard) activeCard.classList.remove('is-spotlit');
-      activeCard = null;
-    }
-
-    document.addEventListener('pointermove', event => {
-      if (!finePointer.matches || reducedMotion.matches || event.pointerType === 'touch' || document.body.classList.contains('modal-open')) {
-        clearPointer();
-        return;
-      }
-      pointer = { x: event.clientX, y: event.clientY, target: event.target };
-      if (pointerFrame) return;
-      pointerFrame = requestAnimationFrame(() => {
-        pointerFrame = 0;
-        glow.style.transform = `translate3d(${pointer.x}px, ${pointer.y}px, 0)`;
-        glow.classList.add('is-visible');
-        const card = pointer.target instanceof Element ? pointer.target.closest(cardSelector) : null;
-        if (activeCard !== card) {
-          if (activeCard) activeCard.classList.remove('is-spotlit');
-          activeCard = card;
-          if (card) card.classList.add('is-spotlit');
-        }
-        if (card) {
-          const rect = card.getBoundingClientRect();
-          card.style.setProperty('--pointer-x', `${pointer.x - rect.left}px`);
-          card.style.setProperty('--pointer-y', `${pointer.y - rect.top}px`);
-        }
-      });
-    }, { passive: true });
-    document.documentElement.addEventListener('pointerleave', clearPointer);
-    document.addEventListener('pointercancel', clearPointer);
-    window.addEventListener('blur', clearPointer);
-    window.addEventListener('scroll', clearPointer, { passive: true });
-    finePointer.addEventListener('change', clearPointer);
-    document.documentElement.classList.toggle('effects-paused', document.hidden);
-    document.addEventListener('visibilitychange', () => {
-      document.documentElement.classList.toggle('effects-paused', document.hidden);
-      if (document.hidden) clearPointer();
-    });
-
-    const revealSelector = `${cardSelector}, .hero, .page-intro, .section-heading, .advice-card, .faq-section`;
-    let observed = new WeakSet();
-    let sequence = 0;
-    const animations = new Set();
-    const revealObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        revealObserver.unobserve(entry.target);
-        if (reducedMotion.matches) return;
-        const animation = entry.target.animate([
-          { opacity: .15, transform: 'translateY(14px)' },
-          { opacity: 1, transform: 'translateY(0)' }
-        ], { duration: 620, delay: sequence++ % 4 * 45, easing: 'cubic-bezier(.2, .75, .2, 1)' });
-        animations.add(animation);
-        animation.onfinish = animation.oncancel = () => animations.delete(animation);
-      });
-    }, { threshold: .08 });
-
-    function observeReveals(root) {
-      if (reducedMotion.matches) return;
-      const elements = [...root.querySelectorAll(revealSelector)];
-      if (root.matches(revealSelector)) elements.unshift(root);
-      elements.forEach(element => {
-        if (observed.has(element)) return;
-        observed.add(element);
-        revealObserver.observe(element);
-      });
-    }
-
-    reducedMotion.addEventListener('change', () => {
-      clearPointer();
-      revealObserver.disconnect();
-      animations.forEach(animation => animation.cancel());
-      observed = new WeakSet();
-      observeReveals($('#main'));
-    });
-    observeReveals($('#main'));
-    const mutationObserver = new MutationObserver(records => {
-      records.forEach(record => {
-        record.removedNodes.forEach(node => {
-          if (!(node instanceof Element)) return;
-          revealObserver.unobserve(node);
-          node.querySelectorAll(revealSelector).forEach(element => revealObserver.unobserve(element));
-        });
-        record.addedNodes.forEach(node => {
-          if (node instanceof Element) observeReveals(node);
-        });
-      });
-    });
-    mutationObserver.observe($('#main'), { childList: true, subtree: true });
   }
 
   window.addEventListener('hashchange', () => route(true));
@@ -739,8 +606,6 @@
     $('#people-list').replaceChildren(fragment);
     renderPagination(totalPages, visible.length);
     $('#people-count').textContent = everyone.length;
-    $('#hero-total').textContent = everyone.length;
-    $('#hero-total-label').textContent = plural(everyone.length, ['студент', 'студента', 'студентов']);
     const end = Math.min(start + pageSize, visible.length);
     $('#results-summary').textContent = visible.length
       ? visible.length > pageSize ? `Показано ${start + 1}–${end} из ${visible.length}` : `${visible.length} ${plural(visible.length, ['студент', 'студента', 'студентов'])}`
@@ -1228,8 +1093,6 @@
   window.addEventListener('storage', event => {
     if (event.key === keys.people || event.key === keys.pending || event.key === keys.pageSize || event.key === null) {
       location.reload();
-    } else if (event.key === keys.theme) {
-      applyTheme(event.newValue === 'dark' ? 'dark' : 'light');
     }
   });
 
@@ -1240,8 +1103,6 @@
   renderInterestPicker();
   renderChatFilter();
   renderChats();
-  $('#hero-clubs').textContent = String(clubs.length);
-  $('#hero-clubs-label').textContent = plural(clubs.length, ['клуб', 'клуба', 'клубов']);
   $('#clubs-grid').replaceChildren(...clubs.map(club => makeClubCard(club)));
   route();
   renderPeople();
@@ -1250,6 +1111,5 @@
     loadRemotePeople().then(syncPendingStatus);
   }
   renderResources();
-  setupVisualEffects();
   if (warnings.length) showToast(warnings[0], true);
 })();

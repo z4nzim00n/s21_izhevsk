@@ -1,37 +1,30 @@
 <!doctype html>
-<html lang="ru" data-theme="light">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#f2f6f4">
-  <meta name="description" content="Неофициальный список анкет студентов Школы 21 в Ижевске: ники, имена, Telegram, направления и интересы.">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ece0c8">
+  <meta name="description" content="Неофициальный список анкет студентов Ижевского кампуса: ники, имена, Telegram, направления и интересы.">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Школа 21, Ижевск">
-  <meta property="og:title" content="Школа 21, Ижевск — каталог студентов">
+  <meta property="og:site_name" content="Ижевский кампус">
+  <meta property="og:title" content="Ижевский кампус — каталог студентов">
   <meta property="og:description" content="Студенческий справочник Ижевского кампуса: анкеты, учебные материалы, чаты и клубы.">
   <meta property="og:url" content="https://z4nzim00n.github.io/s21_izhevsk/">
   <meta property="og:image" content="https://z4nzim00n.github.io/s21_izhevsk/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Школа 21, Ижевск — каталог студентов">
+  <meta property="og:image:alt" content="Ижевский кампус — каталог студентов">
   <meta name="twitter:card" content="summary_large_image">
-  <title>Школа 21, Ижевск</title>
-  <script>
-    try {
-      document.documentElement.dataset.theme = localStorage.getItem('s21-izhevsk.theme') === 'dark' ? 'dark' : 'light';
-    } catch (error) {
-      document.documentElement.dataset.theme = 'light';
-    }
-  </script>
+  <title>Ижевский кампус</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" href="./favicon.svg?v=10" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=11">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="./favicon.png?v=14" type="image/png">
+  <link rel="stylesheet" href="./styles.css?v=14">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./app.js?v=11" defer></script>
+  <script src="./app.js?v=14" defer></script>
 </head>
 <body>
   <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -39,8 +32,6 @@
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
     <symbol id="i-external" viewBox="0 0 24 24"><path d="M13 5h6v6m0-6L9 15M10 5H5v14h14v-5"/></symbol>
-    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></symbol>
-    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.8 13a9 9 0 0 1-9.8-9.8A9 9 0 1 0 20.8 13Z"/></symbol>
     <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2m0-15a3 3 0 0 1 0 6m3 3a5 5 0 0 1 3 4v2"/></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1m0-14c3-2 6-2 9-1v14c-3-1-6-1-9 1V6Z"/></symbol>
     <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
@@ -59,55 +50,9 @@
     <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
   </svg>
   <a class="skip-link" href="#main">К содержимому</a>
-  <div class="blueprint-background" aria-hidden="true">
-    <svg class="blueprint-diagram blueprint-orbit" viewBox="0 0 340 340">
-      <path class="blueprint-guide" d="M16 170h308M170 16v308"/>
-      <circle cx="170" cy="170" r="90"/>
-      <g class="blueprint-rotor">
-        <circle class="blueprint-guide" cx="170" cy="170" r="126"/>
-        <path d="M170 34v22m0 228v22M34 170h22m228 0h22M74 74l16 16m160 160 16 16M74 266l16-16m160-160 16-16"/>
-        <circle class="blueprint-trace" cx="170" cy="170" r="110" pathLength="1000"/>
-      </g>
-      <path d="M80 285h180m-180-5v10m180-10v10M80 170v125m180-125v125"/>
-      <text x="142" y="305">Ø 180</text>
-      <circle class="blueprint-node" cx="170" cy="80" r="3"/>
-      <path d="M162 170h16m-8-8v16"/>
-    </svg>
-    <svg class="blueprint-diagram blueprint-cube" viewBox="0 0 320 320">
-      <path class="blueprint-guide" d="M12 160h296M160 18v284M34 230l252-140M34 90l252 140"/>
-      <path d="m160 64 88 50v102l-88 50-88-50V114l88-50Zm0 102 88-52m-88 52-88-52m88 52v100"/>
-      <path class="blueprint-trace" pathLength="1000" d="m160 64 88 50v102l-88 50-88-50V114l88-50 88 50-88 52v100"/>
-      <path d="M52 114v102m-5-102h10m-10 102h10M72 114H42m30 102H42M84 276l66 38m-70-34 8-8m58 46 8-8"/>
-      <text x="28" y="177" transform="rotate(-90 28 177)">H 102</text>
-      <circle class="blueprint-node" cx="160" cy="166" r="3"/>
-    </svg>
-    <svg class="blueprint-diagram blueprint-circuit" viewBox="0 0 380 300">
-      <path class="blueprint-guide" d="M18 150h344M190 16v268"/>
-      <path d="M22 88h78l48 48h75l48-48h88M22 110h64l48 48h100l46-46h79M22 212h97l45-45v-79l48-48h104M60 256v-35l40-40h31M238 267v-51l47-47h74"/>
-      <rect x="150" y="116" width="80" height="80" rx="10"/>
-      <rect class="blueprint-guide" x="138" y="104" width="104" height="104" rx="14"/>
-      <path class="blueprint-trace" pathLength="1000" d="M22 88h78l48 48h75l48-48h88"/>
-      <path class="blueprint-trace" pathLength="1000" d="M22 212h97l45-45v-79l48-48h104"/>
-      <circle cx="100" cy="88" r="4"/><circle cx="238" cy="267" r="4"/>
-      <circle class="blueprint-node" cx="212" cy="40" r="3"/>
-      <path d="M158 224h64m-64-5v10m64-10v10"/>
-      <text x="171" y="245">64</text>
-    </svg>
-    <svg class="blueprint-diagram blueprint-axes" viewBox="0 0 190 190">
-      <path class="blueprint-guide" d="M20 95h150M95 20v150"/>
-      <path d="M44 146V44h102m-108 6 6-6 6 6m90-12 6 6-6 6"/>
-      <path d="M62 128a66 66 0 0 1 66-66"/>
-      <path class="blueprint-trace" pathLength="1000" d="M62 128a66 66 0 0 1 66-66"/>
-      <circle cx="95" cy="95" r="29"/>
-      <text x="151" y="47">x</text><text x="40" y="160">y</text><text x="112" y="143">R 66</text>
-    </svg>
-  </div>
   <div class="page-shell">
     <header class="site-header">
-      <a class="brand" href="#people" aria-label="Школа 21, Ижевск — на главную">
-        <span class="brand-mark" aria-hidden="true">21</span>
-        <span class="brand-copy"><strong>Школа 21</strong><span>Ижевск</span></span>
-      </a>
+      <a class="brand" href="#people" aria-label="Ижевский кампус — на главную">Ижевский кампус</a>
       <nav class="main-nav" aria-label="Разделы сайта">
         <a class="nav-link is-active" href="#people" data-page="people" aria-current="page"><svg class="icon"><use href="#i-people"/></svg><span>Студенты</span></a>
         <a class="nav-link" href="#rules" data-page="rules"><svg class="icon"><use href="#i-book"/></svg><span>Правила и FAQ</span></a>
@@ -115,7 +60,7 @@
         <a class="nav-link" href="#resources" data-page="resources"><svg class="icon"><use href="#i-grid"/></svg><span>Полезные сайты</span></a>
         <a class="nav-link" href="#clubs" data-page="clubs"><svg class="icon"><use href="#i-clubs"/></svg><span>Клубы</span></a>
       </nav>
-      <div class="header-actions"><span class="version-badge">v0.005</span><button class="icon-button theme-toggle" id="theme-toggle" type="button" aria-label="Включить тёмную тему" title="Включить тёмную тему"><svg class="icon"><use href="#i-moon"/></svg></button></div>
+      <div class="header-actions"><span class="version-badge">v0.005</span></div>
     </header>
 
     <main id="main" tabindex="-1">
@@ -124,19 +69,11 @@
           <div class="hero-copy">
             <p class="section-label">Студенческий справочник</p>
             <h1 id="people-heading">Студенты <span class="hero-accent">кампуса</span></h1>
-            <p class="hero-description">Ники, имена и контакты студентов Школы 21 в Ижевске. Поиск по направлениям и интересам, копирование контактов в один клик.</p>
+            <p class="hero-description">Ники, имена и контакты студентов Ижевского кампуса. Поиск по направлениям и интересам, копирование контактов в один клик.</p>
             <div class="hero-actions"><button type="button" class="button button-primary" data-add-person><svg class="icon"><use href="#i-plus"/></svg>Добавить анкету</button><span class="intro-note">Публикация после проверки</span></div>
           </div>
-          <div class="hero-aside">
-            <div class="hero-scene" aria-hidden="true">
-              <span class="scene-orbit orbit-one"></span><span class="scene-orbit orbit-two"></span>
-              <span class="scene-core">21<span class="scene-core-dot"></span></span>
-              <span class="scene-spark spark-one"></span><span class="scene-spark spark-two"></span>
-            </div>
-            <ul class="hero-stats" aria-label="В справочнике">
-              <li><strong id="hero-total">0</strong><span id="hero-total-label">студентов</span></li>
-              <li><strong id="hero-clubs">3</strong><span id="hero-clubs-label">клуба</span></li>
-            </ul>
+          <div class="hero-aside" aria-hidden="true">
+            <img class="hero-dragon" src="./dragon_100.png?v=14" alt="">
           </div>
         </div>
 
@@ -155,7 +92,7 @@
 
       <section class="page-section" id="page-rules" aria-labelledby="rules-heading" hidden>
         <div class="page-intro"><p class="section-label">Информация об учёбе</p><h1 id="rules-heading">Правила и FAQ</h1><p>Официальный ресурс, памятка по Rocket.Chat и ответы на вопросы об учёбе. Актуальные правила кампуса можно уточнить у администрации.</p></div>
-        <a class="official-card" href="https://applicant.21-school.ru/adm" target="_blank" rel="noopener noreferrer"><div class="resource-icon"><svg class="icon"><use href="#i-book"/></svg></div><div><span class="card-label">Официальный ресурс</span><h2>Портал абитуриента Школы 21</h2><p>Актуальные условия поступления и информация для абитуриентов.</p><span class="link-domain">applicant.21-school.ru/adm</span></div><span class="round-arrow"><svg class="icon"><use href="#i-external"/></svg></span></a>
+        <a class="official-card" href="https://applicant.21-school.ru/adm" target="_blank" rel="noopener noreferrer"><div class="resource-icon"><svg class="icon"><use href="#i-book"/></svg></div><div><span class="card-label">Официальный ресурс</span><h2>Официальные правила школы</h2><p>Актуальные правила поступления и обучения — на официальном ресурсе школы.</p><span class="link-domain">applicant.21-school.ru/adm</span></div><span class="round-arrow"><svg class="icon"><use href="#i-external"/></svg></span></a>
         <div class="rules-columns">
           <section class="advice-card" aria-labelledby="rocketchat-heading"><h2 id="rocketchat-heading">Rocket.Chat: памятка</h2><p class="muted">Основной рабочий чат Школы 21. Вход — <a href="https://rocketchat-student.21-school.ru" target="_blank" rel="noopener noreferrer">rocketchat-student.21-school.ru</a>.</p><ol class="advice-list"><li><span>01</span><div><h3>Как войти</h3><p>Логин — <code>школьный_ник@student.21-school.ru</code>: ник в Школе 21 и студенческий домен.</p></div></li><li><span>02</span><div><h3>Каналы</h3><ul class="channel-list"><li><code>#general</code> — общение между всеми участниками Школы 21 из разных городов.</li><li><code>#izh_adm</code> — организационные вопросы: обучение, мероприятия и клубы, запросы на продление и т.д.</li><li><code>#izh_report</code> — технические проблемы с платформой, Rocket.Chat, оборудованием и Wi-Fi в кампусе.</li><li><code>#izh_service</code> — инфраструктура кампуса: что-то сломалось, пролилось и т.д.</li></ul></div></li><li><span>03</span><div><h3>Связь с администрацией</h3><p>Канал волны, канал администрации и сотрудники ADM в Rocket.Chat. Почта: <a href="mailto:info@izh.21-school.ru">info@izh.21-school.ru</a>.</p></div></li></ol></section>
           <section class="faq-section" aria-labelledby="faq-heading"><div class="section-heading"><h2 id="faq-heading">Частые вопросы</h2><span class="small-badge">FAQ</span></div>
@@ -187,7 +124,7 @@
         <div class="clubs-grid" id="clubs-grid"></div>
       </section>
     </main>
-    <footer class="site-footer"><span class="footer-brand">Школа 21, Ижевск</span><span>Неофициальный студенческий проект.</span><span class="footer-location"><svg class="icon"><use href="#i-pin"/></svg>Ижевск <span class="footer-separator">/</span> версия 0.005</span></footer>
+    <footer class="site-footer"><span class="footer-brand">Ижевский кампус</span><span>Неофициальный студенческий проект.</span><span class="footer-location"><svg class="icon"><use href="#i-pin"/></svg>Ижевск <span class="footer-separator">/</span> версия 0.005</span></footer>
   </div>
 
   <dialog id="person-dialog" class="modal" aria-labelledby="person-dialog-title" aria-describedby="person-dialog-description">
