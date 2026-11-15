@@ -606,7 +606,6 @@
     });
     $('#people-list').replaceChildren(fragment);
     renderPagination(totalPages, visible.length);
-    $('#people-count').textContent = everyone.length;
     const end = Math.min(start + pageSize, visible.length);
     $('#results-summary').textContent = visible.length
       ? visible.length > pageSize ? `Показано ${start + 1}–${end} из ${visible.length}` : `${visible.length} ${plural(visible.length, ['студент', 'студента', 'студентов'])}`
@@ -957,7 +956,6 @@
       });
     });
     $('#resources-grid').replaceChildren(fragment);
-    $('#resources-count').textContent = resources.length;
   }
 
   let chatFilter = 'all';
@@ -1020,7 +1018,6 @@
       });
     });
     $('#chats-grid').replaceChildren(fragment);
-    $('#chats-count').textContent = chats.length;
     $('#chats-empty').hidden = visible > 0;
     $$('#chat-filter .chat-chip').forEach(chip => {
       const active = chip.dataset.filter === chatFilter;

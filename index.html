@@ -29,10 +29,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="./favicon.png?v=14" type="image/png">
-  <link rel="stylesheet" href="./styles.css?v=20">
+  <link rel="stylesheet" href="./styles.css?v=23">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./app.js?v=16" defer></script>
+  <script src="./app.js?v=17" defer></script>
 </head>
 <body>
   <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -58,25 +58,35 @@
   <a class="skip-link" href="#main">К содержимому</a>
   <div class="page-shell">
     <header class="site-header">
-      <a class="brand" href="#people" aria-label="Ижевский кампус — на главную">Ижевский кампус</a>
       <nav class="main-nav" aria-label="Разделы сайта">
-        <a class="nav-link is-active" href="#people" data-page="people" aria-current="page"><svg class="icon"><use href="#i-people"/></svg><span>Студенты</span></a>
-        <a class="nav-link" href="#rules" data-page="rules"><svg class="icon"><use href="#i-book"/></svg><span>Правила и FAQ</span></a>
+        <a class="nav-link is-active" href="#people" data-page="people" aria-current="page"><svg class="icon"><use href="#i-people"/></svg><span>Список</span></a>
+        <a class="nav-link" href="#rules" data-page="rules"><svg class="icon"><use href="#i-book"/></svg><span>Правила</span></a>
         <a class="nav-link" href="#chats" data-page="chats"><svg class="icon"><use href="#i-telegram"/></svg><span>Чаты</span></a>
-        <a class="nav-link" href="#resources" data-page="resources"><svg class="icon"><use href="#i-grid"/></svg><span>Полезные сайты</span></a>
+        <a class="nav-link" href="#resources" data-page="resources"><svg class="icon"><use href="#i-grid"/></svg><span>Сайты</span></a>
         <a class="nav-link" href="#clubs" data-page="clubs"><svg class="icon"><use href="#i-clubs"/></svg><span>Клубы</span></a>
       </nav>
       <div class="header-actions"><button type="button" class="icon-button theme-toggle" id="theme-toggle" aria-label="Переключить тему" title="Переключить тему"><svg class="icon theme-icon-light"><use href="#i-moon"/></svg><svg class="icon theme-icon-dark"><use href="#i-sun"/></svg></button></div>
     </header>
 
     <main id="main" tabindex="-1">
-      <section class="page-section" id="page-people" aria-labelledby="people-heading">
+      <section class="page-section" id="page-people" aria-label="Список студентов">
         <div class="hero">
-          <h1 id="people-heading">Студенты кампуса</h1>
           <div class="hero-actions"><button type="button" class="button button-primary" data-add-person><svg class="icon"><use href="#i-plus"/></svg>Добавить анкету</button></div>
+          <svg class="hero-illustration" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="96" height="96" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <g class="ink-feather">
+              <path d="M60 91C65 64 78 31 103 10C110 30 100 59 76 73L65 78" fill="currentColor" fill-opacity=".06"/>
+              <path d="M60 91C70 58 87 30 103 10M70 63L69 43M76 52L79 29M83 41L88 20M71 64L90 58M77 52L100 42M84 40L105 29"/>
+              <path d="M67 74L79 69M88 31L87 24M95 24L104 20" opacity=".45"/>
+            </g>
+            <path d="M50 91L47 98V109C47 115 80 115 81 109V98L77 91M52 91V86M76 91V86" fill="var(--canvas)"/>
+            <ellipse cx="64" cy="86" rx="12" ry="3.5"/>
+            <path d="M49 101C57 104 72 104 79 101V109C73 113 54 113 49 109Z" fill="currentColor" stroke="none" opacity=".85"/>
+            <path d="M53 97L52 100M55 105V109" stroke="var(--canvas)" opacity=".7"/>
+            <path class="ink-flourish" pathLength="1" d="M17 118C30 112 39 116 35 120C31 124 22 121 27 117C35 111 73 122 108 117"/>
+            <circle cx="91" cy="111" r="1.4" fill="currentColor" stroke="none" opacity=".5"/>
+            <circle cx="97" cy="108" r=".8" fill="currentColor" stroke="none" opacity=".35"/>
+          </svg>
         </div>
-
-        <div class="section-heading"><div class="heading-inline"><h2>Студенты</h2><span class="count-badge" id="people-count">0</span></div></div>
         <div class="directory-toolbar">
           <label class="search-field" for="people-search"><svg class="icon"><use href="#i-search"/></svg><input id="people-search" type="search" placeholder="Поиск по каталогу" maxlength="100" autocomplete="off" aria-label="Поиск по нику, имени, Telegram, направлению или интересам"><kbd aria-hidden="true">/</kbd></label>
         </div>
@@ -90,7 +100,6 @@
       </section>
 
       <section class="page-section" id="page-rules" aria-labelledby="rules-heading" hidden>
-        <div class="page-intro"><h1 id="rules-heading">Правила и FAQ</h1><p>Официальный ресурс, памятка по Rocket.Chat и ответы на вопросы об учёбе. Актуальные правила кампуса можно уточнить у администрации.</p></div>
         <a class="official-card" href="https://applicant.21-school.ru/adm" target="_blank" rel="noopener noreferrer"><div><h2>Официальные правила школы</h2><p>Актуальные правила поступления и обучения — на официальном ресурсе школы.</p><span class="link-domain">applicant.21-school.ru/adm</span></div><span class="round-arrow"><svg class="icon"><use href="#i-external"/></svg></span></a>
         <div class="rules-columns">
           <section class="advice-card" aria-labelledby="rocketchat-heading"><h2 id="rocketchat-heading">Rocket.Chat: памятка</h2><p class="muted">Основной рабочий чат Школы 21. Вход — <a href="https://rocketchat-student.21-school.ru" target="_blank" rel="noopener noreferrer">rocketchat-student.21-school.ru</a>.</p><ol class="advice-list"><li><span>01</span><div><h3>Как войти</h3><p>Логин — <code>школьный_ник@student.21-school.ru</code>: ник в Школе 21 и студенческий домен.</p></div></li><li><span>02</span><div><h3>Каналы</h3><ul class="channel-list"><li><code>#general</code> — общение между всеми участниками Школы 21 из разных городов.</li><li><code>#izh_adm</code> — организационные вопросы: обучение, мероприятия и клубы, запросы на продление и т.д.</li><li><code>#izh_report</code> — технические проблемы с платформой, Rocket.Chat, оборудованием и Wi-Fi в кампусе.</li><li><code>#izh_service</code> — инфраструктура кампуса: что-то сломалось, пролилось и т.д.</li></ul></div></li><li><span>03</span><div><h3>Связь с администрацией</h3><p>Канал волны, канал администрации и сотрудники ADM в Rocket.Chat. Почта: <a href="mailto:info@izh.21-school.ru">info@izh.21-school.ru</a>.</p></div></li></ol></section>
@@ -105,20 +114,15 @@
         </div>
       </section>
 
-      <section class="page-section" id="page-resources" aria-labelledby="resources-heading" hidden>
-        <div class="page-intro"><h1 id="resources-heading">Полезные сайты</h1><p>Тренажёры, сервисы школы и материалы для самостоятельной работы. Подборку обновляет администратор проекта.</p></div>
-        <div class="section-heading"><div class="heading-inline"><h2>Ссылки</h2><span class="count-badge" id="resources-count">13</span></div></div>
+      <section class="page-section" id="page-resources" aria-label="Полезные сайты" hidden>
         <div class="resources-grid" id="resources-grid"></div>
       </section>
-      <section class="page-section" id="page-chats" aria-labelledby="chats-heading" hidden>
-        <div class="page-intro"><h1 id="chats-heading">Чаты кампуса</h1><p>Основное общение — в Rocket.Chat: <a href="https://rocketchat-student.21-school.ru/home" target="_blank" rel="noopener noreferrer">веб-версия</a>, каналы и формат входа — в «Правилах и FAQ». Ниже — Telegram-чаты по проектам, веткам и направлениям, боты и архив.</p></div>
-        <div class="section-heading"><div class="heading-inline"><h2>Чаты</h2><span class="count-badge" id="chats-count">0</span></div><span class="section-caption">Telegram</span></div>
+      <section class="page-section" id="page-chats" aria-label="Чаты" hidden>
         <div class="chat-filter" id="chat-filter" role="group" aria-label="Фильтр чатов по группам"></div>
         <div class="chats-grid" id="chats-grid"></div>
         <p class="clubs-footnote" id="chats-empty" hidden>В этой группе чатов пока нет.</p>
       </section>
       <section class="page-section" id="page-clubs" aria-labelledby="clubs-heading" hidden>
-        <div class="page-intro"><h1 id="clubs-heading">Клубы кампуса</h1></div>
         <div class="clubs-grid" id="clubs-grid"></div>
       </section>
     </main>
