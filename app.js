@@ -369,7 +369,7 @@
       if (pointerFrame) return;
       pointerFrame = requestAnimationFrame(() => {
         pointerFrame = 0;
-        glow.style.transform = `translate3d(${pointer.x - 240}px, ${pointer.y - 240}px, 0)`;
+        glow.style.transform = `translate3d(${pointer.x}px, ${pointer.y}px, 0)`;
         glow.classList.add('is-visible');
         const card = pointer.target instanceof Element ? pointer.target.closest(cardSelector) : null;
         if (activeCard !== card) {

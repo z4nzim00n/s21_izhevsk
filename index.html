@@ -28,10 +28,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" href="./favicon.svg?v=10" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css?v=10">
+  <link rel="stylesheet" href="./styles.css?v=11">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./app.js?v=10" defer></script>
+  <script src="./app.js?v=11" defer></script>
 </head>
 <body>
   <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -59,6 +59,49 @@
     <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
   </svg>
   <a class="skip-link" href="#main">К содержимому</a>
+  <div class="blueprint-background" aria-hidden="true">
+    <svg class="blueprint-diagram blueprint-orbit" viewBox="0 0 340 340">
+      <path class="blueprint-guide" d="M16 170h308M170 16v308"/>
+      <circle cx="170" cy="170" r="90"/>
+      <g class="blueprint-rotor">
+        <circle class="blueprint-guide" cx="170" cy="170" r="126"/>
+        <path d="M170 34v22m0 228v22M34 170h22m228 0h22M74 74l16 16m160 160 16 16M74 266l16-16m160-160 16-16"/>
+        <circle class="blueprint-trace" cx="170" cy="170" r="110" pathLength="1000"/>
+      </g>
+      <path d="M80 285h180m-180-5v10m180-10v10M80 170v125m180-125v125"/>
+      <text x="142" y="305">Ø 180</text>
+      <circle class="blueprint-node" cx="170" cy="80" r="3"/>
+      <path d="M162 170h16m-8-8v16"/>
+    </svg>
+    <svg class="blueprint-diagram blueprint-cube" viewBox="0 0 320 320">
+      <path class="blueprint-guide" d="M12 160h296M160 18v284M34 230l252-140M34 90l252 140"/>
+      <path d="m160 64 88 50v102l-88 50-88-50V114l88-50Zm0 102 88-52m-88 52-88-52m88 52v100"/>
+      <path class="blueprint-trace" pathLength="1000" d="m160 64 88 50v102l-88 50-88-50V114l88-50 88 50-88 52v100"/>
+      <path d="M52 114v102m-5-102h10m-10 102h10M72 114H42m30 102H42M84 276l66 38m-70-34 8-8m58 46 8-8"/>
+      <text x="28" y="177" transform="rotate(-90 28 177)">H 102</text>
+      <circle class="blueprint-node" cx="160" cy="166" r="3"/>
+    </svg>
+    <svg class="blueprint-diagram blueprint-circuit" viewBox="0 0 380 300">
+      <path class="blueprint-guide" d="M18 150h344M190 16v268"/>
+      <path d="M22 88h78l48 48h75l48-48h88M22 110h64l48 48h100l46-46h79M22 212h97l45-45v-79l48-48h104M60 256v-35l40-40h31M238 267v-51l47-47h74"/>
+      <rect x="150" y="116" width="80" height="80" rx="10"/>
+      <rect class="blueprint-guide" x="138" y="104" width="104" height="104" rx="14"/>
+      <path class="blueprint-trace" pathLength="1000" d="M22 88h78l48 48h75l48-48h88"/>
+      <path class="blueprint-trace" pathLength="1000" d="M22 212h97l45-45v-79l48-48h104"/>
+      <circle cx="100" cy="88" r="4"/><circle cx="238" cy="267" r="4"/>
+      <circle class="blueprint-node" cx="212" cy="40" r="3"/>
+      <path d="M158 224h64m-64-5v10m64-10v10"/>
+      <text x="171" y="245">64</text>
+    </svg>
+    <svg class="blueprint-diagram blueprint-axes" viewBox="0 0 190 190">
+      <path class="blueprint-guide" d="M20 95h150M95 20v150"/>
+      <path d="M44 146V44h102m-108 6 6-6 6 6m90-12 6 6-6 6"/>
+      <path d="M62 128a66 66 0 0 1 66-66"/>
+      <path class="blueprint-trace" pathLength="1000" d="M62 128a66 66 0 0 1 66-66"/>
+      <circle cx="95" cy="95" r="29"/>
+      <text x="151" y="47">x</text><text x="40" y="160">y</text><text x="112" y="143">R 66</text>
+    </svg>
+  </div>
   <div class="page-shell">
     <header class="site-header">
       <a class="brand" href="#people" aria-label="Школа 21, Ижевск — на главную">
