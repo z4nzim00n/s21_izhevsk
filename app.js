@@ -189,7 +189,7 @@
   }
 
   function validPersonRecord(item) {
-    return Boolean(item) && typeof item === 'object' && validText(item.id, 64) && typeof item.nick === 'string' && nickPattern.test(item.nick) && validText(item.name, 50) && typeof item.telegram === 'string' && telegramPattern.test(item.telegram) && validDirection(item.direction) && (item.bio === undefined || (typeof item.bio === 'string' && item.bio.length <= 600)) && (item.interests === undefined || validInterests(item.interests)) && (item.token === undefined || item.token === '' || tokenPattern.test(item.token));
+    return Boolean(item) && typeof item === 'object' && validText(item.id, 64) && typeof item.nick === 'string' && nickPattern.test(item.nick) && validText(item.name, 50) && typeof item.telegram === 'string' && (item.telegram === '' || telegramPattern.test(item.telegram)) && validDirection(item.direction) && (item.bio === undefined || (typeof item.bio === 'string' && item.bio.length <= 600)) && (item.interests === undefined || validInterests(item.interests)) && (item.token === undefined || item.token === '' || tokenPattern.test(item.token));
   }
 
   let people = loadRecords(keys.people, validPersonRecord)
@@ -586,6 +586,7 @@
       $('.person-bio-preview', row).textContent = person.bio || 'О себе пока ничего не указано.';
       renderInterestTags($('.person-interests', row), person.interests, 4);
       const telegram = $('.copy-telegram', row);
+      telegram.hidden = !person.telegram;
       $('span', telegram).textContent = `@${person.telegram}`;
       telegram.setAttribute('aria-label', `Скопировать тег @${person.telegram}`);
       telegram.title = `Скопировать тег @${person.telegram}`;
@@ -689,6 +690,7 @@
     $('#profile-badge').textContent = person.pending ? (person.status === 'rejected' ? 'отклонена' : 'на проверке') : person.remote ? '' : 'локальная запись';
     $('#profile-badge').hidden = Boolean(person.remote);
     $('#profile-edit').hidden = Boolean(person.remote || (person.pending && !person.token));
+    $('#profile-telegram').hidden = !person.telegram;
     const direction = $('#profile-direction');
     direction.textContent = directions[person.direction] || '';
     direction.hidden = !person.direction;
@@ -782,8 +784,8 @@
           : 'Заявка ещё на проверке: данные можно исправить до решения модератора. Ник изменить нельзя.')
         : 'Изменения сохранятся в этом браузере.')
       : supabaseClient
-        ? 'Ник, имя и Telegram. После проверки анкета появится в общем каталоге.'
-        : 'Ник, имя и Telegram. Направление, интересы и описание можно добавить по желанию.';
+        ? 'Ник и имя обязательны, остальное — по желанию. После проверки анкета появится в общем каталоге.'
+        : 'Ник и имя обязательны. Telegram, направление, интересы и описание — по желанию.';
     $('#person-submit').replaceChildren(document.createTextNode(person ? 'Сохранить' : 'Добавить'), svgIcon('i-arrow'));
     $('#person-nick').disabled = Boolean(person?.pending);
     if (person) {
@@ -809,6 +811,7 @@
 
   function parseTelegram(value) {
     let username = value.trim();
+    if (!username) return '';
     if (/^(?:https?:\/\/)?(?:www\.)?t\.me\//i.test(username)) {
       try {
         const url = new URL(/^https?:\/\//i.test(username) ? username : `https://${username}`);
@@ -878,7 +881,7 @@
       $('#person-name').focus();
       return;
     }
-    if (!telegram) {
+    if (telegram === null) {
       setError('#person-error', 'Проверь Telegram: username из 5–32 латинских букв, цифр или _, начинается с буквы. Можно вставить ссылку https://t.me/username.');
       $('#person-telegram').focus();
       return;

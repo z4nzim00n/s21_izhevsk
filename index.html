@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="./styles.css?v=27">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./app.js?v=18" defer></script>
+  <script src="./app.js?v=19" defer></script>
 </head>
 <body>
   <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -130,11 +130,11 @@
 
   <dialog id="person-dialog" class="modal" aria-labelledby="person-dialog-title" aria-describedby="person-dialog-description">
     <div class="modal-heading"><button class="icon-button" type="button" data-close-dialog aria-label="Закрыть форму"><svg class="icon"><use href="#i-close"/></svg></button></div>
-    <h2 id="person-dialog-title">Новая анкета</h2><p class="muted" id="person-dialog-description">Ник, имя и Telegram. Направление, интересы и описание можно добавить по желанию.</p>
+    <h2 id="person-dialog-title">Новая анкета</h2><p class="muted" id="person-dialog-description">Ник и имя обязательны. Telegram, направление, интересы и описание — по желанию.</p>
     <form id="person-form">
       <label class="field-label" for="person-nick">Ник в Школе 21 <span>*</span></label><input id="person-nick" name="nick" type="text" required minlength="2" maxlength="24" pattern="[A-Za-z][A-Za-z0-9_\-]{1,23}" placeholder="your_nick" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="nick-help"><p class="field-help" id="nick-help">2–24 символа: латиница, цифры, _ и -. Начни с буквы.</p>
       <label class="field-label" for="person-name">Имя <span>*</span></label><input id="person-name" name="name" type="text" required maxlength="50" placeholder="Например, Саша" autocomplete="given-name">
-      <label class="field-label" for="person-telegram">Telegram <span>*</span></label><div class="input-wrap"><span class="input-prefix">@</span><input id="person-telegram" name="telegram" type="text" required maxlength="100" placeholder="username" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="telegram-help"></div><p class="field-help" id="telegram-help">Публичный username без @ и без ссылки. Не номер телефона и не приглашение.</p>
+      <label class="field-label" for="person-telegram">Telegram <span class="optional-label">необязательно</span></label><div class="input-wrap"><span class="input-prefix">@</span><input id="person-telegram" name="telegram" type="text" maxlength="100" placeholder="username" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="telegram-help"></div><p class="field-help" id="telegram-help">Публичный username без @ и без ссылки. Не номер телефона и не приглашение.</p>
       <label class="field-label" for="person-direction">Направление <span class="optional-label">необязательно</span></label><select id="person-direction" name="direction" aria-describedby="direction-help"></select><p class="field-help" id="direction-help">Покажем его рядом с ником в списке.</p>
       <label class="field-label" for="person-bio">О себе <span class="optional-label">необязательно</span></label><textarea id="person-bio" name="bio" maxlength="600" rows="3" placeholder="Чем увлекаешься, что интересно обсуждать" aria-describedby="bio-help"></textarea><p class="field-help" id="bio-help">До 600 символов. Пиши только то, чем хочешь поделиться.</p>
       <fieldset class="interests-fieldset" aria-describedby="interests-help"><legend class="field-label">Интересы <span class="optional-label">необязательно</span></legend><p class="field-help" id="interests-help">Отметь темы, которые тебе интересны: по ним работает поиск по каталогу.</p><div class="interest-picker" id="interest-picker"></div></fieldset>

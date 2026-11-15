@@ -3,7 +3,7 @@ create table if not exists public.people (
   id uuid primary key default gen_random_uuid(),
   nick text not null check (nick ~ '^[A-Za-z][A-Za-z0-9_-]{1,23}$'),
   name text not null check (char_length(btrim(name)) between 1 and 50),
-  telegram text not null check (telegram ~ '^[A-Za-z][A-Za-z0-9_]{4,31}$'),
+  telegram text not null default '' check (telegram = '' or telegram ~ '^[A-Za-z][A-Za-z0-9_]{4,31}$'),
   direction text not null default '' check (direction in ('', 'backend', 'frontend', 'mobile', 'gamedev', 'devops', 'data', 'ai', 'security', 'qa', 'analytics', 'uxui', 'pm', 'bioinf')),
   bio text not null default '' check (char_length(bio) <= 600),
   interests text[] not null default '{}' check (interests <@ array['games', 'esports', 'boardgames', 'chess', 'films', 'series', 'anime', 'manga', 'cosplay', 'music', 'musicmaking', 'podcasts', 'books', 'art', 'photography', 'dance', 'creativity', 'languages', 'speaking', 'science', 'technology', 'pc', 'electronics', 'robotics', 'printing3d', 'linux', 'ai', 'sport', 'gym', 'running', 'swimming', 'football', 'tennis', 'martialarts', 'cycling', 'hiking', 'travel', 'cars', 'cooking', 'pets', 'investing', 'startups']),
