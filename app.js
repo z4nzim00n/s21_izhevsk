@@ -5,6 +5,7 @@
     people: 's21-izhevsk.people.v1',
     pending: 's21-izhevsk.people.pending.v1',
     pageSize: 's21-izhevsk.pageSize',
+    theme: 's21-izhevsk.theme',
   };
   const supabaseUrl = window.S21_SUPABASE?.url?.trim() || '';
   const supabaseKey = window.S21_SUPABASE?.key?.trim() || '';
@@ -1090,7 +1091,33 @@
     showToast('Запись удалена из этого браузера.');
   });
 
+  const themeMeta = $('meta[name="theme-color"]');
+  function applyTheme(theme) {
+    if (theme === 'dark') document.documentElement.dataset.theme = 'dark';
+    else delete document.documentElement.dataset.theme;
+    if (themeMeta) themeMeta.content = theme === 'dark' ? '#16130e' : '#ece0c8';
+  }
+  function storedTheme() {
+    try {
+      return localStorage.getItem(keys.theme) === 'dark' ? 'dark' : 'light';
+    } catch (error) {
+      return 'light';
+    }
+  }
+  applyTheme(storedTheme());
+  $('#theme-toggle').addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try {
+      localStorage.setItem(keys.theme, next);
+    } catch (error) {}
+  });
+
   window.addEventListener('storage', event => {
+    if (event.key === keys.theme) {
+      applyTheme(event.newValue === 'dark' ? 'dark' : 'light');
+      return;
+    }
     if (event.key === keys.people || event.key === keys.pending || event.key === keys.pageSize || event.key === null) {
       location.reload();
     }

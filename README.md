@@ -106,14 +106,13 @@ GitHub Pages: **Settings → Pages → Deploy from a branch → main / (root)**.
 
 ```
 index.html            разметка и шаблоны карточек
-styles.css            единая светлая тема «бумага и тушь»
+styles.css            две темы «бумага и тушь»: светлая и тёмная
 app.js                логика, Supabase, модерационные статусы
 config.js             Project URL и publishable key
 supabase/schema.sql   таблица, ограничения и RLS-политики
-ink-background.webp   статичный фон для сайта
 og.png                превью для соцсетей
 favicon.png           иконка сайта с драконом
-dragon_100.png        чернильный дракон для героя и карточки правил
+dragon_100.png        чернильный дракон для героя, og и иконки
 ```
 
 ## Если что-то не работает

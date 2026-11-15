@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
+  <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#ece0c8">
   <meta name="description" content="Неофициальный список анкет студентов Ижевского кампуса: ники, имена, Telegram, направления и интересы.">
   <meta property="og:type" content="website">
@@ -17,14 +17,22 @@
   <meta property="og:image:alt" content="Ижевский кампус — каталог студентов">
   <meta name="twitter:card" content="summary_large_image">
   <title>Ижевский кампус</title>
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem('s21-izhevsk.theme');
+        if (saved === 'dark') document.documentElement.dataset.theme = 'dark';
+      } catch (error) {}
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="./favicon.png?v=14" type="image/png">
-  <link rel="stylesheet" href="./styles.css?v=14">
+  <link rel="stylesheet" href="./styles.css?v=18">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./app.js?v=14" defer></script>
+  <script src="./app.js?v=15" defer></script>
 </head>
 <body>
   <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -48,6 +56,8 @@
     <symbol id="i-tennis" viewBox="0 0 24 24"><ellipse cx="14" cy="9" rx="6" ry="7" transform="rotate(35 14 9)"/><path d="m9 14-6 7m8-16 6 9M9 8l6 9M8 11l9-7m-6 11 9-7"/></symbol>
     <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1m-7 8v4m-4 0h8"/></symbol>
     <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 13.5A8 8 0 0 1 10.5 4 8 8 0 1 0 20 13.5Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></symbol>
   </svg>
   <a class="skip-link" href="#main">К содержимому</a>
   <div class="page-shell">
@@ -60,7 +70,7 @@
         <a class="nav-link" href="#resources" data-page="resources"><svg class="icon"><use href="#i-grid"/></svg><span>Полезные сайты</span></a>
         <a class="nav-link" href="#clubs" data-page="clubs"><svg class="icon"><use href="#i-clubs"/></svg><span>Клубы</span></a>
       </nav>
-      <div class="header-actions"><span class="version-badge">v0.005</span></div>
+      <div class="header-actions"><button type="button" class="icon-button theme-toggle" id="theme-toggle" aria-label="Переключить тему" title="Переключить тему"><svg class="icon theme-icon-light"><use href="#i-moon"/></svg><svg class="icon theme-icon-dark"><use href="#i-sun"/></svg></button><span class="version-badge">v0.005</span></div>
     </header>
 
     <main id="main" tabindex="-1">
