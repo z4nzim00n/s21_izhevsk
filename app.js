@@ -84,6 +84,7 @@
     { id: 'english', name: 'Английский клуб', interests: ['languages'], description: 'Разговорная практика для тех, кто учит английский.', organizers: [{ name: 'Катя', nick: 'rosalchi', telegram: 'Kate_hunterr' }] },
     { id: 'tennis', name: 'Теннисный клуб', interests: ['tennis', 'sport'], description: 'Теннис и активный отдых после учёбы.', organizersSoon: true },
     { id: 'speaking', name: 'Клуб публичных выступлений', interests: ['speaking'], description: 'Практика публичных выступлений и работы с голосом.', organizers: [{ name: 'Екатерина Анисимова', role: 'ADM IZH' }] },
+    { id: 'gamers', name: 'Неофициальный клуб геймеров', interests: [], description: '', chatUrl: 'https://t.me/+UdbduQwFgAU4ZTZi' },
   ];
   const resourceGroups = [
     { id: 'practice', title: 'Тренажёры и практика' },
@@ -715,7 +716,9 @@
     card.dataset.club = club.id;
     $('.club-name', card).textContent = club.name;
     $('.club-description', card).textContent = club.description;
+    $('.club-description', card).hidden = !club.description;
     renderInterestTags($('.club-interests', card), club.interests);
+    $('.club-interests', card).hidden = club.interests.length === 0;
     const organizers = (club.organizers || []).filter(item => item && validText(item.name, 50));
     const organizersBox = $('.club-organizers', card);
     organizersBox.hidden = organizers.length === 0 && !club.organizersSoon;
@@ -747,6 +750,16 @@
       organizerRows.push(soon);
     }
     organizersBox.replaceChildren(...organizerRows);
+    const chatUrl = safeUrl(club.chatUrl);
+    if (chatUrl) {
+      const link = document.createElement('a');
+      link.className = 'telegram-link';
+      link.href = chatUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.append(svgIcon('i-telegram'), document.createTextNode('Чат клуба'));
+      card.append(link);
+    }
     return card;
   }
 
