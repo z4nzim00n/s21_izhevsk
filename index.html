@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="./favicon.png?v=14" type="image/png">
-  <link rel="stylesheet" href="./styles.css?v=25">
+  <link rel="stylesheet" href="./styles.css?v=27">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
   <script src="./app.js?v=17" defer></script>
@@ -145,7 +145,23 @@
 
   <dialog id="profile-dialog" class="modal profile-modal" aria-labelledby="profile-title">
     <div class="modal-heading"><span class="small-badge" id="profile-badge"></span><button class="icon-button" type="button" data-close-dialog aria-label="Закрыть профиль"><svg class="icon"><use href="#i-close"/></svg></button></div>
-    <div class="profile-heading"><div><h2 id="profile-title"></h2><p class="muted" id="profile-name"></p><span class="direction-badge" id="profile-direction" hidden></span></div></div>
+    <div class="profile-heading"><div><h2 id="profile-title"></h2><p class="muted" id="profile-name"></p><span class="direction-badge" id="profile-direction" hidden></span></div>
+      <svg class="profile-cat" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 110" width="112" height="103" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <path class="cat-tail" d="M71 97C86 102 101 96 103 81C105 69 95 63 89 70" fill="none"/>
+        <path d="M42 50C33 61 30 79 33 92C34 98 39 101 46 101H62C70 101 75 97 75 89C75 73 70 59 62 50" fill="var(--dialog)"/>
+        <path d="M49 61L52 65L55 61M47 70L50 73M57 70L54 73" opacity=".4"/>
+        <path d="M42 101Q46 94 50 101M55 101Q59 94 63 101"/>
+        <path d="M39 28L40 11L50 21" fill="var(--dialog)"/>
+        <path class="cat-ear" d="M55 21L65 10L67 28" fill="var(--dialog)"/>
+        <path d="M38 28C33 38 38 53 52 54C66 53 71 38 67 28C63 20 42 20 38 28Z" fill="var(--dialog)"/>
+        <path d="M41 17L43 23M64 16L62 22" opacity=".45"/>
+        <g class="cat-eyes" fill="currentColor" stroke="none"><ellipse cx="46" cy="36" rx="2.1" ry="3"/><ellipse cx="58" cy="36" rx="2.1" ry="3"/></g>
+        <path d="M50.5 42.5H53.5L52 44.5Z" fill="currentColor"/>
+        <path d="M52 44.5Q50.5 47.5 48 46.5M52 44.5Q53.5 47.5 56 46.5"/>
+        <path d="M43 43L30 40M43 46L30 47M61 43L74 40M61 46L74 47" stroke-width="1" opacity=".55"/>
+        <path d="M24 104H96" opacity=".3"/>
+      </svg>
+    </div>
     <section class="profile-section" aria-labelledby="profile-about-label"><h3 id="profile-about-label">О себе</h3><p class="profile-bio" id="profile-bio"></p></section>
     <section class="profile-section" aria-labelledby="profile-interests-label"><h3 id="profile-interests-label">Интересы</h3><div class="interest-tags" id="profile-interests"></div><p class="muted" id="profile-no-interests" hidden>Интересы пока не указаны.</p></section>
     <div class="modal-actions"><button class="button button-secondary" type="button" id="profile-edit"><svg class="icon"><use href="#i-edit"/></svg>Редактировать</button><button class="button button-primary" type="button" id="profile-telegram"><svg class="icon"><use href="#i-copy"/></svg>Скопировать тег</button><button class="button button-secondary" type="button" data-close-dialog>Закрыть</button></div>

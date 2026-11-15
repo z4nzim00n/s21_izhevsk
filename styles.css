@@ -373,10 +373,28 @@ kbd { display: grid; flex: 0 0 25px; place-items: center; width: 25px; height: 2
 .modal-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin-top: 24px; padding-top: 18px; }
 .profile-modal { width: min(560px, calc(100% - 32px)); max-width: 560px; }
 .profile-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
-.profile-heading > div:last-child { min-width: 0; }
+.profile-heading > div { flex: 1 1 auto; min-width: 0; }
+.profile-cat { display: block; flex: 0 0 112px; width: 112px; height: auto; color: var(--ink); pointer-events: none; }
+.cat-tail { transform-origin: 71px 97px; animation: cat-tail 3.4s ease-in-out infinite alternate; }
+.cat-ear { transform-origin: 61px 24px; animation: cat-ear 7s ease-in-out infinite; }
+.cat-eyes { transform-box: fill-box; transform-origin: center; animation: cat-blink 5s ease-in-out infinite; }
+@keyframes cat-tail {
+  from { transform: rotate(-7deg); }
+  to { transform: rotate(6deg); }
+}
+@keyframes cat-ear {
+  0%, 84%, 100% { transform: rotate(0); }
+  87% { transform: rotate(-12deg); }
+  90% { transform: rotate(5deg); }
+  93% { transform: rotate(0); }
+}
+@keyframes cat-blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  94% { transform: scaleY(.1); }
+}
 .profile-heading h2 { margin: 0 0 4px; overflow-wrap: anywhere; }
 .profile-heading p { color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
-#profile-direction { margin-top: 9px; }
+#profile-direction { display: inline-block; margin-top: 9px; }
 .profile-section { margin-top: 22px; }
 .profile-section h3 { margin-bottom: 8px; color: var(--faint); font-family: var(--font); font-size: 11px; font-weight: 500; }
 .profile-bio { color: var(--muted); font-size: 13px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
@@ -478,10 +496,12 @@ kbd { display: grid; flex: 0 0 25px; place-items: center; width: 25px; height: 2
   .advice-card, .faq-section { padding: 20px; }
   .modal { padding: 20px; }
   .profile-modal .modal-actions .button { flex-basis: 100%; }
+  .profile-cat { flex-basis: 80px; width: 80px; }
 }
 @media (max-width: 360px) {
   .nav-link { padding: 9px 10px; }
   .hero-actions .button { padding-inline: 4px; }
+  .profile-cat { flex-basis: 64px; width: 64px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
