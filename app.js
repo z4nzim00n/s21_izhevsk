@@ -1028,6 +1028,70 @@
     showToast('Запись удалена из этого браузера.');
   });
 
+  const quillTrigger = $('#quill-trigger');
+  quillTrigger.addEventListener('click', () => {
+    if (quillTrigger.classList.contains('is-writing')) return;
+    const feather = quillTrigger.querySelector('.ink-feather');
+    const flight = quillTrigger.querySelector('.quill-flight');
+    const loops = ['.ink-feather', '.ink-flourish'].flatMap(selector =>
+      quillTrigger.querySelector(selector).getAnimations());
+    loops.forEach(animation => animation.pause());
+    // Keep the resting pose, including the exact phase of the original sway.
+    const pose = new DOMMatrix(getComputedStyle(feather).transform);
+    const nib = new DOMPoint(0, 0).matrixTransform(pose);
+    const tip = { x: 60 + nib.x, y: 91 + nib.y };
+    const smooth = t => { t = Math.max(0, Math.min(1, t)); return t * t * t * (10 + t * (-15 + 6 * t)); };
+    const mix = (a, b, t) => a + (b - a) * t;
+    const bezier = (a, b, c, d, t) => (1-t)**3*a + 3*(1-t)**2*t*b + 3*(1-t)*t*t*c + t**3*d;
+    const transform = (x, y, angle, scale) =>
+      'translate(' + x + 'px,' + y + 'px) rotate(' + angle + 'deg) scale(' + scale + ')';
+    const atPaper = (x, y, angle, scale) => {
+      const r = angle * Math.PI / 180;
+      const dx = (tip.x - 82) * scale, dy = (tip.y - 50) * scale;
+      return { x: x - 82 - dx * Math.cos(r) + dy * Math.sin(r),
+        y: y - 50 - dx * Math.sin(r) - dy * Math.cos(r) };
+    };
+    const landing = atPaper(99, 105, -350, 1.18);
+    const departure = atPaper(315, 105, -350, 1.18);
+    const frames = Array.from({ length: 301 }, (_, i) => {
+      const t = i / 300 * 5;
+      let x, y, angle, scale;
+      if (t <= 1.8) {
+        const u = smooth(t / 1.8);
+        x = bezier(0, -42, 68, landing.x, u);
+        y = bezier(0, -76, -68, landing.y, u);
+        angle = -350 * u;
+        scale = 1 + .18 * smooth(t / .8);
+      } else if (t <= 3.65) {
+        const u = (t - 1.8) / 1.85;
+        const wave = Math.sin(Math.PI * u) ** 2;
+        angle = -350 + 1.4 * Math.sin(u * Math.PI * 16) * wave;
+        scale = 1.18;
+        const p = atPaper(99 + 216 * u, 105 - 1.3 * Math.sin(u * Math.PI * 32) * wave, angle, scale);
+        x = p.x; y = p.y;
+      } else if (t <= 4.2) {
+        const u = smooth((t - 3.65) / .55);
+        angle = -350; scale = 1.18;
+        x = departure.x + 3 * u; y = departure.y - 7 * u;
+      } else {
+        const u = smooth((t - 4.2) / .8);
+        x = bezier(departure.x + 3, 150, -12, 0, u);
+        y = bezier(departure.y - 7, -72, -50, 0, u);
+        angle = mix(-350, -360, u) - 16 * Math.sin(Math.PI * u);
+        scale = mix(1.18, 1, u);
+      }
+      return { offset: i / 300, transform: transform(x, y, angle, scale) };
+    });
+    quillTrigger.classList.add('is-writing');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const animation = reduced ? null : flight.animate(frames, { duration: 5000, easing: 'linear', fill: 'both' });
+    window.setTimeout(() => {
+      animation?.cancel();
+      quillTrigger.classList.remove('is-writing');
+      loops.forEach(animation => animation.play());
+    }, 5000);
+  });
+
   const themeMeta = $('meta[name="theme-color"]');
   function applyTheme(theme) {
     if (theme === 'dark') document.documentElement.dataset.theme = 'dark';

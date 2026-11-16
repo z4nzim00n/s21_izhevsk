@@ -25,14 +25,16 @@
       } catch (error) {}
     })();
   </script>
+  <link rel="preload" href="./assets/quill-blank.png" as="image">
+  <link rel="preload" href="./assets/quill-written.png" as="image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="./favicon.png?v=14" type="image/png">
-  <link rel="stylesheet" href="./styles.css?v=31">
+  <link rel="stylesheet" href="./styles.css?v=quill-art-5">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./app.js?v=25" defer></script>
+  <script src="./app.js?v=quill-art-5" defer></script>
 </head>
 <body>
   <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -72,12 +74,31 @@
       <section class="page-section" id="page-people" aria-label="Список студентов">
         <div class="hero">
           <div class="hero-actions"><button type="button" class="button button-primary" data-add-person><svg class="icon"><use href="#i-plus"/></svg>Добавить анкету</button></div>
-          <svg class="hero-illustration" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="96" height="96" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <g class="ink-feather">
+          <button id="quill-trigger" class="quill-trigger" type="button" aria-label="Пасхалка: перо и чернильница"><svg class="hero-illustration" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="96" height="96" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+
+  <g class="quill-paper" transform="translate(85 -38)">
+    <defs>
+      <linearGradient id="quill-roll"><stop stop-color="#a68a5e"/><stop offset=".45" stop-color="#f3e6c7"/><stop offset="1" stop-color="#bba077"/></linearGradient>
+      <clipPath id="quill-sheet-clip"><rect class="quill-unroll" x="1" y="119" width="239" height="38"/></clipPath>
+      <clipPath id="quill-text-clip"><rect class="quill-reveal" x="14" y="124" width="216" height="29"/></clipPath>
+    </defs>
+    <g clip-path="url(#quill-sheet-clip)">
+      <svg x="1" y="119" width="239" height="38" viewBox="0 180 2172 350" preserveAspectRatio="none">
+        <image href="./assets/quill-blank.png" width="2172" height="724"/>
+      </svg>
+      <g clip-path="url(#quill-text-clip)">
+        <svg x="1" y="119" width="239" height="38" viewBox="0 180 2172 350" preserveAspectRatio="none">
+          <image href="./assets/quill-written.png" width="2172" height="724"/>
+        </svg>
+      </g>
+    </g>
+    <ellipse class="quill-curl" cx="5" cy="138" rx="3.3" ry="15"/>
+  </g>
+<g class="quill-flight"><g class="ink-feather">
               <path d="M60 91C65 64 78 31 103 10C110 30 100 59 76 73L65 78" fill="currentColor" fill-opacity=".06"/>
               <path d="M60 91C70 58 87 30 103 10M70 63L69 43M76 52L79 29M83 41L88 20M71 64L90 58M77 52L100 42M84 40L105 29"/>
               <path d="M67 74L79 69M88 31L87 24M95 24L104 20" opacity=".45"/>
-            </g>
+            </g></g>
             <path d="M50 91L47 98V109C47 115 80 115 81 109V98L77 91M52 91V86M76 91V86" fill="var(--canvas)"/>
             <ellipse cx="64" cy="86" rx="12" ry="3.5"/>
             <path d="M49 101C57 104 72 104 79 101V109C73 113 54 113 49 109Z" fill="currentColor" stroke="none" opacity=".85"/>
@@ -85,7 +106,7 @@
             <path class="ink-flourish" pathLength="1" d="M17 118C30 112 39 116 35 120C31 124 22 121 27 117C35 111 73 122 108 117"/>
             <circle cx="91" cy="111" r="1.4" fill="currentColor" stroke="none" opacity=".5"/>
             <circle cx="97" cy="108" r=".8" fill="currentColor" stroke="none" opacity=".35"/>
-          </svg>
+          </svg></button>
         </div>
         <div class="directory-toolbar">
           <label class="search-field" for="people-search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><input id="people-search" type="search" placeholder="Поиск по всем полям" maxlength="100" autocomplete="off" aria-label="Поиск по каталогу" aria-describedby="people-search-hint"></label>

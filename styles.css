@@ -1,3 +1,4 @@
+/* The dark and light themes share the same layout and interaction states. */
 :root {
   color-scheme: light;
   --canvas: #ece0c8;
@@ -521,4 +522,48 @@ kbd { display: grid; flex: 0 0 25px; place-items: center; width: 25px; height: 2
   .advice-card, .faq-section, .directory-toolbar, .empty-state, .chat-chip, .direction-badge, .telegram-link, .main-nav, .modal,
   .page-size select, .people-filters select, .modal input:not([type='checkbox']), .modal textarea, .modal select { border: 1px solid ButtonText; }
   .nav-link.is-active, .interest-choice input:checked + span, .page-button.is-current, .chat-chip.is-active { outline: 2px solid Highlight; outline-offset: -3px; }
+}
+.quill-trigger { position: relative; display: block; padding: 0; background: transparent; border-radius: 8px; }
+.quill-paper { visibility: hidden; pointer-events: none; }
+.quill-curl { opacity: 0; fill: url(#quill-roll); stroke: #a38b66; stroke-width: .45; }
+.quill-flight { transform-origin: 82px 50px; }
+.quill-trigger.is-writing { z-index: 2; }
+.quill-trigger.is-writing .hero-illustration { overflow: visible; transform-origin: 50% 76%; animation: quill-scene 5s linear both; }
+.quill-trigger.is-writing .quill-paper { visibility: visible; animation: quill-paper 5s linear both; }
+.quill-trigger.is-writing :is(.quill-unroll, .quill-reveal) { transform-box: fill-box; transform-origin: left center; }
+.quill-trigger.is-writing .quill-unroll { animation: quill-unroll 5s linear both; }
+.quill-trigger.is-writing .quill-reveal { animation: quill-reveal 5s linear both; }
+.quill-trigger.is-writing .quill-curl { animation: quill-curl 5s linear both; }
+@keyframes quill-scene {
+  0% { transform: none; animation-timing-function: cubic-bezier(.45, 0, .2, 1); }
+  28%, 86% { transform: translate(var(--quill-shift, -80px), -3%) scale(var(--quill-magic-scale, 1.5)); animation-timing-function: cubic-bezier(.45, 0, .55, 1); }
+  100% { transform: none; }
+}
+@keyframes quill-paper {
+  0%, 8% { opacity: 0; }
+  15%, 88% { opacity: 1; }
+  98%, 100% { opacity: 0; }
+}
+@keyframes quill-unroll {
+  0%, 12% { transform: scaleX(.02); animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
+  34%, 90% { transform: scaleX(1); }
+  100% { transform: scaleX(.02); }
+}
+@keyframes quill-curl {
+  0%, 8% { opacity: 0; transform: translateX(0); }
+  12% { opacity: 1; transform: translateX(0); animation-timing-function: cubic-bezier(.4, 0, .2, 1); }
+  34% { opacity: 1; transform: translateX(231px); }
+  38%, 100% { opacity: 0; transform: translateX(231px); }
+}
+@keyframes quill-reveal {
+  0%, 36% { transform: scaleX(0); }
+  73%, 100% { transform: scaleX(1); }
+}
+@media (max-width: 700px) {
+  .quill-trigger { --quill-shift: -54px; --quill-magic-scale: .95; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quill-trigger.is-writing .hero-illustration { transform: translate(var(--quill-shift, -80px), -3%) scale(var(--quill-magic-scale, 1.5)); }
+  .quill-trigger.is-writing .quill-flight { transform: translate(259px, 12px) rotate(10deg) scale(1.18); }
+  .quill-trigger.is-writing .quill-curl { opacity: 0; }
 }
