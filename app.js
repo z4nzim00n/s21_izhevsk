@@ -574,7 +574,11 @@
     const query = $('#people-search').value.trim().toLocaleLowerCase('ru').replace(/^@/, '');
     const visible = everyone
       .filter(person => [person.nick, person.name, person.telegram || '', directions[person.direction] || '', ...person.interests.map(id => interestLabels[id])].some(value => value.toLocaleLowerCase('ru').includes(query)))
-      .sort((a, b) => peopleOrder.get(a.id) - peopleOrder.get(b.id));
+      .sort((a, b) => {
+        const aPending = Boolean(a.pending && a.token && a.status !== 'rejected');
+        const bPending = Boolean(b.pending && b.token && b.status !== 'rejected');
+        return Number(bPending) - Number(aPending) || peopleOrder.get(a.id) - peopleOrder.get(b.id);
+      });
     const totalPages = Math.max(1, Math.ceil(visible.length / pageSize));
     currentPage = Math.min(Math.max(1, currentPage), totalPages);
     const start = (currentPage - 1) * pageSize;
