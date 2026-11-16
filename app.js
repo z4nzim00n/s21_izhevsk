@@ -29,11 +29,13 @@
     devops: 'DevOps',
     data: 'Data Science',
     ai: 'ИИ-инженер',
+    technopreneur: 'Технологический предприниматель',
     security: 'Кибербезопасность',
     qa: 'QA',
     analytics: 'Системный и бизнес-анализ',
     uxui: 'UX/UI',
     pm: 'Проджект-менеджмент',
+    product: 'Продакт-менеджмент',
     bioinf: 'Биоинформатика',
   };
   const interestLabels = {
@@ -197,6 +199,7 @@
   let pendingPeople = loadRecords(keys.pending, validPersonRecord)
     .map(({ id, nick, name, telegram, bio = '', interests = [], direction = '', token = '', status }) => ({ id, nick, name, telegram, bio, interests, direction, token, status: status === 'rejected' ? 'rejected' : 'pending' }));
   let remotePeople = [];
+  const peopleOrder = new Map();
   let editingId = null;
   let editingToken = null;
   let profileId = null;
@@ -565,8 +568,13 @@
 
   function renderPeople() {
     const everyone = allPeople();
+    everyone.forEach(person => {
+      if (!peopleOrder.has(person.id)) peopleOrder.set(person.id, Math.random());
+    });
     const query = $('#people-search').value.trim().toLocaleLowerCase('ru').replace(/^@/, '');
-    const visible = everyone.filter(person => [person.nick, person.name, person.telegram || '', directions[person.direction] || '', ...person.interests.map(id => interestLabels[id])].some(value => value.toLocaleLowerCase('ru').includes(query)));
+    const visible = everyone
+      .filter(person => [person.nick, person.name, person.telegram || '', directions[person.direction] || '', ...person.interests.map(id => interestLabels[id])].some(value => value.toLocaleLowerCase('ru').includes(query)))
+      .sort((a, b) => peopleOrder.get(a.id) - peopleOrder.get(b.id));
     const totalPages = Math.max(1, Math.ceil(visible.length / pageSize));
     currentPage = Math.min(Math.max(1, currentPage), totalPages);
     const start = (currentPage - 1) * pageSize;
