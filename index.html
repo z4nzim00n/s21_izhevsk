@@ -29,10 +29,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="./favicon.png?v=14" type="image/png">
-  <link rel="stylesheet" href="./styles.css?v=27">
+  <link rel="stylesheet" href="./styles.css?v=30">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./app.js?v=22" defer></script>
+  <script src="./app.js?v=25" defer></script>
 </head>
 <body>
   <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -88,8 +88,14 @@
           </svg>
         </div>
         <div class="directory-toolbar">
-          <label class="search-field" for="people-search"><svg class="icon"><use href="#i-search"/></svg><input id="people-search" type="search" placeholder="Поиск по каталогу" maxlength="100" autocomplete="off" aria-label="Поиск по нику, имени, Telegram, направлению или интересам"></label>
+          <label class="search-field" for="people-search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><input id="people-search" type="search" placeholder="Поиск по всем полям" maxlength="100" autocomplete="off" aria-label="Поиск по каталогу" aria-describedby="people-search-hint"></label>
+          <div class="people-filters" role="group" aria-label="Фильтры списка">
+            <select id="people-direction" aria-label="Направление"><option value="">Все направления</option></select>
+            <select id="people-interest" aria-label="Увлечение"><option value="">Все увлечения</option></select>
+            <button type="button" class="button button-secondary button-small" id="people-reset" hidden>Сбросить</button>
+          </div>
         </div>
+        <p class="search-hint" id="people-search-hint">Ник, имя, Telegram, описание, направление и увлечения.</p>
         <span class="sr-only" id="results-summary" role="status" aria-live="polite"></span>
         <div id="people-list" class="people-list"></div>
         <div id="people-empty" class="empty-state" hidden><span class="empty-icon"><svg class="icon"><use href="#i-search"/></svg></span><h3 id="empty-title">Пока никого</h3><p id="empty-description">Добавь свою первую анкету.</p><button class="button button-secondary" type="button" id="empty-action">Добавить анкету</button></div>
@@ -115,11 +121,226 @@
       </section>
 
       <section class="page-section" id="page-resources" aria-label="Полезные сайты" hidden>
-        <div class="resources-grid" id="resources-grid"></div>
+        <div class="link-groups" id="resource-groups">
+          <section class="link-group" aria-labelledby="sites-school">
+            <h2 id="sites-school">Школа и кампус</h2>
+            <div class="resources-grid">
+              <a class="resource-card" data-id="platform" href="https://platform.21-school.ru/" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Платформа Школы 21">
+                <div class="resource-card-heading"><h3>Платформа Школы 21</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Основной сайт школы: проекты, проверки и прогресс.</p>
+              </a>
+              <a class="resource-card" data-id="deadlines" href="https://applicant.21-school.ru/education/education" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Дедлайны обучения">
+                <div class="resource-card-heading"><h3>Дедлайны обучения</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Сроки и этапы обучения на портале абитуриента.</p>
+              </a>
+              <a class="resource-card" data-id="campus-qr" href="https://applicant.21-school.ru/campus-qr-code" target="_blank" rel="noopener noreferrer" aria-label="Открыть: QR-код кампуса">
+                <div class="resource-card-heading"><h3>QR-код кампуса</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">QR-код кампуса Ижевска на портале абитуриента.</p>
+              </a>
+              <a class="resource-card" data-id="rocketchat" href="https://rocketchat-student.21-school.ru/home" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Rocket.Chat">
+                <div class="resource-card-heading"><h3>Rocket.Chat</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Основной рабочий чат Школы 21: каналы кампуса и проектов.</p>
+              </a>
+              <a class="resource-card" data-id="discord" href="https://discord.gg/KWCGA6RtG" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Discord канал Ижевского кампуса">
+                <div class="resource-card-heading"><h3>Discord канал Ижевского кампуса</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Иногда играем в игры.</p>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" aria-labelledby="sites-calls">
+            <h2 id="sites-calls">Сайт для онлайн проверок</h2>
+            <div class="resources-grid">
+              <a class="resource-card" data-id="salutejazz" href="https://salutejazz.ru/" target="_blank" rel="noopener noreferrer" aria-label="Открыть: SaluteJazz">
+                <div class="resource-card-heading"><h3>SaluteJazz</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Видеопереговоры для сдачи заданий и проверок.</p>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" aria-labelledby="sites-knowledge">
+            <h2 id="sites-knowledge">Базы знаний</h2>
+            <div class="resources-grid">
+              <a class="resource-card" data-id="izh-knowledge" href="https://docs.yandex.ru/edit/d/GDBAOOKz1vtQPndD9p8_7iPegnqahzm72s0qoIz-cKg6VENfa3QyRUNTZw?from_public=1" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Хранилище знаний Ижевска">
+                <div class="resource-card-heading"><h3>Хранилище знаний Ижевска</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Общий документ кампуса: заметки и материалы по учёбе.</p>
+              </a>
+              <a class="resource-card" data-id="knowledge-base-nsk" href="https://git.21-school.ru/gehnaeli/knowledge-base-nsk/-/tree/master" target="_blank" rel="noopener noreferrer" aria-label="Открыть: База знаний (Новосибирск)">
+                <div class="resource-card-heading"><h3>База знаний (Новосибирск)</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Полезное по веткам, чаты проектов, поиск команды и ответы на вопросы по заданиям.</p>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" aria-labelledby="sites-practice">
+            <h2 id="sites-practice">Тренажёры и практика</h2>
+            <div class="resources-grid">
+              <a class="resource-card" data-id="c-trainer" href="https://github.com/z4nzim00n/Exam_trainer" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Тренажёр по C">
+                <div class="resource-card-heading"><h3>Тренажёр по C</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Сборник задач для практики перед экзаменом.</p>
+              </a>
+              <a class="resource-card" data-id="sql-trainer" href="https://z4nzim00n.github.io/SQL_trainer/" target="_blank" rel="noopener noreferrer" aria-label="Открыть: SQL-тренажёр">
+                <div class="resource-card-heading"><h3>SQL-тренажёр</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Задания по SQL с проверкой запросов.</p>
+              </a>
+              <a class="resource-card" data-id="sql-theory" href="https://z4nzim00n.github.io/sql_theory_trainer/" target="_blank" rel="noopener noreferrer" aria-label="Открыть: SQL-тест к экзамену">
+                <div class="resource-card-heading"><h3>SQL-тест к экзамену</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Теоретические тесты для подготовки к экзамену по SQL.</p>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" aria-labelledby="sites-tools">
+            <h2 id="sites-tools">Другие полезные материалы</h2>
+            <div class="resources-grid">
+              <a class="resource-card" data-id="emap" href="https://emap.tamelaos.fun/" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Интерактивная карта">
+                <div class="resource-card-heading"><h3>Интерактивная карта</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Карта Школы 21 без скрытых узлов и ограничений: путь к цели и проекты, которые откроются после неё.</p>
+              </a>
+              <a class="resource-card" data-id="linux-cheatsheet" href="https://github.com/justxor/Linux-/" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Шпаргалка по Linux">
+                <div class="resource-card-heading"><h3>Шпаргалка по Linux</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Команды Linux коротко: файлы, права, процессы и сеть.</p>
+              </a>
+              <a class="resource-card" data-id="starter-pack" href="https://github.com/z4nzim00n/S21-Starter-Pack" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Настройка терминала разработчика">
+                <div class="resource-card-heading"><h3>Настройка терминала разработчика</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Руководство по настройке терминала для работы из дома: WSL и SSH.</p>
+              </a>
+            </div>
+          </section>
+        </div>
       </section>
       <section class="page-section" id="page-chats" aria-label="Чаты" hidden>
         <div class="chat-filter" id="chat-filter" role="group" aria-label="Фильтр чатов по группам"></div>
-        <div class="chats-grid" id="chats-grid"></div>
+        <div class="link-groups" id="chat-groups">
+          <section class="link-group" data-chat-group="campus" aria-labelledby="chats-campus">
+            <h2 id="chats-campus">Кампус Ижевск</h2>
+            <div class="chats-grid">
+              <a class="resource-card" data-id="izh-main" href="https://t.me/+YpNtHCEqbl4yODcy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Основа Ижевск">
+                <div class="resource-card-heading"><h3>Основа Ижевск</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="izh-backend" href="https://t.me/+JYuUe1n0cwkwYmUy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Backend Ижевск">
+                <div class="resource-card-heading"><h3>Backend Ижевск</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="izh-qa" href="https://t.me/+2Bnrzy64xRk0Mzky" target="_blank" rel="noopener noreferrer" aria-label="Открыть: QA Ижевск">
+                <div class="resource-card-heading"><h3>QA Ижевск</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="izh-devops" href="https://t.me/+IMXkLAMMwcoxZjRi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: DevOps Ижевск">
+                <div class="resource-card-heading"><h3>DevOps Ижевск</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="izh-ds" href="https://t.me/ds_school21_izhevsk" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Data Science Ижевск">
+                <div class="resource-card-heading"><h3>Data Science Ижевск</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" data-chat-group="bots" aria-labelledby="chats-bots">
+            <h2 id="chats-bots">Боты</h2>
+            <div class="chats-grid">
+              <a class="resource-card" data-id="morty-bot" href="https://t.me/MortyS21bot" target="_blank" rel="noopener noreferrer" aria-label="Открыть: MortyS21bot">
+                <div class="resource-card-heading"><h3>MortyS21bot</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Поиск пиров по нику, Telegram username или ID, верификация в чатах, статистика активности и база проверенных пользователей.</p>
+              </a>
+              <a class="resource-card" data-id="login-bot" href="https://t.me/login_school21_bot" target="_blank" rel="noopener noreferrer" aria-label="Открыть: login_school21_bot">
+                <div class="resource-card-heading"><h3>login_school21_bot</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Бот для поиска пиров по нику в Telegram и школьному нику.</p>
+              </a>
+              <a class="resource-card" data-id="noem-bot" href="https://t.me/NoemX21_bot" target="_blank" rel="noopener noreferrer" aria-label="Открыть: NoemX21_bot">
+                <div class="resource-card-heading"><h3>NoemX21_bot</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Переговорки, книги, клубы, личная статистика, PRR helper и управление группами.</p>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" data-chat-group="branches" aria-labelledby="chats-branches">
+            <h2 id="chats-branches">Ветки</h2>
+            <div class="chats-grid">
+              <a class="resource-card" data-id="algo-branches" href="https://t.me/+KgbLy4KXsVxiYTIy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Алгоритмические ветки">
+                <div class="resource-card-heading"><h3>Алгоритмические ветки</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="lang-branches" href="https://t.me/+0QNpBkJDKQNhZjAy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Языковые ветки">
+                <div class="resource-card-heading"><h3>Языковые ветки</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" data-chat-group="other" aria-labelledby="chats-other">
+            <h2 id="chats-other">Направления</h2>
+            <div class="chats-grid">
+              <a class="resource-card" data-id="ai-agent" href="https://t.me/+zFa1Humn1X9iNTZi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: AI Agent">
+                <div class="resource-card-heading"><h3>AI Agent</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="cbs-branch" href="https://t.me/+a85WycvCrtxiNjYy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Кибербезопасность / CbS">
+                <div class="resource-card-heading"><h3>Кибербезопасность / CbS</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="cbs-club" href="https://t.me/+r5wufz8L3mUzOGUy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Клуб кибербеза">
+                <div class="resource-card-heading"><h3>Клуб кибербеза</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="backend" href="https://t.me/+3arMZbxPqtgxNWZi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Backend">
+                <div class="resource-card-heading"><h3>Backend</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="ml-ds" href="https://t.me/+mAUDhBpSrvo0YzIy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: ML / DS">
+                <div class="resource-card-heading"><h3>ML / DS</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="bsa" href="https://t.me/+lUffgOle5M8yMTgy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: BSA">
+                <div class="resource-card-heading"><h3>BSA</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="s21-math" href="https://t.me/+PYp_Z2nGW_FjYmJi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: s21_math">
+                <div class="resource-card-heading"><h3>s21_math</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="3dviewer" href="https://t.me/+D2sccrQhVL5hOWYy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: 3DViewer">
+                <div class="resource-card-heading"><h3>3DViewer</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="qa" href="https://t.me/+NVATSadWEcc1Njcy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: QA">
+                <div class="resource-card-heading"><h3>QA</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="pm" href="https://t.me/+yPBq8rDpXy02MmU6" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Project Manager">
+                <div class="resource-card-heading"><h3>Project Manager</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="product" href="https://t.me/+_16VEmzJtFQ0N2Zi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Product Manager">
+                <div class="resource-card-heading"><h3>Product Manager</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="bioinf" href="https://t.me/+uvUmkuHuyAhhZGFi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Биоинформатика">
+                <div class="resource-card-heading"><h3>Биоинформатика</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="uxui" href="https://t.me/+1NkIFYy7tiM2YmFi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: UX / UI">
+                <div class="resource-card-heading"><h3>UX / UI</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" data-chat-group="dev" aria-labelledby="chats-dev">
+            <h2 id="chats-dev">Разработка</h2>
+            <div class="chats-grid">
+              <a class="resource-card" data-id="simplebashutils" href="https://t.me/+C8pCQLUsSvNkNzcy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: SimpleBashUtils">
+                <div class="resource-card-heading"><h3>SimpleBashUtils</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="s21-string" href="https://t.me/+LQpPWconGXViMzA6" target="_blank" rel="noopener noreferrer" aria-label="Открыть: s21_string+">
+                <div class="resource-card-heading"><h3>s21_string+</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="s21-decimal" href="https://t.me/+KvtB8PKDB2xlM2Qy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: s21_decimal">
+                <div class="resource-card-heading"><h3>s21_decimal</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="s21-matrix" href="https://t.me/S21_matrix" target="_blank" rel="noopener noreferrer" aria-label="Открыть: s21_matrix / s21_matrix+">
+                <div class="resource-card-heading"><h3>s21_matrix / s21_matrix+</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="brickgame" href="https://t.me/+3YyNoe6dMDM3OGQy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: BrickGame">
+                <div class="resource-card-heading"><h3>BrickGame</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="devops-project" href="https://t.me/+MPogbcEDJ-JhZWE6" target="_blank" rel="noopener noreferrer" aria-label="Открыть: DevOps">
+                <div class="resource-card-heading"><h3>DevOps</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="cpp" href="https://t.me/+wqh8GgT1dClmNmJi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: C++">
+                <div class="resource-card-heading"><h3>C++</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="sql" href="https://t.me/+t1CH7q-bZNcxY2Qy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: SQL">
+                <div class="resource-card-heading"><h3>SQL</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="sber-java" href="https://t.me/+gUdaLC_tadNmYjJi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Sber_Java">
+                <div class="resource-card-heading"><h3>Sber_Java</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" data-chat-group="archive" aria-labelledby="chats-archive">
+            <h2 id="chats-archive">Архив</h2>
+            <div class="chats-grid">
+              <a class="resource-card" data-id="smartcalc" href="https://t.me/+kVtODVcII0k2MjU6" target="_blank" rel="noopener noreferrer" aria-label="Открыть: SmartCalc">
+                <div class="resource-card-heading"><h3>SmartCalc</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+            </div>
+          </section>
+        </div>
         <p class="clubs-footnote" id="chats-empty" hidden>В этой группе чатов пока нет.</p>
       </section>
       <section class="page-section" id="page-clubs" aria-labelledby="clubs-heading" hidden>
@@ -171,8 +392,6 @@
   <div class="toast" id="toast" role="status" aria-live="polite" popover="manual" hidden><svg class="icon"><use href="#i-check"/></svg><span></span></div>
 
   <template id="person-template"><article class="person-row"><div class="person-main"><div class="person-head"><button class="person-nick copy-nick" type="button"><span class="nick-text"></span><svg class="icon copy-icon"><use href="#i-copy"/></svg></button><span class="direction-badge" hidden></span><span class="small-badge person-pending" hidden>на проверке</span></div><p class="person-name"></p><p class="person-bio-preview"></p><div class="interest-tags person-interests"></div></div><div class="person-side"><button class="telegram-link copy-telegram" type="button"><svg class="icon"><use href="#i-telegram"/></svg><span></span><svg class="icon copy-mini"><use href="#i-copy"/></svg></button><div class="person-actions"><button class="button button-secondary button-small profile-open" type="button"><span>Профиль</span><svg class="icon"><use href="#i-arrow"/></svg></button><span class="card-actions"><button class="icon-button edit-person" type="button"><svg class="icon"><use href="#i-edit"/></svg></button><button class="icon-button delete-person" type="button"><svg class="icon"><use href="#i-trash"/></svg></button></span></div></div></article></template>
-  <template id="club-template"><article class="club-card"><h3 class="club-name"></h3><p class="club-description"></p><div class="interest-tags club-interests"></div><div class="club-organizers" hidden></div></article></template>
-  <template id="chat-template"><article class="resource-card"><h3></h3><p class="chat-direction" hidden></p><p class="resource-description"></p><div class="resource-card-bottom"><span class="chat-link"></span></div></article></template>
-  <template id="resource-template"><article class="resource-card"><h3></h3><p class="resource-description"></p><div class="resource-card-bottom"><a class="resource-link" target="_blank" rel="noopener noreferrer"><span>Открыть</span><svg class="icon"><use href="#i-external"/></svg></a></div><span class="resource-domain"></span></article></template>
+  <template id="club-template"><article class="club-card"><h3 class="club-name"></h3><p class="club-description"></p><div class="club-organizers" hidden></div></article></template>
 </body>
 </html>

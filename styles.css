@@ -218,11 +218,15 @@ input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px
 .hero-actions [data-add-person]::after { content: ""; position: absolute; inset: -40% auto -40% -80%; width: 45%; transform: skewX(-20deg); background: linear-gradient(90deg, transparent, rgba(248, 243, 232, .28), transparent); pointer-events: none; transition: left .7s var(--ease); }
 .section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
 h2 { font-size: 26px; font-weight: 700; letter-spacing: -.2px; line-height: 1.25; }
-.directory-toolbar { display: flex; align-items: center; padding: 9px 18px; border: 0; border-radius: 13px; background: var(--surface); box-shadow: var(--card-shadow); }
+.directory-toolbar { display: flex; align-items: center; gap: 18px; padding: 9px 18px; border: 0; border-radius: 13px; background: var(--surface); box-shadow: var(--card-shadow); }
 .directory-toolbar:focus-within { outline: 2px solid var(--focus); outline-offset: 2px; }
 .search-field { display: flex; align-items: center; flex: 1 1 auto; gap: 12px; min-width: 0; color: var(--faint); }
 .search-field input { width: 100%; height: 36px; padding: 0; border: 0; background: transparent; color: var(--text); font-size: 13px; }
 .search-field input:focus-visible { outline: none; }
+.people-filters { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; min-width: 0; }
+.people-filters select { width: 175px; min-width: 0; height: 36px; padding: 0 9px; border: 0; border-radius: 8px; background: var(--surface-solid); color: var(--muted); font-size: 11px; text-overflow: ellipsis; cursor: pointer; }
+.people-filters select.is-active { background: var(--accent-soft); color: var(--accent-chip-text); }
+.search-hint { margin: 8px 18px 0; color: var(--faint); font-size: 11px; line-height: 1.6; }
 input::placeholder, textarea::placeholder { color: var(--faint); opacity: 1; }
 kbd { display: grid; flex: 0 0 25px; place-items: center; width: 25px; height: 25px; border-radius: 6px; background: var(--chip); color: var(--faint); font-family: var(--font-mono); font-size: 12px; }
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
@@ -307,31 +311,26 @@ kbd { display: grid; flex: 0 0 25px; place-items: center; width: 25px; height: 2
 .faq-table td { color: var(--muted); }
 .faq-table td:not(:first-child) { font-variant-numeric: tabular-nums; white-space: nowrap; }
 
-.resources-grid, .clubs-grid, .chats-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.resources-grid, .chats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.link-groups { display: grid; gap: 24px; min-width: 0; }
+.link-group { min-width: 0; }
+.link-group h2 { margin-bottom: 12px; font-size: 22px; }
+.resources-grid, .chats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.resource-card { display: flex; flex-direction: column; min-width: 0; min-height: 52px; height: 100%; padding: 14px; border-radius: 10px; }
+.resource-card-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.resource-card-heading h3 { min-width: 0; color: var(--ink); font-size: 13px; font-weight: 600; line-height: 1.5; overflow-wrap: anywhere; }
+.resource-card-heading .icon { width: 13px; height: 13px; flex-basis: 13px; margin-top: 3px; color: var(--accent); }
+.resource-description { margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
 .chat-filter { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 24px; }
 .chat-chip { min-height: 36px; padding: 8px 13px; border: 0; border-radius: 9px; background: var(--surface); color: var(--muted); font-size: 11px; font-weight: 500; }
 .chat-chip.is-active { background: var(--ink); color: var(--paper); }
-.chat-soon { color: var(--faint); font-size: 12px; }
-.chats-group-title, .resources-group-title { display: flex; align-items: center; gap: 10px; grid-column: 1 / -1; margin: 20px 0 0; font-family: var(--font-display); font-size: 20px; font-weight: 700; letter-spacing: .2px; }
-.chats-group-title:first-child, .resources-group-title:first-child { margin-top: 0; }
-.resource-card, .club-card { display: flex; flex-direction: column; min-width: 0; height: 100%; padding: 22px; }
-.resource-card h3, .club-name { font-size: 15px; font-weight: 700; letter-spacing: -.1px; line-height: 1.5; overflow-wrap: anywhere; }
-.chat-direction { margin-top: 6px; color: var(--muted); font-size: 11px; overflow-wrap: anywhere; }
-.resource-description { margin: 8px 0 16px; color: var(--muted); font-size: 12px; line-height: 1.75; overflow-wrap: anywhere; }
-.resource-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 34px; margin-top: auto; }
-.resource-link, .chat-link a { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; color: var(--accent); font-size: 11px; font-weight: 600; }
-.resource-link .icon, .chat-link .icon { width: 14px; height: 14px; flex-basis: 14px; }
-.resource-domain { overflow: hidden; margin-top: 3px; color: var(--faint); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
-:is(.resources-grid, .chats-grid) .resource-card { padding: 18px; }
-:is(.resources-grid, .chats-grid) .resource-card h3 { font-size: 13px; }
-:is(.resources-grid, .chats-grid) .resource-description { margin: 7px 0 12px; font-size: 12px; line-height: 1.65; }
+.clubs-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.club-card { display: flex; flex-direction: column; min-width: 0; height: 100%; padding: 22px; }
+.club-name { font-size: 15px; font-weight: 700; letter-spacing: -.1px; line-height: 1.5; overflow-wrap: anywhere; }
 .club-description { margin: 9px 0 16px; color: var(--muted); font-size: 12px; line-height: 1.8; overflow-wrap: anywhere; }
-.club-interests { margin-bottom: 22px; }
 .club-organizers { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; padding-top: 16px; }
 .club-organizer-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; width: 100%; }
 .club-organizer-name { color: var(--muted); font-size: 12px; }
-.club-organizer { font-size: 11px; }
+.club-organizer, .club-organizer-nick { font-size: 11px; }
 .clubs-footnote { margin: 16px 2px 0; color: var(--faint); font-size: 12px; line-height: 1.8; overflow-wrap: anywhere; }
 
 .modal { width: min(520px, calc(100% - 32px)); max-width: 520px; max-height: 88vh; max-height: 88dvh; margin: auto; padding: 28px; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; border: 0; border-radius: 18px; background-color: var(--dialog); background-image: var(--grain); color: var(--text); box-shadow: var(--shadow); scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
@@ -420,7 +419,7 @@ kbd { display: grid; flex: 0 0 25px; place-items: center; width: 25px; height: 2
   .person-nick:hover .copy-icon { color: var(--accent); opacity: 1; }
   .interest-choice:hover input:not(:checked) + span { background: var(--chip-hover); color: var(--ink); }
   .page-button:hover:not(:disabled):not(.is-current) { background: var(--chip); color: var(--ink); }
-  .resource-link:hover, .chat-link a:hover, .link-domain:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .link-domain:hover { text-decoration: underline; text-underline-offset: 4px; }
   .delete-person:hover { background: var(--danger-bg); color: var(--danger); }
   .faq-item summary:hover { color: var(--accent); }
   .chat-chip:hover:not(.is-active) { background: var(--chip); color: var(--ink); }
@@ -442,6 +441,10 @@ kbd { display: grid; flex: 0 0 25px; place-items: center; width: 25px; height: 2
   .site-header { gap: 20px; }
   .main-nav { justify-self: start; }
   .resources-grid, .chats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .directory-toolbar { flex-wrap: wrap; gap: 8px; }
+  .search-field { flex-basis: 100%; }
+  .people-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) auto; width: 100%; }
+  .people-filters select { width: 100%; }
   .person-row { grid-template-columns: minmax(0, 1fr) 170px; }
   .rules-columns { grid-template-columns: minmax(0, 1fr); }
 }
@@ -459,16 +462,20 @@ kbd { display: grid; flex: 0 0 25px; place-items: center; width: 25px; height: 2
   .search-field { gap: 9px; }
   .search-field input { font-size: 16px; }
   .search-field input::placeholder { font-size: 12px; }
+  .people-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .people-filters select { height: 44px; }
+  #people-reset { grid-column: 1 / -1; min-height: 40px; }
+  .search-hint { margin-inline: 13px; }
   kbd { display: none; }
   .person-row { grid-template-columns: minmax(0, 1fr); gap: 14px; padding: 20px; }
   .person-side { flex-direction: row; align-items: center; gap: 12px; }
   .person-actions { margin-left: auto; }
   .card-actions { gap: 0; }
   .telegram-link { font-size: 11px; }
-  .resources-grid, .clubs-grid, .chats-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  .resource-card, .club-card { padding: 20px; }
-  :is(.resources-grid, .chats-grid) .resource-card h3 { font-size: 14px; }
-  .chats-group-title, .resources-group-title { margin-top: 16px; }
+  .clubs-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .club-card { padding: 20px; }
+  .resources-grid, .chats-grid { grid-template-columns: minmax(0, 1fr); }
+  .link-groups { gap: 20px; }
   .list-footer { gap: 12px; }
   .official-card { align-items: flex-start; gap: 14px; padding: 22px; }
   .official-card h2 { font-size: 21px; }
@@ -512,6 +519,6 @@ kbd { display: grid; flex: 0 0 25px; place-items: center; width: 25px; height: 2
   .site-header { background: Canvas; }
   .button, .icon-button, .interest-choice > span, .person-row, .resource-card, .club-card, .official-card,
   .advice-card, .faq-section, .directory-toolbar, .empty-state, .chat-chip, .direction-badge, .telegram-link, .main-nav, .modal,
-  .page-size select, .modal input:not([type='checkbox']), .modal textarea, .modal select { border: 1px solid ButtonText; }
+  .page-size select, .people-filters select, .modal input:not([type='checkbox']), .modal textarea, .modal select { border: 1px solid ButtonText; }
   .nav-link.is-active, .interest-choice input:checked + span, .page-button.is-current, .chat-chip.is-active { outline: 2px solid Highlight; outline-offset: -3px; }
 }

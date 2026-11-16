@@ -83,74 +83,10 @@
     startups: 'Стартапы',
   };
   const clubs = [
-    { id: 'english', name: 'Английский клуб', interests: ['languages'], description: 'Разговорная практика для тех, кто учит английский.', organizers: [{ name: 'Катя', nick: 'rosalchi', telegram: 'Kate_hunterr' }] },
-    { id: 'tennis', name: 'Теннисный клуб', interests: ['tennis', 'sport'], description: 'Теннис и активный отдых после учёбы.', organizersSoon: true },
-    { id: 'speaking', name: 'Клуб публичных выступлений', interests: ['speaking'], description: 'Практика публичных выступлений и работы с голосом.', organizers: [{ name: 'Екатерина Анисимова', role: 'ADM IZH' }] },
-    { id: 'gamers', name: 'Неофициальный клуб геймеров', interests: [], description: '', chatUrl: 'https://t.me/+UdbduQwFgAU4ZTZi' },
-  ];
-  const resourceGroups = [
-    { id: 'practice', title: 'Тренажёры и практика' },
-    { id: 'school', title: 'Школа и кампус' },
-    { id: 'calls', title: 'Переговорки' },
-    { id: 'knowledge', title: 'Базы знаний' },
-    { id: 'tools', title: 'Инструменты и карта' },
-  ];
-  const resources = [
-    { id: 'c-trainer', group: 'practice', title: 'Тренажёр по C', description: 'Сборник задач для практики перед экзаменом.', url: 'https://github.com/z4nzim00n/Exam_trainer' },
-    { id: 'sql-trainer', group: 'practice', title: 'SQL-тренажёр', description: 'Задания по SQL с проверкой запросов.', url: 'https://z4nzim00n.github.io/SQL_trainer/' },
-    { id: 'sql-theory', group: 'practice', title: 'SQL-тест к экзамену', description: 'Теоретические тесты для подготовки к экзамену по SQL.', url: 'https://z4nzim00n.github.io/sql_theory_trainer/' },
-    { id: 'platform', group: 'school', title: 'Платформа Школы 21', description: 'Основной сайт школы: проекты, проверки и прогресс.', url: 'https://platform.21-school.ru/' },
-    { id: 'deadlines', group: 'school', title: 'Дедлайны обучения', description: 'Сроки и этапы обучения на портале абитуриента.', url: 'https://applicant.21-school.ru/education/education' },
-    { id: 'campus-qr', group: 'school', title: 'QR-код кампуса', description: 'QR-код кампуса Ижевска на портале абитуриента.', url: 'https://applicant.21-school.ru/campus-qr-code' },
-    { id: 'rocketchat', group: 'school', title: 'Rocket.Chat', description: 'Основной рабочий чат Школы 21: каналы кампуса и проектов.', url: 'https://rocketchat-student.21-school.ru/home' },
-    { id: 'salutejazz', group: 'calls', title: 'SaluteJazz', description: 'Видеопереговоры для сдачи заданий и проверок.', url: 'https://salutejazz.ru/' },
-    { id: 'izh-knowledge', group: 'knowledge', title: 'Хранилище знаний Ижевска', description: 'Общий документ кампуса: заметки и материалы по учёбе.', url: 'https://docs.yandex.ru/edit/d/GDBAOOKz1vtQPndD9p8_7iPegnqahzm72s0qoIz-cKg6VENfa3QyRUNTZw?from_public=1' },
-    { id: 'knowledge-base-nsk', group: 'knowledge', title: 'База знаний (Новосибирск)', description: 'Полезное по веткам, чаты проектов, поиск команды и ответы на вопросы по заданиям.', url: 'https://git.21-school.ru/gehnaeli/knowledge-base-nsk/-/tree/master' },
-    { id: 'emap', group: 'tools', title: 'Интерактивная карта', description: 'Карта Школы 21 без скрытых узлов и ограничений: путь к цели и проекты, которые откроются после неё.', url: 'https://emap.tamelaos.fun/' },
-    { id: 'linux-cheatsheet', group: 'tools', title: 'Шпаргалка по Linux', description: 'Команды Linux коротко: файлы, права, процессы и сеть.', url: 'https://github.com/justxor/Linux-/' },
-    { id: 'starter-pack', group: 'tools', title: 'Настройка терминала разработчика', description: 'Руководство по настройке терминала для работы из дома: WSL и SSH.', url: 'https://github.com/z4nzim00n/S21-Starter-Pack' },
-  ];
-  const chatGroups = [
-    { id: 'campus', title: 'Кампус Ижевск' },
-    { id: 'dev', title: 'Разработка' },
-    { id: 'branches', title: 'Ветки' },
-    { id: 'other', title: 'Другие направления' },
-    { id: 'bots', title: 'Боты' },
-    { id: 'archive', title: 'Архив' },
-  ];
-  const chats = [
-    { id: 'izh-backend', group: 'campus', title: 'Backend Ижевск', description: 'Чат направления Backend в Ижевске.', url: 'https://t.me/+JYuUe1n0cwkwYmUy' },
-    { id: 'izh-qa', group: 'campus', title: 'QA Ижевск', description: 'Чат направления QA в Ижевске.', url: 'https://t.me/+2Bnrzy64xRk0Mzky' },
-    { id: 'izh-devops', group: 'campus', title: 'DevOps Ижевск', description: 'Чат направления DevOps в Ижевске.', url: 'https://t.me/+IMXkLAMMwcoxZjRi' },
-    { id: 'izh-ds', group: 'campus', title: 'Data Science Ижевск', description: 'Чат направления Data Science в Ижевске.', url: 'https://t.me/ds_school21_izhevsk' },
-    { id: 'simplebashutils', group: 'dev', title: 'SimpleBashUtils', url: 'https://t.me/+C8pCQLUsSvNkNzcy' },
-    { id: 's21-string', group: 'dev', title: 's21_string+', url: 'https://t.me/+LQpPWconGXViMzA6' },
-    { id: 's21-decimal', group: 'dev', title: 's21_decimal', url: 'https://t.me/+KvtB8PKDB2xlM2Qy' },
-    { id: 's21-matrix', group: 'dev', title: 's21_matrix / s21_matrix+', url: 'https://t.me/S21_matrix' },
-    { id: 'brickgame', group: 'dev', title: 'BrickGame', tag: 'все части', url: 'https://t.me/+3YyNoe6dMDM3OGQy' },
-    { id: 'devops-project', group: 'dev', title: 'DevOps', url: 'https://t.me/+MPogbcEDJ-JhZWE6' },
-    { id: 'cpp', group: 'dev', title: 'C++', url: 'https://t.me/+wqh8GgT1dClmNmJi' },
-    { id: 'sql', group: 'dev', title: 'SQL', url: 'https://t.me/+t1CH7q-bZNcxY2Qy' },
-    { id: 'sber-java', group: 'dev', title: 'Sber_Java', url: 'https://t.me/+gUdaLC_tadNmYjJi' },
-    { id: 'algo-branches', group: 'branches', title: 'Алгоритмические ветки', tag: 'общий чат', description: 'Общий чат алгоритмических веток.', url: 'https://t.me/+KgbLy4KXsVxiYTIy' },
-    { id: 'lang-branches', group: 'branches', title: 'Языковые ветки', tag: 'общий чат', description: 'Java, Python, Kotlin, Go, C#.', url: 'https://t.me/+0QNpBkJDKQNhZjAy' },
-    { id: 'ai-agent', group: 'other', title: 'AI Agent', url: 'https://t.me/+zFa1Humn1X9iNTZi' },
-    { id: 'cbs-branch', group: 'other', title: 'Кибербезопасность / CbS', tag: 'чат ветки', url: 'https://t.me/+a85WycvCrtxiNjYy' },
-    { id: 'cbs-club', group: 'other', title: 'Клуб кибербеза', tag: 'чат клуба', url: 'https://t.me/+r5wufz8L3mUzOGUy' },
-    { id: 'backend', group: 'other', title: 'Backend', url: 'https://t.me/+3arMZbxPqtgxNWZi' },
-    { id: 'ml-ds', group: 'other', title: 'ML / DS', url: 'https://t.me/+mAUDhBpSrvo0YzIy' },
-    { id: 'bsa', group: 'other', title: 'BSA', url: 'https://t.me/+lUffgOle5M8yMTgy' },
-    { id: 's21-math', group: 'other', title: 's21_math', url: 'https://t.me/+PYp_Z2nGW_FjYmJi' },
-    { id: '3dviewer', group: 'other', title: '3DViewer', url: 'https://t.me/+D2sccrQhVL5hOWYy' },
-    { id: 'qa', group: 'other', title: 'QA', url: 'https://t.me/+NVATSadWEcc1Njcy' },
-    { id: 'pm', group: 'other', title: 'Project Manager', tag: 'межкампусный', description: 'Общий чат проджектов, не только Ижевск.', url: 'https://t.me/+yPBq8rDpXy02MmU6' },
-    { id: 'product', group: 'other', title: 'Product Manager', url: 'https://t.me/+_16VEmzJtFQ0N2Zi' },
-    { id: 'bioinf', group: 'other', title: 'Биоинформатика', url: 'https://t.me/+uvUmkuHuyAhhZGFi' },
-    { id: 'uxui', group: 'other', title: 'UX / UI', url: 'https://t.me/+1NkIFYy7tiM2YmFi' },
-    { id: 'morty-bot', group: 'bots', title: 'MortyS21bot', tag: 'поиск и верификация', description: 'Поиск пиров по нику, Telegram username или ID, верификация в чатах, статистика активности и база проверенных пользователей.', url: 'https://t.me/MortyS21bot' },
-    { id: 'login-bot', group: 'bots', title: 'login_school21_bot', tag: 'поиск пиров', description: 'Бот для поиска пиров по нику в Telegram и школьному нику.', url: 'https://t.me/login_school21_bot' },
-    { id: 'noem-bot', group: 'bots', title: 'NoemX21_bot', tag: 'бот-помощник', description: 'Переговорки, книги, клубы, личная статистика, PRR helper и управление группами.', url: 'https://t.me/NoemX21_bot' },
-    { id: 'smartcalc', group: 'archive', title: 'SmartCalc', tag: 'архив', description: 'Проект больше недоступен для выполнения.', url: 'https://t.me/+kVtODVcII0k2MjU6' },
+    { id: 'english', name: 'Английский клуб', description: 'Разговорная практика для тех, кто учит английский.', organizers: [{ name: 'Катя', nick: 'rosalchi', telegram: 'Kate_hunterr' }] },
+    { id: 'tennis', name: 'Теннисный клуб', description: 'Теннис и активный отдых после учёбы.', organizersSoon: true },
+    { id: 'speaking', name: 'Клуб публичных выступлений', description: 'Практика публичных выступлений и работы с голосом.', organizers: [{ name: 'Екатерина Анисимова', role: 'ADM IZH' }] },
+    { id: 'gamers', name: 'Неофициальный клуб геймеров', description: '', chatUrl: 'https://t.me/+UdbduQwFgAU4ZTZi' },
   ];
 
   function validText(value, max) {
@@ -566,14 +502,33 @@
     nav.replaceChildren(fragment);
   }
 
+  function renderPeopleFilters() {
+    $('#people-direction').replaceChildren(new Option('Все направления', ''), ...Object.entries(directions).map(([id, title]) => new Option(title, id)));
+    $('#people-interest').replaceChildren(new Option('Все увлечения', ''), ...Object.entries(interestLabels).map(([id, title]) => new Option(title, id)));
+  }
+
+  function resetPeopleSearch() {
+    $('#people-search').value = '';
+    $('#people-direction').value = '';
+    $('#people-interest').value = '';
+    currentPage = 1;
+  }
+
   function renderPeople() {
     const everyone = allPeople();
     everyone.forEach(person => {
       if (!peopleOrder.has(person.id)) peopleOrder.set(person.id, Math.random());
     });
     const query = $('#people-search').value.trim().toLocaleLowerCase('ru').replace(/^@/, '');
+    const direction = $('#people-direction').value;
+    const interest = $('#people-interest').value;
+    const hasFilters = Boolean(query || direction || interest);
+    $('#people-reset').hidden = !hasFilters;
+    $('#people-direction').classList.toggle('is-active', Boolean(direction));
+    $('#people-interest').classList.toggle('is-active', Boolean(interest));
     const visible = everyone
-      .filter(person => [person.nick, person.name, person.telegram || '', directions[person.direction] || '', ...person.interests.map(id => interestLabels[id])].some(value => value.toLocaleLowerCase('ru').includes(query)))
+      .filter(person => (!direction || person.direction === direction) && (!interest || person.interests.includes(interest)))
+      .filter(person => [person.nick, person.name, person.telegram || '', person.bio || '', directions[person.direction] || '', ...person.interests.map(id => interestLabels[id])].some(value => value.toLocaleLowerCase('ru').includes(query)))
       .sort((a, b) => {
         const aPending = Boolean(a.pending && a.token && a.status !== 'rejected');
         const bPending = Boolean(b.pending && b.token && b.status !== 'rejected');
@@ -623,12 +578,12 @@
     const end = Math.min(start + pageSize, visible.length);
     $('#results-summary').textContent = visible.length
       ? visible.length > pageSize ? `Показано ${start + 1}–${end} из ${visible.length}` : `${visible.length} ${plural(visible.length, ['студент', 'студента', 'студентов'])}`
-      : query ? 'Ничего не найдено' : 'Пока никого';
+      : hasFilters ? 'Ничего не найдено' : 'Пока никого';
     $('#people-empty').hidden = visible.length > 0;
     if (!visible.length) {
-      $('#empty-title').textContent = query ? 'Ничего не найдено' : 'Пока никого';
-      $('#empty-description').textContent = query ? 'Измени запрос или сбрось поиск, чтобы увидеть весь список.' : supabaseClient ? 'Добавь первую анкету — после проверки она появится в общем каталоге.' : 'Добавь первую анкету — она сохранится в этом браузере.';
-      $('#empty-action').textContent = query ? 'Сбросить поиск' : 'Добавить анкету';
+      $('#empty-title').textContent = hasFilters ? 'Ничего не найдено' : 'Пока никого';
+      $('#empty-description').textContent = hasFilters ? 'Измени запрос или сбрось фильтры, чтобы увидеть весь список.' : supabaseClient ? 'Добавь первую анкету — после проверки она появится в общем каталоге.' : 'Добавь первую анкету — она сохранится в этом браузере.';
+      $('#empty-action').textContent = hasFilters ? 'Сбросить поиск' : 'Добавить анкету';
     }
   }
 
@@ -636,10 +591,18 @@
     currentPage = 1;
     renderPeople();
   });
+  $$('.people-filters select').forEach(select => select.addEventListener('change', () => {
+    currentPage = 1;
+    renderPeople();
+  }));
+  $('#people-reset').addEventListener('click', () => {
+    resetPeopleSearch();
+    renderPeople();
+    $('#people-search').focus();
+  });
   $('#empty-action').addEventListener('click', () => {
-    if ($('#people-search').value.trim()) {
-      $('#people-search').value = '';
-      currentPage = 1;
+    if ($('#people-search').value.trim() || $('#people-direction').value || $('#people-interest').value) {
+      resetPeopleSearch();
       renderPeople();
       $('#people-search').focus();
     } else {
@@ -731,8 +694,6 @@
     $('.club-name', card).textContent = club.name;
     $('.club-description', card).textContent = club.description;
     $('.club-description', card).hidden = !club.description;
-    renderInterestTags($('.club-interests', card), club.interests);
-    $('.club-interests', card).hidden = club.interests.length === 0;
     const organizers = (club.organizers || []).filter(item => item && validText(item.name, 50));
     const organizersBox = $('.club-organizers', card);
     organizersBox.hidden = organizers.length === 0 && !club.organizersSoon;
@@ -741,8 +702,22 @@
       row.className = 'club-organizer-row';
       const name = document.createElement('span');
       name.className = 'club-organizer-name';
-      name.textContent = item.nick ? `${item.name} · ник ${item.nick}` : item.role ? `${item.name} · ${item.role}` : item.name;
+      name.textContent = item.role ? `${item.name} · ${item.role}` : item.name;
       row.append(name);
+      if (item.nick && nickPattern.test(item.nick)) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'telegram-link club-organizer-nick';
+        button.dataset.nick = item.nick;
+        button.setAttribute('aria-label', `Скопировать Rocket.Chat: ${item.nick}`);
+        button.title = `Скопировать Rocket.Chat: ${item.nick}`;
+        const caption = document.createElement('span');
+        caption.textContent = item.nick;
+        const copyIcon = svgIcon('i-copy');
+        copyIcon.classList.add('copy-mini');
+        button.append(caption, copyIcon);
+        row.append(button);
+      }
       if (item.telegram && telegramPattern.test(item.telegram)) {
         const button = document.createElement('button');
         button.type = 'button';
@@ -778,6 +753,11 @@
   }
 
   $('#clubs-grid').addEventListener('click', event => {
+    const nick = event.target.closest('.club-organizer-nick');
+    if (nick) {
+      copyText(nick.dataset.nick, `Rocket.Chat скопирован: ${nick.dataset.nick}`);
+      return;
+    }
     const organizer = event.target.closest('.club-organizer');
     if (!organizer) return;
     copyText(`@${organizer.dataset.telegram}`, `Тег скопирован: @${organizer.dataset.telegram}`);
@@ -867,8 +847,7 @@
     }
     const next = [person, ...pendingPeople];
     if (persist(keys.pending, next, '#person-error')) pendingPeople = next;
-    $('#people-search').value = '';
-    currentPage = 1;
+    resetPeopleSearch();
     renderPeople();
     $('#person-dialog').close();
     showToast('Анкета отправлена на проверку.');
@@ -926,8 +905,7 @@
     const next = editingId ? people.map(item => item.id === editingId ? person : item) : [person, ...people];
     if (!persist(keys.people, next, '#person-error')) return;
     people = next;
-    $('#people-search').value = '';
-    currentPage = 1;
+    resetPeopleSearch();
     renderPeople();
     $('#person-dialog').close();
     showToast(editingId ? 'Анкета обновлена.' : 'Анкета добавлена и сохранена в этом браузере.');
@@ -963,29 +941,8 @@
     }
   });
 
-  function renderResources() {
-    const fragment = document.createDocumentFragment();
-    resourceGroups.forEach(group => {
-      const items = resources.filter(resource => resource.group === group.id);
-      if (!items.length) return;
-      const heading = document.createElement('h3');
-      heading.className = 'resources-group-title';
-      heading.textContent = group.title;
-      fragment.append(heading);
-      items.forEach(resource => {
-        const card = $('#resource-template').content.firstElementChild.cloneNode(true);
-        card.dataset.id = resource.id;
-        $('h3', card).textContent = resource.title;
-        $('.resource-description', card).textContent = resource.description || '';
-        $('.resource-link', card).href = safeUrl(resource.url);
-        $('.resource-link', card).setAttribute('aria-label', `Открыть: ${resource.title}`);
-        $('.resource-domain', card).textContent = new URL(resource.url).hostname;
-        fragment.append(card);
-      });
-    });
-    $('#resources-grid').replaceChildren(fragment);
-  }
-
+  const chatSections = $$('#chat-groups [data-chat-group]');
+  const chatGroups = chatSections.map(section => ({ id: section.dataset.chatGroup, title: $('h2', section).textContent }));
   let chatFilter = 'all';
 
   function renderChatFilter() {
@@ -1003,49 +960,13 @@
   }
 
   function renderChats() {
-    const fragment = document.createDocumentFragment();
     let visible = 0;
-    chatGroups.forEach(group => {
-      if (chatFilter !== 'all' && chatFilter !== group.id) return;
-      const items = chats.filter(chat => chat.group === group.id);
-      if (!items.length) return;
-      const heading = document.createElement('h3');
-      heading.className = 'chats-group-title';
-      heading.textContent = group.title;
-      fragment.append(heading);
-      items.forEach(chat => {
-        const card = $('#chat-template').content.firstElementChild.cloneNode(true);
-        card.dataset.id = chat.id;
-        const badge = $('.chat-direction', card);
-        badge.textContent = chat.tag || '';
-        badge.hidden = !chat.tag;
-        $('h3', card).textContent = chat.title;
-        const description = $('.resource-description', card);
-        description.textContent = chat.description || '';
-        description.hidden = !chat.description;
-        const link = $('.chat-link', card);
-        const url = safeUrl(chat.url);
-        if (url) {
-          const anchor = document.createElement('a');
-          anchor.className = 'resource-link';
-          anchor.href = url;
-          anchor.target = '_blank';
-          anchor.rel = 'noopener noreferrer';
-          const label = chat.group === 'bots' ? 'Открыть бота' : 'Открыть чат';
-          anchor.setAttribute('aria-label', `${label}: ${chat.title}`);
-          anchor.append(document.createTextNode(label), svgIcon('i-external'));
-          link.replaceChildren(anchor);
-        } else {
-          const soon = document.createElement('span');
-          soon.className = 'chat-soon';
-          soon.textContent = 'Ссылку добавим позже';
-          link.replaceChildren(soon);
-        }
-        fragment.append(card);
-        visible += 1;
-      });
+    chatSections.forEach(section => {
+      const matches = chatFilter === 'all' || chatFilter === section.dataset.chatGroup;
+      const cards = $$('.resource-card', section).length;
+      section.hidden = !matches || cards === 0;
+      if (!section.hidden) visible += cards;
     });
-    $('#chats-grid').replaceChildren(fragment);
     $('#chats-empty').hidden = visible > 0;
     $$('#chat-filter .chat-chip').forEach(chip => {
       const active = chip.dataset.filter === chatFilter;
@@ -1144,6 +1065,7 @@
   }
   renderDirectionPicker();
   renderInterestPicker();
+  renderPeopleFilters();
   renderChatFilter();
   renderChats();
   $('#clubs-grid').replaceChildren(...clubs.map(club => makeClubCard(club)));
@@ -1153,6 +1075,5 @@
     $('#results-summary').textContent = 'Загружаем анкеты…';
     loadRemotePeople().then(syncPendingStatus);
   }
-  renderResources();
   if (warnings.length) showToast(warnings[0], true);
 })();
