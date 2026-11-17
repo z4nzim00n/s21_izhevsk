@@ -1,37 +1,40 @@
 <!doctype html>
-<html lang="ru" data-theme="dark">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#101612">
-  <meta name="description" content="Неофициальный список анкет студентов Школы 21 в Ижевске: ники, имена, Telegram, направления и интересы.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ece0c8">
+  <meta name="description" content="Неофициальный список анкет студентов Ижевского кампуса: ники, имена, Telegram, направления и интересы.">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Школа 21, Ижевск">
-  <meta property="og:title" content="Школа 21, Ижевск — каталог студентов">
-  <meta property="og:description" content="Ники, Telegram, направления и интересы студентов Ижевского кампуса. Найди своих.">
+  <meta property="og:site_name" content="Ижевский кампус">
+  <meta property="og:title" content="Ижевский кампус — каталог студентов">
+  <meta property="og:description" content="Студенческий справочник Ижевского кампуса: анкеты, учебные материалы, чаты и клубы.">
   <meta property="og:url" content="https://z4nzim00n.github.io/s21_izhevsk/">
   <meta property="og:image" content="https://z4nzim00n.github.io/s21_izhevsk/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Школа 21, Ижевск — каталог студентов">
+  <meta property="og:image:alt" content="Ижевский кампус — каталог студентов">
   <meta name="twitter:card" content="summary_large_image">
-  <title>Школа 21, Ижевск</title>
+  <title>Ижевский кампус</title>
   <script>
-    try {
-      document.documentElement.dataset.theme = localStorage.getItem('s21-izhevsk.theme') === 'light' ? 'light' : 'dark';
-    } catch (error) {
-      document.documentElement.dataset.theme = 'dark';
-    }
+    (() => {
+      try {
+        const saved = localStorage.getItem('s21-izhevsk.theme');
+        if (saved === 'dark') document.documentElement.dataset.theme = 'dark';
+      } catch (error) {}
+    })();
   </script>
+  <link rel="preload" href="./assets/quill-blank.png" as="image">
+  <link rel="preload" href="./assets/quill-written.png" as="image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Golos+Text:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="./favicon.png?v=14" type="image/png">
+  <link rel="stylesheet" href="./styles.css?v=quill-art-5">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./config.js"></script>
-  <script src="./app.js" defer></script>
+  <script src="./app.js?v=quill-art-5" defer></script>
 </head>
 <body>
   <svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -39,85 +42,84 @@
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
     <symbol id="i-external" viewBox="0 0 24 24"><path d="M13 5h6v6m0-6L9 15M10 5H5v14h14v-5"/></symbol>
-    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></symbol>
-    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.8 13a9 9 0 0 1-9.8-9.8A9 9 0 1 0 20.8 13Z"/></symbol>
     <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2m0-15a3 3 0 0 1 0 6m3 3a5 5 0 0 1 3 4v2"/></symbol>
     <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1m0-14c3-2 6-2 9-1v14c-3-1-6-1-9 1V6Z"/></symbol>
     <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
-    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v.5"/></symbol>
     <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
     <symbol id="i-edit" viewBox="0 0 24 24"><path d="m14 5 5 5M4 20l5-1L20 8a2.1 2.1 0 0 0-5-5L4 14v6Z"/></symbol>
     <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
     <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m8 10 4 4 4-4"/></symbol>
-    <symbol id="i-code" viewBox="0 0 24 24"><path d="m7 7-5 5 5 5m10-10 5 5-5 5M14 4l-4 16"/></symbol>
     <symbol id="i-telegram" viewBox="0 0 24 24"><path d="m21 3-4 18-6-5-4 3 1-7L21 3ZM8 12 3 10l18-7M11 16l4-7"/></symbol>
-    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></symbol>
     <symbol id="i-clubs" viewBox="0 0 24 24"><path d="M5 16 3 21l6-2h8a4 4 0 0 0 4-4V7a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v5a4 4 0 0 0 2 4Z"/><path d="M8 8h8M8 12h5"/></symbol>
-    <symbol id="i-language" viewBox="0 0 24 24"><path d="M3 5h12M9 3v2m4 0c0 6-4 10-9 12m1-9c1 4 4 7 8 9m1 4 4-10 4 10m-6.5-4h5"/></symbol>
-    <symbol id="i-tennis" viewBox="0 0 24 24"><ellipse cx="14" cy="9" rx="6" ry="7" transform="rotate(35 14 9)"/><path d="m9 14-6 7m8-16 6 9M9 8l6 9M8 11l9-7m-6 11 9-7"/></symbol>
-    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1m-7 8v4m-4 0h8"/></symbol>
     <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 13.5A8 8 0 0 1 10.5 4 8 8 0 1 0 20 13.5Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></symbol>
   </svg>
   <a class="skip-link" href="#main">К содержимому</a>
-  <div class="ambient" aria-hidden="true">
-    <span class="ambient-orb orb-one"></span>
-    <span class="ambient-orb orb-two"></span>
-    <span class="ambient-orb orb-three"></span>
-  </div>
   <div class="page-shell">
-    <header class="site-header glass">
-      <a class="brand" href="#people" aria-label="Школа 21, Ижевск — на главную">
-        <span class="brand-mark" aria-hidden="true">21</span>
-        <span class="brand-copy"><strong>Школа 21</strong><span>Ижевск</span></span>
-      </a>
+    <header class="site-header">
       <nav class="main-nav" aria-label="Разделы сайта">
-        <a class="nav-link is-active" href="#people" data-page="people" aria-current="page"><svg class="icon"><use href="#i-people"/></svg><span>Ники</span></a>
-        <a class="nav-link" href="#rules" data-page="rules"><svg class="icon"><use href="#i-book"/></svg><span>Правила и FAQ</span></a>
+        <a class="nav-link is-active" href="#people" data-page="people" aria-current="page"><svg class="icon"><use href="#i-people"/></svg><span>Список</span></a>
+        <a class="nav-link" href="#rules" data-page="rules"><svg class="icon"><use href="#i-book"/></svg><span>Правила</span></a>
         <a class="nav-link" href="#chats" data-page="chats"><svg class="icon"><use href="#i-telegram"/></svg><span>Чаты</span></a>
-        <a class="nav-link" href="#resources" data-page="resources"><svg class="icon"><use href="#i-grid"/></svg><span>Полезные сайты</span></a>
+        <a class="nav-link" href="#resources" data-page="resources"><svg class="icon"><use href="#i-grid"/></svg><span>Сайты</span></a>
         <a class="nav-link" href="#clubs" data-page="clubs"><svg class="icon"><use href="#i-clubs"/></svg><span>Клубы</span></a>
       </nav>
-      <div class="header-actions"><span class="version-badge">v0.005</span><button class="icon-button theme-toggle" id="theme-toggle" type="button" aria-label="Включить светлую тему" title="Включить светлую тему"><svg class="icon"><use href="#i-sun"/></svg></button></div>
+      <div class="header-actions"><button type="button" class="icon-button theme-toggle" id="theme-toggle" aria-label="Переключить тему" title="Переключить тему"><svg class="icon theme-icon-light"><use href="#i-moon"/></svg><svg class="icon theme-icon-dark"><use href="#i-sun"/></svg></button></div>
     </header>
 
     <main id="main" tabindex="-1">
-      <section class="page-section" id="page-people" aria-labelledby="people-heading">
+      <section class="page-section" id="page-people" aria-label="Список студентов">
         <div class="hero">
-          <div class="hero-copy">
-            <p class="mono-label">s21 / izhevsk / nicks</p>
-            <h1 id="people-heading">Ники Школы 21 в Ижевске</h1>
-            <p class="hero-description">Анкеты студентов: ник, имя, Telegram, направление и интересы. Ник и тег копируются в один клик, поиск ищет по всем полям.</p>
-            <div class="hero-actions"><button type="button" class="button button-primary" data-add-person><svg class="icon"><use href="#i-plus"/></svg>Добавить анкету</button><span class="intro-note">Только свои данные</span></div>
-            <ul class="hero-stats">
-              <li><strong id="hero-total">0</strong><span id="hero-total-label">студентов</span></li>
-              <li><strong id="hero-clubs">3</strong><span id="hero-clubs-label">клуба</span></li>
-            </ul>
-          </div>
-          <div class="campus-art" aria-hidden="true">
-            <span class="art-orbit orbit-a"></span>
-            <span class="art-orbit orbit-b"></span>
-            <span class="art-tile tile-back"></span>
-            <span class="art-tile tile-front">
-              <span class="tile-caption">school / 21</span>
-              <span class="tile-number">21<span>↗</span></span>
-              <span class="tile-footer"><span>Ижевск</span><svg class="icon"><use href="#i-code"/></svg></span>
-            </span>
-            <span class="art-label label-top glass"><span class="status-dot"></span>студенты</span>
-            <span class="art-label label-bottom glass"><svg class="icon"><use href="#i-pin"/></svg><strong>Ижевск</strong><span>кампус</span></span>
-            <span class="floating-code code-one">{ }</span>
-            <span class="floating-code code-two">&lt;/&gt;</span>
-          </div>
-        </div>
+          <div class="hero-actions"><button type="button" class="button button-primary" data-add-person><svg class="icon"><use href="#i-plus"/></svg>Добавить анкету</button></div>
+          <button id="quill-trigger" class="quill-trigger" type="button" aria-label="Пасхалка: перо и чернильница"><svg class="hero-illustration" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="96" height="96" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 
-        <div class="section-heading"><div class="heading-inline"><h2>Студенты</h2><span class="count-badge" id="people-count">0</span></div><span class="section-caption">Ижевский кампус</span></div>
-        <div class="directory-toolbar glass">
-          <label class="search-field" for="people-search"><svg class="icon"><use href="#i-search"/></svg><input id="people-search" type="search" placeholder="Ник, имя, Telegram, направление или интерес" maxlength="100" autocomplete="off" aria-label="Поиск по нику, имени, Telegram, направлению или интересам"><kbd aria-hidden="true">/</kbd></label>
+  <g class="quill-paper" transform="translate(85 -38)">
+    <defs>
+      <linearGradient id="quill-roll"><stop stop-color="#a68a5e"/><stop offset=".45" stop-color="#f3e6c7"/><stop offset="1" stop-color="#bba077"/></linearGradient>
+      <clipPath id="quill-sheet-clip"><rect class="quill-unroll" x="1" y="119" width="239" height="38"/></clipPath>
+      <clipPath id="quill-text-clip"><rect class="quill-reveal" x="14" y="124" width="216" height="29"/></clipPath>
+    </defs>
+    <g clip-path="url(#quill-sheet-clip)">
+      <svg x="1" y="119" width="239" height="38" viewBox="0 180 2172 350" preserveAspectRatio="none">
+        <image href="./assets/quill-blank.png" width="2172" height="724"/>
+      </svg>
+      <g clip-path="url(#quill-text-clip)">
+        <svg x="1" y="119" width="239" height="38" viewBox="0 180 2172 350" preserveAspectRatio="none">
+          <image href="./assets/quill-written.png" width="2172" height="724"/>
+        </svg>
+      </g>
+    </g>
+    <ellipse class="quill-curl" cx="5" cy="138" rx="3.3" ry="15"/>
+  </g>
+<g class="quill-flight"><g class="ink-feather">
+              <path d="M60 91C65 64 78 31 103 10C110 30 100 59 76 73L65 78" fill="currentColor" fill-opacity=".06"/>
+              <path d="M60 91C70 58 87 30 103 10M70 63L69 43M76 52L79 29M83 41L88 20M71 64L90 58M77 52L100 42M84 40L105 29"/>
+              <path d="M67 74L79 69M88 31L87 24M95 24L104 20" opacity=".45"/>
+            </g></g>
+            <path d="M50 91L47 98V109C47 115 80 115 81 109V98L77 91M52 91V86M76 91V86" fill="var(--canvas)"/>
+            <ellipse cx="64" cy="86" rx="12" ry="3.5"/>
+            <path d="M49 101C57 104 72 104 79 101V109C73 113 54 113 49 109Z" fill="currentColor" stroke="none" opacity=".85"/>
+            <path d="M53 97L52 100M55 105V109" stroke="var(--canvas)" opacity=".7"/>
+            <path class="ink-flourish" pathLength="1" d="M17 118C30 112 39 116 35 120C31 124 22 121 27 117C35 111 73 122 108 117"/>
+            <circle cx="91" cy="111" r="1.4" fill="currentColor" stroke="none" opacity=".5"/>
+            <circle cx="97" cy="108" r=".8" fill="currentColor" stroke="none" opacity=".35"/>
+          </svg></button>
         </div>
-        <div class="directory-meta"><span id="results-summary" role="status" aria-live="polite">Пока никого</span><span><span class="tiny-dot"></span> Ижевск</span></div>
+        <div class="directory-toolbar">
+          <label class="search-field" for="people-search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><input id="people-search" type="search" placeholder="Поиск по всем полям" maxlength="100" autocomplete="off" aria-label="Поиск по каталогу" aria-describedby="people-search-hint"></label>
+          <div class="people-filters" role="group" aria-label="Фильтры списка">
+            <select id="people-direction" aria-label="Направление"><option value="">Все направления</option></select>
+            <select id="people-interest" aria-label="Увлечение"><option value="">Все увлечения</option></select>
+            <button type="button" class="button button-secondary button-small" id="people-reset" hidden>Сбросить</button>
+          </div>
+        </div>
+        <p class="search-hint" id="people-search-hint">Ник, имя, Telegram, описание, направление и увлечения.</p>
+        <span class="sr-only" id="results-summary" role="status" aria-live="polite"></span>
         <div id="people-list" class="people-list"></div>
-        <div id="people-empty" class="empty-state glass" hidden><span class="empty-icon"><svg class="icon"><use href="#i-search"/></svg></span><h3 id="empty-title">Пока никого</h3><p id="empty-description">Добавь свою первую анкету.</p><button class="button button-secondary" type="button" id="empty-action">Добавить анкету</button></div>
+        <div id="people-empty" class="empty-state" hidden><span class="empty-icon"><svg class="icon"><use href="#i-search"/></svg></span><h3 id="empty-title">Пока никого</h3><p id="empty-description">Добавь свою первую анкету.</p><button class="button button-secondary" type="button" id="empty-action">Добавить анкету</button></div>
         <div class="list-footer" id="list-footer">
           <nav class="pagination" id="pagination" aria-label="Страницы"></nav>
           <label class="page-size" for="page-size">На странице <select id="page-size"><option value="10">10</option><option value="20">20</option><option value="50">50</option></select></label>
@@ -125,55 +127,259 @@
       </section>
 
       <section class="page-section" id="page-rules" aria-labelledby="rules-heading" hidden>
-        <div class="page-intro"><p class="mono-label">s21 / izhevsk / faq</p><h1 id="rules-heading">Правила и FAQ</h1><p>Официальная ссылка, памятка по Rocket.Chat и частые вопросы об учёбе. Правила кампуса уточняй у его команды.</p></div>
-        <a class="official-card glass" href="https://applicant.21-school.ru/adm" target="_blank" rel="noopener noreferrer"><div class="resource-icon"><svg class="icon"><use href="#i-book"/></svg></div><div><span class="card-label">Официальный ресурс</span><h2>Портал абитуриента Школы 21</h2><p>Актуальные условия поступления и информация для абитуриентов.</p><span class="link-domain">applicant.21-school.ru/adm</span></div><span class="round-arrow"><svg class="icon"><use href="#i-external"/></svg></span></a>
+        <a class="official-card" href="https://applicant.21-school.ru/adm" target="_blank" rel="noopener noreferrer"><div><h2>Официальные правила школы</h2><p>Актуальные правила поступления и обучения — на официальном ресурсе школы.</p><span class="link-domain">applicant.21-school.ru/adm</span></div><span class="round-arrow"><svg class="icon"><use href="#i-external"/></svg></span></a>
         <div class="rules-columns">
-          <section class="advice-card glass" aria-labelledby="rocketchat-heading"><h2 id="rocketchat-heading">Rocket.Chat: памятка</h2><p class="muted">Основной рабочий чат Школы 21. Вход — <a href="https://rocketchat-student.21-school.ru" target="_blank" rel="noopener noreferrer">rocketchat-student.21-school.ru</a>.</p><ol class="advice-list"><li><span>01</span><div><h3>Как войти</h3><p>Логин — <code>школьный_ник@student.21-school.ru</code>: твой ник в Школе 21 и студенческий домен.</p></div></li><li><span>02</span><div><h3>Каналы</h3><ul class="channel-list"><li><code>#general</code> — общение между всеми участниками Школы 21 из разных городов.</li><li><code>#izh_adm</code> — организационные вопросы: обучение, мероприятия и клубы, запросы на продление и т.д.</li><li><code>#izh_report</code> — технические проблемы с платформой, рокетом, техникой и вай-фаем в кампусе.</li><li><code>#izh_service</code> — инфраструктура кампуса: что-то сломалось, пролилось и т.д.</li></ul></div></li><li><span>03</span><div><h3>Связь с администрацией</h3><p>Канал волны, канал адм и АДМ в Rocket.Chat. Почта: <a href="mailto:info@izh.21-school.ru">info@izh.21-school.ru</a>.</p></div></li></ol></section>
-          <section class="faq-section" aria-labelledby="faq-heading"><div class="section-heading"><h2 id="faq-heading">Частые вопросы</h2><span class="small-badge">FAQ</span></div>
-            <details class="faq-item glass"><summary>Как учиться из дома?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Всё просто: нужен Git и SSH-ключ в твоём GitLab.</p><ol class="faq-steps"><li>Установи Git: <a href="https://git-scm.com/downloads" target="_blank" rel="noopener noreferrer">git-scm.com/downloads</a>.</li><li>Сгенерируй SSH-ключ на своей машине (<code>ssh-keygen -t ed25519</code>) и добавь публичный ключ в свой GitLab.</li><li>Важно: если идёшь в разработческую ветку и работаешь в WSL — сгенерируй второй ключ прямо внутри WSL и тоже добавь его в GitLab.</li><li>После этого работают базовые команды: <code>git clone</code>, <code>git add</code>, <code>git commit</code>, <code>git push</code>.</li></ol></details>
-            <details class="faq-item glass"><summary>Что делать, если получилась офлайн-проверка вместо онлайн?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Не парься: проводи её онлайн любым доступным способом. Записи проверок пока ни разу не просили — их смотрят только при конфликтах. Ты сам отвечаешь за свои проверки и за качество своего обучения.</p></details>
-            <details class="faq-item glass"><summary>Как получать PRP-поинты?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Подпишись на все доступные проекты. Сами проекты делать не нужно — подписка даёт возможность проверять их. Чем меньше у тебя PRP, тем выше приоритет получения слота для проверки, поэтому имеет смысл держать их на нуле.</p></details>
-            <details class="faq-item glass"><summary>Как учитывается PRP при проверке и absence?<svg class="icon"><use href="#i-chevron"/></svg></summary><ol class="faq-steps"><li>При записи на проверку PRP списываются сразу.</li><li>Отменил меньше чем за 24 часа до проверки — PRP не возвращаются. Отменил раньше, чем за 24 часа, — возвращаются.</li><li>Если проверяющий или проверяемый не пришёл, жди 15 минут от времени старта: через 15 минут появляется кнопка absence. Не жди второго участника дольше, если он не отвечает.</li><li>Если участник не пришёл, можно написать на почту ADM, приложив скрин переписки и попыток связаться. За отсутствие пиру могут выдать пенальти.</li><li>Ты проверяемый и нажал absence — PRP вернутся.</li><li>Ты проверяющий и нажал absence — проект проверяемого уйдёт в fail. Продолжать сдавать его дальше нет смысла: итоговая оценка будет 0%.</li><li>После absence можно сразу снова записываться на новую проверку.</li><li>Вернулись ли PRP — смотри историю PRP в профиле.</li><li>Во время акций и распродаж PRP ориентируйся не на момент записи, а на момент завершения проверки. Можно записаться и провести проверку заранее, а по договорённости завершить её уже во время распродажи — тогда бонусы получат оба.</li></ol><p class="faq-warning">Важно: если ты проверяющий, кнопка absence может заруинить проект сдающему — будь очень аккуратен. Если absence жмёт сдающий, никто ничего не теряет.</p></details>
-            <details class="faq-item glass"><summary>Как правильно пересдавать буткемп/интенсив?<svg class="icon"><use href="#i-chevron"/></svg></summary><ol class="faq-steps"><li>Ретрай буткемпа — спишется начисленный за него XP.</li><li>Сделанные проекты: ретрай и гивап — им выставится максимальная оценка за предыдущие попытки.</li><li>Несделанные проекты сдаёшь заново.</li><li>Финишишь буткемп заново — начислится новый XP по средней.</li></ol></details>
-            <details class="faq-item glass"><summary>Сколько XP нужно для каждого уровня?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Порог уровня и сколько XP осталось до следующего:</p><table class="faq-table"><thead><tr><th>Уровень</th><th>XP</th><th>До следующего</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>499</td></tr><tr><td>1</td><td>499</td><td>200</td></tr><tr><td>2</td><td>699</td><td>300</td></tr><tr><td>3</td><td>999</td><td>300</td></tr><tr><td>4</td><td>1 299</td><td>600</td></tr><tr><td>5</td><td>1 899</td><td>700</td></tr><tr><td>6</td><td>2 599</td><td>1 000</td></tr><tr><td>7</td><td>3 599</td><td>1 400</td></tr><tr><td>8</td><td>4 999</td><td>2 000</td></tr><tr><td>9</td><td>6 999</td><td>2 700</td></tr><tr><td>10</td><td>9 699</td><td>3 800</td></tr><tr><td>11</td><td>13 499</td><td>5 200</td></tr><tr><td>12</td><td>18 699</td><td>7 300</td></tr><tr><td>13</td><td>25 999</td><td>10 200</td></tr><tr><td>14</td><td>36 199</td><td>14 100</td></tr><tr><td>15</td><td>50 299</td><td>19 600</td></tr><tr><td>16</td><td>69 899</td><td>—</td></tr></tbody></table></details>
+          <section class="advice-card" aria-labelledby="rocketchat-heading"><h2 id="rocketchat-heading">Rocket.Chat: памятка</h2><p class="muted">Основной рабочий чат Школы 21. Вход — <a href="https://rocketchat-student.21-school.ru" target="_blank" rel="noopener noreferrer">rocketchat-student.21-school.ru</a>.</p><ol class="advice-list"><li><span>01</span><div><h3>Как войти</h3><p>Логин — <code>школьный_ник@student.21-school.ru</code>: ник в Школе 21 и студенческий домен.</p></div></li><li><span>02</span><div><h3>Каналы</h3><ul class="channel-list"><li><code>#general</code> — общение между всеми участниками Школы 21 из разных городов.</li><li><code>#izh_adm</code> — организационные вопросы: обучение, мероприятия и клубы, запросы на продление и т.д.</li><li><code>#izh_report</code> — технические проблемы с платформой, Rocket.Chat, оборудованием и Wi-Fi в кампусе.</li><li><code>#izh_service</code> — инфраструктура кампуса: что-то сломалось, пролилось и т.д.</li></ul></div></li><li><span>03</span><div><h3>Связь с администрацией</h3><p>Канал волны, канал администрации и сотрудники ADM в Rocket.Chat. Почта: <a href="mailto:info@izh.21-school.ru">info@izh.21-school.ru</a>.</p></div></li></ol></section>
+          <section class="faq-section" aria-labelledby="faq-heading"><div class="section-heading"><h2 id="faq-heading">Частые вопросы</h2></div>
+            <details class="faq-item"><summary>Как учиться из дома?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Для работы из дома нужны Git и SSH-ключ, добавленный в GitLab.</p><ol class="faq-steps"><li>Установи Git: <a href="https://git-scm.com/downloads" target="_blank" rel="noopener noreferrer">git-scm.com/downloads</a>.</li><li>Сгенерируй SSH-ключ на своей машине (<code>ssh-keygen -t ed25519</code>) и добавь публичный ключ в свой GitLab.</li><li>Важно: если идёшь в разработческую ветку и работаешь в WSL — сгенерируй второй ключ прямо внутри WSL и тоже добавь его в GitLab.</li><li>После этого работают базовые команды: <code>git clone</code>, <code>git add</code>, <code>git commit</code>, <code>git push</code>.</li></ol></details>
+            <details class="faq-item"><summary>Что делать, если получилась офлайн-проверка вместо онлайн?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Проверку можно провести онлайн любым доступным способом. По опыту участников, записи проверок запрашивают только при конфликтах. Ответственность за проведение проверки и качество обучения остаётся за участниками.</p></details>
+            <details class="faq-item"><summary>Как получать PRP-поинты?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Подписка на доступные проекты позволяет проверять их без выполнения самих проектов. Чем меньше PRP на балансе, тем выше приоритет получения слота для проверки. Для получения слотов имеет смысл поддерживать нулевой баланс.</p></details>
+            <details class="faq-item"><summary>Как учитывается PRP при проверке и absence?<svg class="icon"><use href="#i-chevron"/></svg></summary><ol class="faq-steps"><li>При записи на проверку PRP списываются сразу.</li><li>При отмене менее чем за 24 часа до проверки PRP не возвращаются. При более ранней отмене — возвращаются.</li><li>Если один из участников не пришёл, необходимо подождать 15 минут от времени начала. После этого появляется кнопка absence. Если участник не отвечает, ждать дольше не требуется.</li><li>Об отсутствии участника можно сообщить на почту ADM, приложив скриншоты переписки и попыток связаться. За отсутствие участнику могут назначить штраф.</li><li>Если absence нажимает проверяемый, PRP возвращаются.</li><li>Если absence нажимает проверяющий, проект проверяемого получает fail. Продолжение сдачи не изменит итоговую оценку: она составит 0%.</li><li>После absence можно сразу записаться на новую проверку.</li><li>Возврат PRP можно проверить в истории PRP в профиле.</li><li>Во время акций и распродаж PRP учитывается момент завершения проверки, а не записи на неё. Проверку можно провести заранее и по договорённости завершить во время распродажи — тогда бонусы получат оба участника.</li></ol><p class="faq-warning">Важно: absence со стороны проверяющего приводит к провалу проекта сдающего. Перед нажатием необходимо убедиться, что участник действительно отсутствует. Если absence нажимает сдающий, штрафов для участников нет.</p></details>
+            <details class="faq-item"><summary>Как правильно пересдавать буткемп/интенсив?<svg class="icon"><use href="#i-chevron"/></svg></summary><ol class="faq-steps"><li>При повторном запуске буткемпа списывается начисленный за него XP.</li><li>Для выполненных проектов нужно выбрать retry, затем give up. Им будет выставлена максимальная оценка за предыдущие попытки.</li><li>Невыполненные проекты необходимо сдать заново.</li><li>После повторного завершения буткемпа начисляется новый XP по средней оценке.</li></ol></details>
+            <details class="faq-item"><summary>Сколько XP нужно для каждого уровня?<svg class="icon"><use href="#i-chevron"/></svg></summary><p>Порог уровня и сколько XP осталось до следующего:</p><table class="faq-table"><thead><tr><th>Уровень</th><th>XP</th><th>До следующего</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>499</td></tr><tr><td>1</td><td>499</td><td>200</td></tr><tr><td>2</td><td>699</td><td>300</td></tr><tr><td>3</td><td>999</td><td>300</td></tr><tr><td>4</td><td>1 299</td><td>600</td></tr><tr><td>5</td><td>1 899</td><td>700</td></tr><tr><td>6</td><td>2 599</td><td>1 000</td></tr><tr><td>7</td><td>3 599</td><td>1 400</td></tr><tr><td>8</td><td>4 999</td><td>2 000</td></tr><tr><td>9</td><td>6 999</td><td>2 700</td></tr><tr><td>10</td><td>9 699</td><td>3 800</td></tr><tr><td>11</td><td>13 499</td><td>5 200</td></tr><tr><td>12</td><td>18 699</td><td>7 300</td></tr><tr><td>13</td><td>25 999</td><td>10 200</td></tr><tr><td>14</td><td>36 199</td><td>14 100</td></tr><tr><td>15</td><td>50 299</td><td>19 600</td></tr><tr><td>16</td><td>69 899</td><td>—</td></tr></tbody></table></details>
           </section>
         </div>
       </section>
 
-      <section class="page-section" id="page-resources" aria-labelledby="resources-heading" hidden>
-        <div class="page-intro"><p class="mono-label">s21 / izhevsk / useful_sites</p><h1 id="resources-heading">Полезные сайты</h1><p>Тренажёры и ссылки, которые пригодились при обучении. Список можно дополнить, но пока только в этом браузере.</p></div>
-        <div class="section-heading"><div class="heading-inline"><h2>Ссылки</h2><span class="count-badge" id="resources-count">2</span></div><button class="button button-secondary button-small" id="add-resource" type="button"><svg class="icon"><use href="#i-plus"/></svg>Добавить ссылку</button></div>
-        <div class="resources-grid" id="resources-grid"></div>
-        <aside class="prototype-note glass"><span class="note-icon"><svg class="icon"><use href="#i-lock"/></svg></span><div><strong>Редактор пока локальный</strong><p>Добавить ссылку может любой посетитель, но её увидит только его браузер. Это не защищённая админка. В общей версии подборкой будет управлять администратор после входа.</p></div></aside>
+      <section class="page-section" id="page-resources" aria-label="Полезные сайты" hidden>
+        <div class="link-groups" id="resource-groups">
+          <section class="link-group" aria-labelledby="sites-school">
+            <h2 id="sites-school">Школа и кампус</h2>
+            <div class="resources-grid">
+              <a class="resource-card" data-id="platform" href="https://platform.21-school.ru/" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Платформа Школы 21">
+                <div class="resource-card-heading"><h3>Платформа Школы 21</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Основной сайт школы: проекты, проверки и прогресс.</p>
+              </a>
+              <a class="resource-card" data-id="deadlines" href="https://applicant.21-school.ru/education/education" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Дедлайны обучения">
+                <div class="resource-card-heading"><h3>Дедлайны обучения</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Сроки и этапы обучения на портале абитуриента.</p>
+              </a>
+              <a class="resource-card" data-id="campus-qr" href="https://applicant.21-school.ru/campus-qr-code" target="_blank" rel="noopener noreferrer" aria-label="Открыть: QR-код кампуса">
+                <div class="resource-card-heading"><h3>QR-код кампуса</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">QR-код кампуса Ижевска на портале абитуриента.</p>
+              </a>
+              <a class="resource-card" data-id="rocketchat" href="https://rocketchat-student.21-school.ru/home" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Rocket.Chat">
+                <div class="resource-card-heading"><h3>Rocket.Chat</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Основной рабочий чат Школы 21: каналы кампуса и проектов.</p>
+              </a>
+              <a class="resource-card" data-id="discord" href="https://discord.gg/KWCGA6RtG" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Discord канал Ижевского кампуса">
+                <div class="resource-card-heading"><h3>Discord канал Ижевского кампуса</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Иногда играем в игры.</p>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" aria-labelledby="sites-calls">
+            <h2 id="sites-calls">Сайт для онлайн проверок</h2>
+            <div class="resources-grid">
+              <a class="resource-card" data-id="salutejazz" href="https://salutejazz.ru/" target="_blank" rel="noopener noreferrer" aria-label="Открыть: SaluteJazz">
+                <div class="resource-card-heading"><h3>SaluteJazz</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Видеопереговоры для сдачи заданий и проверок.</p>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" aria-labelledby="sites-knowledge">
+            <h2 id="sites-knowledge">Базы знаний</h2>
+            <div class="resources-grid">
+              <a class="resource-card" data-id="izh-knowledge" href="https://docs.yandex.ru/edit/d/GDBAOOKz1vtQPndD9p8_7iPegnqahzm72s0qoIz-cKg6VENfa3QyRUNTZw?from_public=1" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Хранилище знаний Ижевска">
+                <div class="resource-card-heading"><h3>Хранилище знаний Ижевска</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Общий документ кампуса: заметки и материалы по учёбе.</p>
+              </a>
+              <a class="resource-card" data-id="knowledge-base-nsk" href="https://git.21-school.ru/gehnaeli/knowledge-base-nsk/-/tree/master" target="_blank" rel="noopener noreferrer" aria-label="Открыть: База знаний (Новосибирск)">
+                <div class="resource-card-heading"><h3>База знаний (Новосибирск)</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Полезное по веткам, чаты проектов, поиск команды и ответы на вопросы по заданиям.</p>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" aria-labelledby="sites-practice">
+            <h2 id="sites-practice">Тренажёры и практика</h2>
+            <div class="resources-grid">
+              <a class="resource-card" data-id="c-trainer" href="https://github.com/z4nzim00n/Exam_trainer" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Тренажёр по C">
+                <div class="resource-card-heading"><h3>Тренажёр по C</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Сборник задач для практики перед экзаменом.</p>
+              </a>
+              <a class="resource-card" data-id="sql-trainer" href="https://z4nzim00n.github.io/SQL_trainer/" target="_blank" rel="noopener noreferrer" aria-label="Открыть: SQL-тренажёр">
+                <div class="resource-card-heading"><h3>SQL-тренажёр</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Задания по SQL с проверкой запросов.</p>
+              </a>
+              <a class="resource-card" data-id="sql-theory" href="https://z4nzim00n.github.io/sql_theory_trainer/" target="_blank" rel="noopener noreferrer" aria-label="Открыть: SQL-тест к экзамену">
+                <div class="resource-card-heading"><h3>SQL-тест к экзамену</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Теоретические тесты для подготовки к экзамену по SQL.</p>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" aria-labelledby="sites-tools">
+            <h2 id="sites-tools">Другие полезные материалы</h2>
+            <div class="resources-grid">
+              <a class="resource-card" data-id="emap" href="https://emap.tamelaos.fun/" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Интерактивная карта">
+                <div class="resource-card-heading"><h3>Интерактивная карта</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Карта Школы 21 без скрытых узлов и ограничений: путь к цели и проекты, которые откроются после неё.</p>
+              </a>
+              <a class="resource-card" data-id="linux-cheatsheet" href="https://github.com/justxor/Linux-/" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Шпаргалка по Linux">
+                <div class="resource-card-heading"><h3>Шпаргалка по Linux</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Команды Linux коротко: файлы, права, процессы и сеть.</p>
+              </a>
+              <a class="resource-card" data-id="starter-pack" href="https://github.com/z4nzim00n/S21-Starter-Pack" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Настройка терминала разработчика">
+                <div class="resource-card-heading"><h3>Настройка терминала разработчика</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Руководство по настройке терминала для работы из дома: WSL и SSH.</p>
+              </a>
+            </div>
+          </section>
+        </div>
       </section>
-      <section class="page-section" id="page-chats" aria-labelledby="chats-heading" hidden>
-        <div class="page-intro"><p class="mono-label">s21 / izhevsk / chats</p><h1 id="chats-heading">Чаты кампуса</h1><p>Основное общение — в Rocket.Chat: <a href="https://rocketchat-student.21-school.ru/home" target="_blank" rel="noopener noreferrer">веб-версия</a>, каналы и формат входа — в «Правилах и FAQ». Ниже — Telegram-чаты по проектам, веткам и направлениям, боты и архив.</p></div>
-        <div class="section-heading"><div class="heading-inline"><h2>Чаты</h2><span class="count-badge" id="chats-count">0</span></div><span class="section-caption">Telegram</span></div>
+      <section class="page-section" id="page-chats" aria-label="Чаты" hidden>
         <div class="chat-filter" id="chat-filter" role="group" aria-label="Фильтр чатов по группам"></div>
-        <div class="chats-grid" id="chats-grid"></div>
+        <div class="link-groups" id="chat-groups">
+          <section class="link-group" data-chat-group="campus" aria-labelledby="chats-campus">
+            <h2 id="chats-campus">Кампус Ижевск</h2>
+            <div class="chats-grid">
+              <a class="resource-card" data-id="izh-main" href="https://t.me/+YpNtHCEqbl4yODcy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Основа Ижевск">
+                <div class="resource-card-heading"><h3>Основой канал</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="izh-backend" href="https://t.me/+JYuUe1n0cwkwYmUy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Backend Ижевск">
+                <div class="resource-card-heading"><h3>Backend</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="izh-qa" href="https://t.me/+2Bnrzy64xRk0Mzky" target="_blank" rel="noopener noreferrer" aria-label="Открыть: QA Ижевск">
+                <div class="resource-card-heading"><h3>QA</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="izh-devops" href="https://t.me/+IMXkLAMMwcoxZjRi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: DevOps Ижевск">
+                <div class="resource-card-heading"><h3>DevOps</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="izh-ds" href="https://t.me/ds_school21_izhevsk" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Data Science Ижевск">
+                <div class="resource-card-heading"><h3>Data Science</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" data-chat-group="bots" aria-labelledby="chats-bots">
+            <h2 id="chats-bots">Боты</h2>
+            <div class="chats-grid">
+              <a class="resource-card" data-id="morty-bot" href="https://t.me/MortyS21bot" target="_blank" rel="noopener noreferrer" aria-label="Открыть: MortyS21bot">
+                <div class="resource-card-heading"><h3>MortyS21bot</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Поиск пиров по нику, Telegram username или ID, верификация в чатах, статистика активности и база проверенных пользователей.</p>
+              </a>
+              <a class="resource-card" data-id="login-bot" href="https://t.me/login_school21_bot" target="_blank" rel="noopener noreferrer" aria-label="Открыть: login_school21_bot">
+                <div class="resource-card-heading"><h3>login_school21_bot</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Бот для поиска пиров по нику в Telegram и школьному нику.</p>
+              </a>
+              <a class="resource-card" data-id="noem-bot" href="https://t.me/NoemX21_bot" target="_blank" rel="noopener noreferrer" aria-label="Открыть: NoemX21_bot">
+                <div class="resource-card-heading"><h3>NoemX21_bot</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+                <p class="resource-description">Переговорки, книги, клубы, личная статистика, PRR helper и управление группами.</p>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" data-chat-group="branches" aria-labelledby="chats-branches">
+            <h2 id="chats-branches">Ветки</h2>
+            <div class="chats-grid">
+              <a class="resource-card" data-id="algo-branches" href="https://t.me/+KgbLy4KXsVxiYTIy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Алгоритмические ветки">
+                <div class="resource-card-heading"><h3>Алгоритмические ветки</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="lang-branches" href="https://t.me/+0QNpBkJDKQNhZjAy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Языковые ветки">
+                <div class="resource-card-heading"><h3>Языковые ветки</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" data-chat-group="other" aria-labelledby="chats-other">
+            <h2 id="chats-other">Направления</h2>
+            <div class="chats-grid">
+              <a class="resource-card" data-id="ai-agent" href="https://t.me/+zFa1Humn1X9iNTZi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: AI Agent">
+                <div class="resource-card-heading"><h3>AI Agent</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="cbs-branch" href="https://t.me/+a85WycvCrtxiNjYy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Кибербезопасность / CbS">
+                <div class="resource-card-heading"><h3>Кибербезопасность / CbS</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="cbs-club" href="https://t.me/+r5wufz8L3mUzOGUy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Клуб кибербеза">
+                <div class="resource-card-heading"><h3>Клуб кибербеза</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="backend" href="https://t.me/+3arMZbxPqtgxNWZi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Backend">
+                <div class="resource-card-heading"><h3>Backend</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="ml-ds" href="https://t.me/+mAUDhBpSrvo0YzIy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: ML / DS">
+                <div class="resource-card-heading"><h3>ML / DS</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="bsa" href="https://t.me/+lUffgOle5M8yMTgy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: BSA">
+                <div class="resource-card-heading"><h3>BSA</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="s21-math" href="https://t.me/+PYp_Z2nGW_FjYmJi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: s21_math">
+                <div class="resource-card-heading"><h3>s21_math</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="3dviewer" href="https://t.me/+D2sccrQhVL5hOWYy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: 3DViewer">
+                <div class="resource-card-heading"><h3>3DViewer</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="qa" href="https://t.me/+NVATSadWEcc1Njcy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: QA">
+                <div class="resource-card-heading"><h3>QA</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="pm" href="https://t.me/+yPBq8rDpXy02MmU6" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Project Manager">
+                <div class="resource-card-heading"><h3>Project Manager</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="product" href="https://t.me/+_16VEmzJtFQ0N2Zi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Product Manager">
+                <div class="resource-card-heading"><h3>Product Manager</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="bioinf" href="https://t.me/+uvUmkuHuyAhhZGFi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Биоинформатика">
+                <div class="resource-card-heading"><h3>Биоинформатика</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="uxui" href="https://t.me/+1NkIFYy7tiM2YmFi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: UX / UI">
+                <div class="resource-card-heading"><h3>UX / UI</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" data-chat-group="dev" aria-labelledby="chats-dev">
+            <h2 id="chats-dev">Разработка</h2>
+            <div class="chats-grid">
+              <a class="resource-card" data-id="simplebashutils" href="https://t.me/+C8pCQLUsSvNkNzcy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: SimpleBashUtils">
+                <div class="resource-card-heading"><h3>SimpleBashUtils</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="s21-string" href="https://t.me/+LQpPWconGXViMzA6" target="_blank" rel="noopener noreferrer" aria-label="Открыть: s21_string+">
+                <div class="resource-card-heading"><h3>s21_string+</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="s21-decimal" href="https://t.me/+KvtB8PKDB2xlM2Qy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: s21_decimal">
+                <div class="resource-card-heading"><h3>s21_decimal</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="s21-matrix" href="https://t.me/S21_matrix" target="_blank" rel="noopener noreferrer" aria-label="Открыть: s21_matrix / s21_matrix+">
+                <div class="resource-card-heading"><h3>s21_matrix / s21_matrix+</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="brickgame" href="https://t.me/+3YyNoe6dMDM3OGQy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: BrickGame">
+                <div class="resource-card-heading"><h3>BrickGame</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="devops-project" href="https://t.me/+MPogbcEDJ-JhZWE6" target="_blank" rel="noopener noreferrer" aria-label="Открыть: DevOps">
+                <div class="resource-card-heading"><h3>DevOps</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="cpp" href="https://t.me/+wqh8GgT1dClmNmJi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: C++">
+                <div class="resource-card-heading"><h3>C++</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="sql" href="https://t.me/+t1CH7q-bZNcxY2Qy" target="_blank" rel="noopener noreferrer" aria-label="Открыть: SQL">
+                <div class="resource-card-heading"><h3>SQL</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+              <a class="resource-card" data-id="sber-java" href="https://t.me/+gUdaLC_tadNmYjJi" target="_blank" rel="noopener noreferrer" aria-label="Открыть: Sber_Java">
+                <div class="resource-card-heading"><h3>Sber_Java</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+            </div>
+          </section>
+          <section class="link-group" data-chat-group="archive" aria-labelledby="chats-archive">
+            <h2 id="chats-archive">Архив</h2>
+            <div class="chats-grid">
+              <a class="resource-card" data-id="smartcalc" href="https://t.me/+kVtODVcII0k2MjU6" target="_blank" rel="noopener noreferrer" aria-label="Открыть: SmartCalc">
+                <div class="resource-card-heading"><h3>SmartCalc</h3><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></div>
+              </a>
+            </div>
+          </section>
+        </div>
         <p class="clubs-footnote" id="chats-empty" hidden>В этой группе чатов пока нет.</p>
       </section>
       <section class="page-section" id="page-clubs" aria-labelledby="clubs-heading" hidden>
-        <div class="page-intro"><p class="mono-label">s21 / izhevsk / clubs</p><h1 id="clubs-heading">Клубы кампуса</h1><p>Английский клуб, теннис и публичные выступления. Контактов и расписания пока нет: добавим, когда появится проверенная информация.</p></div>
-        <div class="section-heading"><div class="heading-inline"><h2>Клубы</h2><span class="count-badge">3</span></div><span class="section-caption">Ижевск</span></div>
         <div class="clubs-grid" id="clubs-grid"></div>
-        <aside class="club-invitation glass"><span class="note-icon"><svg class="icon"><use href="#i-people"/></svg></span><div><h2>Подобрать клуб по интересам</h2><p>Отметь интересы в анкете — после сохранения покажем подходящие клубы. Это подсказка, а не запись в участники.</p></div><button class="button button-secondary" type="button" data-add-person><svg class="icon"><use href="#i-plus"/></svg>Заполнить анкету</button></aside>
-        <p class="clubs-footnote">Записаться через сайт пока нельзя. Здесь появятся контакты и расписание клубов.</p>
       </section>
     </main>
-    <footer class="site-footer"><span class="footer-brand">Школа 21, Ижевск</span><span>Неофициальный студенческий проект.</span><span class="footer-location"><svg class="icon"><use href="#i-pin"/></svg>Ижевск <span class="footer-separator">/</span> версия 0.005</span></footer>
   </div>
 
   <dialog id="person-dialog" class="modal" aria-labelledby="person-dialog-title" aria-describedby="person-dialog-description">
-    <div class="modal-heading"><span class="small-badge">Анкета</span><button class="icon-button" type="button" data-close-dialog aria-label="Закрыть форму"><svg class="icon"><use href="#i-close"/></svg></button></div>
-    <h2 id="person-dialog-title">Новая анкета</h2><p class="muted" id="person-dialog-description">Ник, имя и Telegram. Направление, интересы и описание можно добавить по желанию.</p>
+    <div class="modal-heading"><button class="icon-button" type="button" data-close-dialog aria-label="Закрыть форму"><svg class="icon"><use href="#i-close"/></svg></button></div>
+    <h2 id="person-dialog-title">Новая анкета</h2><p class="muted" id="person-dialog-description">Ник и имя обязательны. Telegram, направление, интересы и описание — по желанию.</p>
     <form id="person-form">
-      <label class="field-label" for="person-nick">Ник в Школе 21 <span>*</span></label><input id="person-nick" name="nick" type="text" required minlength="2" maxlength="24" pattern="[A-Za-z][A-Za-z0-9_\-]{1,23}" placeholder="your_nick" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="nick-help"><p class="field-help" id="nick-help">2–24 символа: латиница, цифры, _ и -. Начни с буквы. Вводи без @.</p>
+      <label class="field-label" for="person-nick">Ник в Школе 21 <span>*</span></label><input id="person-nick" name="nick" type="text" required minlength="2" maxlength="24" pattern="[A-Za-z][A-Za-z0-9_\-]{1,23}" placeholder="your_nick" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="nick-help"><p class="field-help" id="nick-help">2–24 символа: латиница, цифры, _ и -. Начни с буквы.</p>
       <label class="field-label" for="person-name">Имя <span>*</span></label><input id="person-name" name="name" type="text" required maxlength="50" placeholder="Например, Саша" autocomplete="given-name">
-      <label class="field-label" for="person-telegram">Telegram <span>*</span></label><div class="input-wrap"><span class="input-prefix">@</span><input id="person-telegram" name="telegram" type="text" required maxlength="100" placeholder="username" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="telegram-help"></div><p class="field-help" id="telegram-help">Публичный username без @ и без ссылки. Не номер телефона и не приглашение.</p>
+      <label class="field-label" for="person-telegram">Telegram <span class="optional-label">необязательно</span></label><div class="input-wrap"><span class="input-prefix">@</span><input id="person-telegram" name="telegram" type="text" maxlength="100" placeholder="username" autocomplete="off" autocapitalize="none" spellcheck="false" aria-describedby="telegram-help"></div><p class="field-help" id="telegram-help">Публичный username без @ и без ссылки. Не номер телефона и не приглашение.</p>
       <label class="field-label" for="person-direction">Направление <span class="optional-label">необязательно</span></label><select id="person-direction" name="direction" aria-describedby="direction-help"></select><p class="field-help" id="direction-help">Покажем его рядом с ником в списке.</p>
       <label class="field-label" for="person-bio">О себе <span class="optional-label">необязательно</span></label><textarea id="person-bio" name="bio" maxlength="600" rows="3" placeholder="Чем увлекаешься, что интересно обсуждать" aria-describedby="bio-help"></textarea><p class="field-help" id="bio-help">До 600 символов. Пиши только то, чем хочешь поделиться.</p>
-      <fieldset class="interests-fieldset" aria-describedby="interests-help"><legend class="field-label">Интересы <span class="optional-label">необязательно</span></legend><p class="field-help" id="interests-help">По выбранным темам подскажем клубы кампуса.</p><div class="interest-picker" id="interest-picker"></div></fieldset>
+      <fieldset class="interests-fieldset" aria-describedby="interests-help"><legend class="field-label">Интересы <span class="optional-label">необязательно</span></legend><p class="field-help" id="interests-help">Отметь темы, которые тебе интересны: по ним работает поиск по каталогу.</p><div class="interest-picker" id="interest-picker"></div></fieldset>
       <label class="consent-label"><input id="person-consent" type="checkbox" required><span>Добавляю свои данные и понимаю, что сейчас анкета сохранится только в этом браузере.</span></label>
       <p class="form-error" id="person-error" role="alert" hidden></p><div class="modal-actions"><button class="button button-secondary" type="button" data-close-dialog>Отмена</button><button class="button button-primary" type="submit" id="person-submit">Добавить<svg class="icon"><use href="#i-arrow"/></svg></button></div>
     </form>
@@ -181,29 +387,32 @@
 
   <dialog id="profile-dialog" class="modal profile-modal" aria-labelledby="profile-title">
     <div class="modal-heading"><span class="small-badge" id="profile-badge"></span><button class="icon-button" type="button" data-close-dialog aria-label="Закрыть профиль"><svg class="icon"><use href="#i-close"/></svg></button></div>
-    <div class="profile-heading"><div><h2 id="profile-title"></h2><p class="muted" id="profile-name"></p><span class="direction-badge" id="profile-direction" hidden></span></div></div>
+    <div class="profile-heading"><div><h2 id="profile-title"></h2><p class="muted" id="profile-name"></p><span class="direction-badge" id="profile-direction" hidden></span></div>
+      <svg class="profile-cat" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 110" width="112" height="103" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <path class="cat-tail" d="M71 97C86 102 101 96 103 81C105 69 95 63 89 70" fill="none"/>
+        <path d="M42 50C33 61 30 79 33 92C34 98 39 101 46 101H62C70 101 75 97 75 89C75 73 70 59 62 50" fill="var(--dialog)"/>
+        <path d="M49 61L52 65L55 61M47 70L50 73M57 70L54 73" opacity=".4"/>
+        <path d="M42 101Q46 94 50 101M55 101Q59 94 63 101"/>
+        <path d="M39 28L40 11L50 21" fill="var(--dialog)"/>
+        <path class="cat-ear" d="M55 21L65 10L67 28" fill="var(--dialog)"/>
+        <path d="M38 28C33 38 38 53 52 54C66 53 71 38 67 28C63 20 42 20 38 28Z" fill="var(--dialog)"/>
+        <path d="M41 17L43 23M64 16L62 22" opacity=".45"/>
+        <g class="cat-eyes" fill="currentColor" stroke="none"><ellipse cx="46" cy="36" rx="2.1" ry="3"/><ellipse cx="58" cy="36" rx="2.1" ry="3"/></g>
+        <path d="M50.5 42.5H53.5L52 44.5Z" fill="currentColor"/>
+        <path d="M52 44.5Q50.5 47.5 48 46.5M52 44.5Q53.5 47.5 56 46.5"/>
+        <path d="M43 43L30 40M43 46L30 47M61 43L74 40M61 46L74 47" stroke-width="1" opacity=".55"/>
+        <path d="M24 104H96" opacity=".3"/>
+      </svg>
+    </div>
     <section class="profile-section" aria-labelledby="profile-about-label"><h3 id="profile-about-label">О себе</h3><p class="profile-bio" id="profile-bio"></p></section>
     <section class="profile-section" aria-labelledby="profile-interests-label"><h3 id="profile-interests-label">Интересы</h3><div class="interest-tags" id="profile-interests"></div><p class="muted" id="profile-no-interests" hidden>Интересы пока не указаны.</p></section>
     <div class="modal-actions"><button class="button button-secondary" type="button" id="profile-edit"><svg class="icon"><use href="#i-edit"/></svg>Редактировать</button><button class="button button-primary" type="button" id="profile-telegram"><svg class="icon"><use href="#i-copy"/></svg>Скопировать тег</button><button class="button button-secondary" type="button" data-close-dialog>Закрыть</button></div>
   </dialog>
 
-  <dialog id="recommendation-dialog" class="modal recommendation-modal" aria-labelledby="recommendation-title" aria-describedby="recommendation-description">
-    <div class="modal-heading"><span class="save-confirmation"><svg class="icon"><use href="#i-check"/></svg>Анкета сохранена</span><button class="icon-button" type="button" data-close-dialog aria-label="Закрыть"><svg class="icon"><use href="#i-close"/></svg></button></div>
-    <h2 id="recommendation-title">Подходящие клубы</h2><p class="muted" id="recommendation-description">Ты отметил интересы, связанные с этими клубами. Это только подсказка.</p><div class="recommendation-list" id="recommendation-list"></div><p class="field-help">Мы никуда тебя не записываем и не передаём данные клубам.</p>
-    <div class="modal-actions"><button class="button button-secondary" type="button" data-close-dialog>Закрыть</button><a class="button button-primary" href="#clubs" id="recommendation-clubs">Все клубы<svg class="icon"><use href="#i-arrow"/></svg></a></div>
-  </dialog>
-
-  <dialog id="resource-dialog" class="modal" aria-labelledby="resource-dialog-title">
-    <div class="modal-heading"><span class="small-badge">Ссылка</span><button class="icon-button" type="button" data-close-dialog aria-label="Закрыть форму"><svg class="icon"><use href="#i-close"/></svg></button></div><h2 id="resource-dialog-title">Добавить ссылку</h2><p class="muted">Ссылка появится только в подборке этого браузера.</p>
-    <form id="resource-form"><label class="field-label" for="resource-title">Название <span>*</span></label><input id="resource-title" name="title" type="text" required maxlength="70" placeholder="Название сайта или тренажёра"><label class="field-label" for="resource-url">Ссылка <span>*</span></label><input id="resource-url" name="url" type="url" required maxlength="500" placeholder="https://…"><label class="field-label" for="resource-description">Короткое описание</label><textarea id="resource-description" name="description" maxlength="240" rows="3" placeholder="Чем этот ресурс может помочь?"></textarea><p class="form-error" id="resource-error" role="alert" hidden></p><div class="modal-actions"><button class="button button-secondary" type="button" data-close-dialog>Отмена</button><button class="button button-primary" type="submit">Сохранить<svg class="icon"><use href="#i-arrow"/></svg></button></div></form>
-  </dialog>
-
-  <dialog id="delete-dialog" class="modal modal-compact" aria-labelledby="delete-title"><div class="modal-heading"><span class="small-badge">Мои записи</span><button class="icon-button" type="button" data-close-dialog aria-label="Отмена"><svg class="icon"><use href="#i-close"/></svg></button></div><h2 id="delete-title">Удалить запись?</h2><p class="muted" id="delete-description"></p><p class="form-error" id="delete-error" role="alert" hidden></p><div class="modal-actions"><button class="button button-secondary" type="button" data-close-dialog>Оставить</button><button class="button button-danger" type="button" id="confirm-delete">Удалить</button></div></dialog>
+  <dialog id="delete-dialog" class="modal modal-compact" aria-labelledby="delete-title"><div class="modal-heading"><button class="icon-button" type="button" data-close-dialog aria-label="Отмена"><svg class="icon"><use href="#i-close"/></svg></button></div><h2 id="delete-title">Удалить запись?</h2><p class="muted" id="delete-description"></p><p class="form-error" id="delete-error" role="alert" hidden></p><div class="modal-actions"><button class="button button-secondary" type="button" data-close-dialog>Оставить</button><button class="button button-danger" type="button" id="confirm-delete">Удалить</button></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite" popover="manual" hidden><svg class="icon"><use href="#i-check"/></svg><span></span></div>
 
-  <template id="person-template"><article class="person-row glass"><div class="person-main"><div class="person-head"><button class="person-nick copy-nick" type="button"><span class="nick-text"></span><svg class="icon copy-icon"><use href="#i-copy"/></svg></button><span class="direction-badge" hidden></span><span class="small-badge person-pending" hidden>на проверке</span></div><p class="person-name"></p><p class="person-bio-preview"></p><div class="interest-tags person-interests"></div></div><div class="person-side"><button class="telegram-link copy-telegram" type="button"><svg class="icon"><use href="#i-telegram"/></svg><span></span><svg class="icon copy-mini"><use href="#i-copy"/></svg></button><div class="person-actions"><button class="button button-secondary button-small profile-open" type="button"><span>Профиль</span><svg class="icon"><use href="#i-arrow"/></svg></button><span class="card-actions"><button class="icon-button edit-person" type="button"><svg class="icon"><use href="#i-edit"/></svg></button><button class="icon-button delete-person" type="button"><svg class="icon"><use href="#i-trash"/></svg></button></span></div></div></article></template>
-  <template id="club-template"><article class="club-card glass"><div class="club-card-top"><div class="resource-icon club-icon"></div><span class="small-badge club-category"></span></div><h3 class="club-name"></h3><p class="club-description"></p><div class="interest-tags club-interests"></div><p class="club-reason" hidden></p><div class="club-organizers" hidden></div><div class="club-contact"><svg class="icon"><use href="#i-telegram"/></svg><span>Контакты появятся позже</span></div></article></template>
-  <template id="chat-template"><article class="resource-card glass"><div class="resource-card-top"><div class="resource-icon"><svg class="icon"><use href="#i-telegram"/></svg></div><span class="small-badge chat-direction"></span></div><h3></h3><p class="resource-description"></p><div class="resource-card-bottom"><span class="chat-link"></span></div></article></template>
-  <template id="resource-template"><article class="resource-card glass"><div class="resource-card-top"><div class="resource-icon"></div><span class="small-badge resource-category"></span></div><h3></h3><p class="resource-description"></p><div class="resource-card-bottom"><a class="resource-link" target="_blank" rel="noopener noreferrer"><span>Открыть</span><svg class="icon"><use href="#i-external"/></svg></a><button class="icon-button delete-resource" type="button"><svg class="icon"><use href="#i-trash"/></svg></button></div><span class="resource-domain"></span></article></template>
+  <template id="person-template"><article class="person-row"><div class="person-main"><div class="person-head"><button class="person-nick copy-nick" type="button"><span class="nick-text"></span><svg class="icon copy-icon"><use href="#i-copy"/></svg></button><span class="direction-badge" hidden></span><span class="small-badge person-pending" hidden>на проверке</span></div><p class="person-name"></p><p class="person-bio-preview"></p><div class="interest-tags person-interests"></div></div><div class="person-side"><button class="telegram-link copy-telegram" type="button"><svg class="icon"><use href="#i-telegram"/></svg><span></span><svg class="icon copy-mini"><use href="#i-copy"/></svg></button><div class="person-actions"><button class="button button-secondary button-small profile-open" type="button"><span>Профиль</span><svg class="icon"><use href="#i-arrow"/></svg></button><span class="card-actions"><button class="icon-button edit-person" type="button"><svg class="icon"><use href="#i-edit"/></svg></button><button class="icon-button delete-person" type="button"><svg class="icon"><use href="#i-trash"/></svg></button></span></div></div></article></template>
+  <template id="club-template"><article class="club-card"><h3 class="club-name"></h3><p class="club-description"></p><div class="club-organizers" hidden></div></article></template>
 </body>
 </html>
